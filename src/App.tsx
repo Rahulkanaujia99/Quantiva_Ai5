@@ -253,7 +253,9 @@ const App: React.FC = () => {
         </span>
       )}
     </button>
-    return (
+  );
+
+  return (
     <div className={`min-h-screen flex selection:bg-[#3D3DC4]/30 ${themeClasses.bg}`}>
       {/* Sidebar */}
       <aside className={`w-[280px] fixed inset-y-0 border-r z-50 flex flex-col p-6 space-y-8 ${themeClasses.sidebar}`}>
