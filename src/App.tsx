@@ -344,22 +344,38 @@ const App: React.FC = () => {
             Generate Report
           </button>
           
-          <div className="flex items-center justify-between px-2 gap-4">
-            <button className="p-2 text-[#888899] hover:text-[#1A1A2E] transition-colors" title="Settings"><Settings className="w-5 h-5" /></button>
-            <button 
-              onClick={async () => {
-                try {
-                  await signOut(auth);
-                } catch (e) {
-                   console.error("Signout error:", e);
-                 }
-              }}
-              className="flex items-center gap-2 p-2.5 px-4 btn-primary rounded-lg transition-all text-xs font-bold uppercase tracking-wider focus:outline-none"
-              title="Sign Out"
-            >
-              <LogOut className="w-4 h-4 text-white" />
-              <span>Log Out</span>
-            </button>
+          <div className="flex items-center justify-between px-1 gap-2">
+            <div className="flex items-center gap-3 overflow-hidden">
+              <div className="w-10 h-10 shrink-0 rounded-full bg-[#1DB88E] flex items-center justify-center font-bold text-sm text-white font-mono shadow-sm">
+                {profile.initials}
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="text-[13px] font-bold text-[#1A1A2E] leading-snug truncate">{profileName}</span>
+                <span className="text-[10px] text-[#888899] font-medium leading-none mt-0.5 truncate">{profileOrg || 'Penguin International'}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 shrink-0">
+              <button 
+                onClick={() => setActiveTab('settings')}
+                className={`p-2 rounded-lg transition-all ${activeTab === 'settings' ? 'bg-[#3D3DC4]/10 text-[#3D3DC4] border border-[#3D3DC4]/20' : 'text-[#888899] hover:text-[#1A1A2E] hover:bg-[#F3F3FE]'}`}
+                title="Settings"
+              >
+                <Settings className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={async () => {
+                  try {
+                    await signOut(auth);
+                  } catch (e) {
+                     console.error("Signout error:", e);
+                   }
+                }}
+                className="p-2 text-[#888899] hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                title="Log Out"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </aside>
