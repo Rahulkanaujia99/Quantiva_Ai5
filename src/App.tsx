@@ -23,7 +23,7 @@ const App: React.FC = () => {
   const [extractedData, setExtractedData] = useState<ExtractedData | null>(null);
   const [archive, setArchive] = useState<ExtractedData[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const isDarkMode = true;
+  const isDarkMode = false;
   const [showQRCheck, setShowQRCheck] = useState(false);
   const [activeTab, setActiveTab] = useState<'home' | 'analysis' | 'archive' | 'qr-status' | 'qr-check'>('home');
   
@@ -214,22 +214,12 @@ const App: React.FC = () => {
   };
 
   const themeClasses = {
-    bg: isDarkMode 
-      ? "bg-[#0a0c14] text-slate-200" 
-      : "bg-slate-50 text-slate-900",
-    sidebar: isDarkMode
-      ? "bg-[#0d111d] border-[#1e2433]"
-      : "bg-white border-slate-200 shadow-sm",
-    nav: isDarkMode
-      ? "bg-[#0d111d]/80 border-[#1e2433]"
-      : "bg-white/80 border-slate-200 shadow-sm",
-    accent: "bg-[#2563eb] hover:bg-[#1d4ed8] text-white shadow-xl shadow-blue-500/10",
-    textHeading: isDarkMode
-      ? "text-white"
-      : "text-slate-900",
-    card: isDarkMode
-      ? "bg-[#111827] border-[#1e2433]"
-      : "bg-white border-slate-200 shadow-sm"
+    bg: "bg-[#FFFFFF] text-[#555566]",
+    sidebar: "bg-[#FFFFFF] border-[#E5E5F0]",
+    nav: "bg-[#FFFFFF] border-[#E5E5F0] shadow-sm",
+    accent: "bg-[#3D3DC4] hover:bg-[#5B5BF5] text-white shadow-xl shadow-blue-500/10",
+    textHeading: "text-[#1A1A2E]",
+    card: "bg-[#FFFFFF] border-[#E5E5F0]"
   };
 
   const handleHome = () => {
@@ -249,16 +239,16 @@ const App: React.FC = () => {
       }}
       className={`w-full flex items-center justify-between p-3.5 rounded-xl transition-all group border border-transparent ${
         ((id === activeTab && id !== 'qr-check') || (id === 'qr-check' && showQRCheck))
-          ? "bg-blue-600/10 text-blue-500 border-blue-500/20" 
-          : `text-slate-500 hover:${isDarkMode ? 'text-white bg-slate-800/40' : 'text-slate-900 bg-slate-100'}`
+          ? "bg-[#3D3DC4]/10 text-[#3D3DC4] border-[#3D3DC4]/20" 
+          : "text-[#555566] hover:text-[#1A1A2E] hover:bg-[#F3F3FE]"
       }`}
     >
       <div className="flex items-center gap-3">
-        <Icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${activeTab === id ? 'text-blue-400' : ''}`} />
+        <Icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${((id === activeTab && id !== 'qr-check') || (id === 'qr-check' && showQRCheck)) ? 'text-[#3D3DC4]' : 'text-[#888899]'}`} />
         <span className="text-[15px] font-bold tracking-tight">{label}</span>
       </div>
       {status && (
-        <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#F3F3FE] text-[#5B5BF5]">
           {status}
         </span>
       )}
