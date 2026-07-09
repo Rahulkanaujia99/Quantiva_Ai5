@@ -298,13 +298,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
         
         {/* ================= PANEL A: THE DYNAMIC SLIDING BANNER (AQUAMARINE INTEGRATED DESIGN) ================= */}
         <div 
-          className={`w-full md:w-[41%] bg-hero-gradient text-[#1A1A2E] p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-all duration-500 ${
-            mode === 'login' ? 'md:order-last border-l border-[#E5E5F0]' : 'md:order-first border-r border-[#E5E5F0]'
+          className={`w-full md:w-[41%] bg-gradient-to-b from-[#061F1A] to-[#030F0D] text-white p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-all duration-500 ${
+            mode === 'login' ? 'md:order-last border-l border-[#061F1A]' : 'md:order-first border-r border-[#061F1A]'
           }`}
         >
           {/* Watermark Logo Backdrop (Perfect alignment & premium styling) */}
-          <div className="absolute inset-0 z-0 opacity-[0.05] pointer-events-none flex items-center justify-center select-none">
-            <svg className="w-[320px] h-[320px] animate-[spin_180s_linear_infinite] text-[#3D3DC4]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none flex items-center justify-center select-none">
+            <svg className="w-[320px] h-[320px] animate-[spin_180s_linear_infinite] text-[#1DB88E]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="50" cy="50" r="46" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
               <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 {/* Center linking ring */}
