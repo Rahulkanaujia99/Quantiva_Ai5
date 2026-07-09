@@ -25,7 +25,15 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const isDarkMode = false;
   const [showQRCheck, setShowQRCheck] = useState(false);
-  const [activeTab, setActiveTab] = useState<'home' | 'analysis' | 'archive' | 'qr-status' | 'qr-check'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'analysis' | 'archive' | 'qr-status' | 'qr-check' | 'settings'>('home');
+  
+  // Profile settings states
+  const [profileName, setProfileName] = useState<string>('rahul Kanaujia');
+  const [profileEmail, setProfileEmail] = useState<string>('rkanaujia75@gmail.com');
+  const [profileOrg, setProfileOrg] = useState<string>('Penguin International');
+  const [profileRole, setProfileRole] = useState<string>('Director');
+  const [profileRegion, setProfileRegion] = useState<string>('Asia Pacific');
+  const [profileSector, setProfileSector] = useState<string>('Energy & Utilities');
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -36,6 +44,13 @@ const App: React.FC = () => {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      setProfileName(currentUser.displayName || 'rahul Kanaujia');
+      setProfileEmail(currentUser.email || 'rkanaujia75@gmail.com');
+    }
+  }, [currentUser]);
 
   if (isAuthChecking) {
     return (
