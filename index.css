@@ -59,6 +59,11 @@ body {
   background: linear-gradient(135deg, #EEF9F6 0%, #F5F5FF 50%, #E1F5EE 100%);
 }
 
+.bg-dark-panel {
+  background: linear-gradient(to bottom, #061F1A 0%, #030F0D 100%) !important;
+  color: #FFFFFF !important;
+}
+
 .card-base {
   border-radius: 14px;
   border: 1px solid #E5E5F0;
