@@ -584,8 +584,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                       placeholder="Jane Doe"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className={`w-full bg-white text-[#1A1A2E] border rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none ${
-                        nameError ? 'border-red-500/40 focus:border-red-500/60' : 'border-[#E5E5F0] focus:border-[#3D3DC4]/50'
+                      className={`w-full bg-[#F3F6FF] text-[#1A1A2E] border rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none focus:bg-white focus:ring-4 focus:ring-[#3D3DC4]/10 ${
+                        nameError ? 'border-red-500/40 focus:border-red-500/60' : 'border-[#D8E2FD] focus:border-[#3D3DC4]/50'
                       }`}
                     />
                   </div>
@@ -609,10 +609,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     disabled={isLoading}
                     onChange={handleEmailChange}
                     placeholder="certified@enterprise.com"
-                    className={`w-full bg-white border text-[#1A1A2E] rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none ${
+                    className={`w-full bg-[#F3F6FF] border text-[#1A1A2E] rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none focus:bg-white focus:ring-4 focus:ring-[#3D3DC4]/10 ${
                       emailError 
                         ? 'border-red-500/40 focus:border-red-500/60' 
-                        : 'border-[#E5E5F0] focus:border-[#3D3DC4]/50'
+                        : 'border-[#D8E2FD] focus:border-[#3D3DC4]/50'
                     }`}
                   />
                 </div>
@@ -641,10 +641,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                       disabled={isLoading}
                       onChange={handlePasswordChange}
                       placeholder={mode === 'signup' ? "Create strong password" : "••••••••"}
-                      className={`w-full bg-white border text-[#1A1A2E] rounded-xl py-3 pl-11 pr-11 text-xs font-bold transition-all outline-none ${
+                      className={`w-full bg-[#F3F6FF] border text-[#1A1A2E] rounded-xl py-3 pl-11 pr-11 text-xs font-bold transition-all outline-none focus:bg-white focus:ring-4 focus:ring-[#3D3DC4]/10 ${
                         passwordError 
                           ? 'border-red-500/40 focus:border-red-500/60' 
-                          : 'border-[#E5E5F0] focus:border-[#3D3DC4]/50'
+                          : 'border-[#D8E2FD] focus:border-[#3D3DC4]/50'
                       }`}
                     />
                     <button
