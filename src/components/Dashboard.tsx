@@ -13,17 +13,13 @@ import { ExtractedData, StrategicPoint } from '../types';
 
 interface DashboardProps {
   data: ExtractedData;
-  isDarkMode: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ data, isDarkMode }) => {
-  const cardBase = `rounded-[1.5rem] border transition-all duration-300 ${
-    isDarkMode ? 'bg-[#0f1423] border-[#1e2433]' : 'bg-white border-slate-200 shadow-sm'
-  }`;
-
-  const textPrimary = isDarkMode ? 'text-white' : 'text-slate-900';
-  const textSecondary = isDarkMode ? 'text-slate-400' : 'text-slate-600';
-  const textMuted = isDarkMode ? 'text-slate-500' : 'text-slate-400';
+const Dashboard: React.FC<DashboardProps> = ({ data }) => {
+  const cardBase = "card-base card-hover";
+  const textPrimary = "text-[#1A1A2E]";
+  const textSecondary = "text-[#555566]";
+  const textMuted = "text-[#888899]";
 
   const chartData = data.chartData && data.chartData.length > 0 ? data.chartData : [];
 
@@ -33,18 +29,18 @@ const Dashboard: React.FC<DashboardProps> = ({ data, isDarkMode }) => {
     color: string,
     dataKey: 'revenue' | 'ebitda' | 'pat'
   }) => (
-    <div className={`${cardBase} p-6 flex flex-col justify-between group hover:border-blue-500/30 overflow-hidden relative`}>
+    <div className={`${cardBase} p-6 flex flex-col justify-between overflow-hidden relative`}>
       <div className="flex items-center justify-between mb-4">
         <h4 className={`text-[11px] font-black uppercase tracking-[0.2em] ${textMuted}`}>{label}</h4>
-        <div className={`px-2 py-0.5 rounded text-[9px] font-black bg-blue-500/10 text-blue-400 border border-blue-500/20`}>
+        <div className="badge-pill bg-[#F3F3FE] text-[#5B5BF5] border border-[#5B5BF5]/15 text-[10px]">
           Trends
         </div>
       </div>
       
       <div className="space-y-4">
         <div className="flex items-baseline gap-2">
-          <p className={`text-4xl font-black tracking-tight ${textPrimary}`}>{value}</p>
-          <span className={`text-xs font-bold uppercase ${textMuted}`}>Value</span>
+          <p className="text-[40px] font-extrabold tracking-tight text-[#4545DD]">{value}</p>
+          <span className={`text-xs font-semibold uppercase ${textMuted}`}>Value</span>
         </div>
         
         {/* Real Chart */}
@@ -54,14 +50,14 @@ const Dashboard: React.FC<DashboardProps> = ({ data, isDarkMode }) => {
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id={`gradient-${dataKey}`} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={color === 'bg-blue-400' ? '#60a5fa' : color === 'bg-indigo-400' ? '#818cf8' : '#34d399'} stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor={color === 'bg-blue-400' ? '#60a5fa' : color === 'bg-indigo-400' ? '#818cf8' : '#34d399'} stopOpacity={0}/>
+                    <stop offset="5%" stopColor={color === 'bg-blue-400' ? '#3D3DC4' : color === 'bg-indigo-400' ? '#5B5BF5' : '#1DB88E'} stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor={color === 'bg-blue-400' ? '#3D3DC4' : color === 'bg-indigo-400' ? '#5B5BF5' : '#1DB88E'} stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <Area 
                   type="monotone" 
                   dataKey={dataKey} 
-                  stroke={color === 'bg-blue-400' ? '#60a5fa' : color === 'bg-indigo-400' ? '#818cf8' : '#34d399'} 
+                  stroke={color === 'bg-blue-400' ? '#3D3DC4' : color === 'bg-indigo-400' ? '#5B5BF5' : '#1DB88E'} 
                   fillOpacity={1} 
                   fill={`url(#gradient-${dataKey})`} 
                   strokeWidth={3}
@@ -69,18 +65,18 @@ const Dashboard: React.FC<DashboardProps> = ({ data, isDarkMode }) => {
               </AreaChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-full flex items-center justify-center border border-dashed border-slate-800 rounded-lg">
-              <p className="text-[11px] font-black text-slate-600 uppercase tracking-widest">No trend data found</p>
+            <div className="h-full flex items-center justify-center border border-dashed border-[#E5E5F0] rounded-lg">
+              <p className="text-[11px] font-black text-[#888899] uppercase tracking-widest">No trend data found</p>
             </div>
           )}
         </div>
         
-        <div className="flex justify-between items-center text-[8px] font-black uppercase tracking-widest text-slate-600 mt-2">
+        <div className="flex justify-between items-center text-[8px] font-black uppercase tracking-widest text-[#888899] mt-2">
             <span>{chartData.length > 0 ? chartData[0].quarter : 'N/A'}</span>
             <span>{chartData.length > 0 ? chartData[chartData.length - 1].quarter : 'N/A'}</span>
         </div>
 
-        <button className={`flex items-center gap-2 text-[9px] font-black transition-colors uppercase tracking-widest pt-2 ${textMuted} hover:${textPrimary}`}>
+        <button className={`flex items-center gap-2 text-[9px] font-black transition-colors uppercase tracking-widest pt-2 ${textMuted} hover:text-[#3D3DC4]`}>
            <Copy className="w-3 h-3" />
            Copy Dataset
         </button>
@@ -89,36 +85,36 @@ const Dashboard: React.FC<DashboardProps> = ({ data, isDarkMode }) => {
   );
 
   const StrategyCard = ({ title, icon: Icon, items, count }: { title: string, icon: React.ElementType, items: StrategicPoint[], count: number }) => (
-    <div className={`${cardBase} p-6 h-full flex flex-col ${isDarkMode ? 'bg-[#0d111d]/50' : 'bg-slate-50/50'}`}>
-      <div className="flex items-center justify-between mb-8">
+    <div className={`${cardBase} p-6 h-full flex flex-col bg-white`}>
+      <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-           <div className={`p-2 rounded-lg bg-blue-500/10 text-blue-400`}>
+           <div className="p-2 rounded-lg bg-[#F3F3FE] text-[#5B5BF5]">
               <Icon className="w-5 h-5" />
            </div>
-           <h4 className={`text-base font-black ${textPrimary}`}>{title}</h4>
+           <h4 className="text-base font-extrabold text-[#1A1A2E]">{title}</h4>
         </div>
-        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black ${isDarkMode ? 'bg-slate-800 text-slate-400' : 'bg-slate-200 text-slate-500'}`}>
+        <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold bg-[#F3F3FE] text-[#5B5BF5]">
            {count}
         </div>
       </div>
       
-      <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2">
+      <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1">
         {items.map((item, i) => (
-          <div key={i} className={`p-4 rounded-xl border group hover:border-blue-500/30 transition-all ${isDarkMode ? 'bg-[#1a2035]/50 border-slate-800/20' : 'bg-white border-slate-200 shadow-sm'}`}>
+          <div key={i} className="p-4 rounded-xl border border-[#E5E5F0] bg-white group hover:border-[#5B5BF5] transition-all">
             <div className="flex justify-between items-start mb-2 gap-2">
-              <h5 className={`text-sm font-black leading-tight ${textPrimary}`}>{item.title}</h5>
+              <h5 className="text-sm font-bold leading-tight text-[#1A1A2E]">{item.title}</h5>
               {item.value && (
-                <span className="shrink-0 px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase whitespace-nowrap">
+                <span className="shrink-0 badge-pill bg-[#F3F3FE] text-[#5B5BF5]">
                    {item.value}
                 </span>
               )}
             </div>
-            <p className={`text-[13px] font-bold leading-relaxed mb-3 ${textSecondary}`}>
+            <p className="text-[13px] font-medium leading-relaxed mb-3 text-[#555566]">
               {item.details}
             </p>
             {item.impact && (
-              <div className={`pt-3 border-t ${isDarkMode ? 'border-slate-800/30' : 'border-slate-100'}`}>
-                <p className="text-[9px] font-black text-amber-500 uppercase tracking-widest leading-normal">
+              <div className="pt-3 border-t border-[#E5E5F0]">
+                <p className="text-[10px] font-semibold text-[#1DB88E] uppercase tracking-wider leading-normal">
                   # IMPACT: {item.impact}
                 </p>
               </div>
@@ -126,7 +122,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data, isDarkMode }) => {
           </div>
         ))}
         {items.length === 0 && (
-          <p className={`text-xs font-bold italic ${textMuted}`}>No data available in this category.</p>
+          <p className="text-xs font-semibold italic text-[#888899]">No data available in this category.</p>
         )}
       </div>
     </div>
@@ -135,42 +131,35 @@ const Dashboard: React.FC<DashboardProps> = ({ data, isDarkMode }) => {
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto pb-10">
       {/* Executive Intelligence Summary */}
-      <section className={`${cardBase} p-10 relative overflow-hidden bg-gradient-to-br ${isDarkMode ? 'from-[#111827] to-[#0d111d]' : 'from-slate-50 to-white'}`}>
+      <section className={`${cardBase} p-10 relative overflow-hidden bg-hero-gradient`}>
         <div className="relative z-10 space-y-6">
            <div className="flex items-center gap-2">
               <div className="flex items-baseline gap-1">
-                <span className="text-[9px] font-black text-blue-500 uppercase tracking-[0.2em]">EXECUTIVE INTELLIGENCE SUMMARY</span>
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]"> • Q3 2024 • ANALYST REPORT</span>
+                <span className="text-[10px] font-bold text-[#5B5BF5] uppercase tracking-wider">EXECUTIVE SUMMARY</span>
+                <span className="text-[10px] font-bold text-[#888899] uppercase tracking-wider"> • Q3 2024 • ANALYST REPORT</span>
               </div>
            </div>
            
-           <div className="space-y-8">
+           <div className="space-y-6">
               <div className="flex items-start gap-4">
-                 <Sparkles className="w-8 h-8 text-blue-400 mt-2 shrink-0" />
-                 <h2 className="text-3xl font-black tracking-tight leading-tight text-[#f2f2f2]">
+                 <Sparkles className="w-8 h-8 text-[#5B5BF5] mt-1 shrink-0" />
+                 <h2 className="text-3xl font-extrabold tracking-tight leading-snug text-[#1A1A2E]">
                     {data.headline || data.summary.split('.')[0]}
                  </h2>
               </div>
               
-              <p className={`text-[15px] font-bold leading-relaxed max-w-5xl ${textSecondary}`}>
+              <p className="text-base text-[#555566] leading-relaxed max-w-5xl">
                  {data.summary}
               </p>
            </div>
 
-            <div className="flex items-center gap-4 pt-4">
-               <button className="flex items-center gap-2 px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all gradient-button text-white active:scale-95">
-                  <Copy className="w-3 h-3" />
-                  Copy Full Analysis
-               </button>
-            </div>
+           <div className="flex items-center gap-4 pt-4">
+              <button className="btn-primary px-6 py-3 rounded-lg text-xs uppercase tracking-wider transition-all flex items-center gap-2">
+                 <Copy className="w-3.5 h-3.5" />
+                 Copy Full Analysis
+              </button>
+           </div>
         </div>
-
-        {/* Decorative background for dark mode */}
-        {isDarkMode && (
-          <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none select-none">
-             <div className="w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from)_0%,_transparent_70%)] from-blue-500/40"></div>
-          </div>
-        )}
       </section>
 
       {/* Financial Metrics Row */}
@@ -196,21 +185,21 @@ const Dashboard: React.FC<DashboardProps> = ({ data, isDarkMode }) => {
       </div>
 
       {/* Performance Drivers Section */}
-      <div className={`${cardBase} p-8 ${isDarkMode ? 'bg-[#0a0f1d]' : 'bg-white'}`}>
-         <div className="flex items-center gap-3 mb-8">
-            <Activity className="w-6 h-6 text-amber-500" />
-            <h3 className={`text-xl font-black ${textPrimary}`}>Performance Drivers</h3>
+      <div className={`${cardBase} p-8 bg-white`}>
+         <div className="flex items-center gap-3 mb-6">
+            <Activity className="w-6 h-6 text-[#5B5BF5]" />
+            <h3 className="text-xl font-extrabold text-[#1A1A2E]">Performance Drivers</h3>
          </div>
 
          <div className="grid grid-cols-1 gap-4">
             {[
-              { label: 'REVENUE ANALYSIS', text: data.financialDrivers.revenue, color: 'text-blue-500' },
-              { label: 'EBITDA ANALYSIS', text: data.financialDrivers.ebitda, color: 'text-indigo-500' },
-              { label: 'PAT ANALYSIS', text: data.financialDrivers.pat, color: 'text-emerald-500' }
+              { label: 'REVENUE ANALYSIS', text: data.financialDrivers.revenue, color: 'text-[#3D3DC4]' },
+              { label: 'EBITDA ANALYSIS', text: data.financialDrivers.ebitda, color: 'text-[#5B5BF5]' },
+              { label: 'PAT ANALYSIS', text: data.financialDrivers.pat, color: 'text-[#1DB88E]' }
             ].map((driver, i) => (
-              <div key={i} className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-slate-900/50 border-[#1e2433]' : 'bg-slate-50 border-slate-200'}`}>
-                 <p className={`text-[11px] font-black ${driver.color} uppercase tracking-[0.2em] mb-3`}>{driver.label}</p>
-                 <p className={`text-[15px] font-bold leading-relaxed whitespace-pre-line ${textPrimary}`}>
+              <div key={i} className="p-6 rounded-xl border border-[#E5E5F0] bg-white hover:border-[#5B5BF5] transition-all">
+                 <p className={`text-[10px] font-bold ${driver.color} uppercase tracking-wider mb-2`}>{driver.label}</p>
+                 <p className="text-[14px] font-medium leading-relaxed whitespace-pre-line text-[#555566]">
                    {driver.text || "Report metrics data not sufficiently detailed for specific narrative analysis."}
                  </p>
               </div>
