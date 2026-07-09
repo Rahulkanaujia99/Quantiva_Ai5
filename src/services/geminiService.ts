@@ -239,8 +239,17 @@ export const chatWithDocuments = async (base64Pdfs: string[], history: { role: s
 };
 
 const searchTavily = async (query: string): Promise<string> => {
-  const apiKey = process.env.TAVILY_API_KEY || "";
-  if (!apiKey) {
+  const getTavilyApiKey = (): string => {
+    try {
+      const key = process.env.TAVILY_API_KEY;
+      if (key && key !== 'undefined' && key.trim() !== '') {
+        return key;
+      }
+    } catch (e) {}
+    return "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";
+  };
+  const apiKey = getTavilyApiKey();
+  if (!apiKey || apiKey === "undefined") {
     console.warn("Tavily API key is missing. Skipping web search.");
     return "No search results available (Tavily API key missing).";
   }
