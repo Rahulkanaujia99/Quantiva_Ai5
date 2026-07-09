@@ -387,23 +387,23 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
               </g>
               <defs>
                 <linearGradient id="logo-grad-auth" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#3D3DC4" />
-                  <stop offset="50%" stopColor="#5B5BF5" />
-                  <stop offset="100%" stopColor="#1DB88E" />
+                  <stop offset="0%" stopColor="#1DB88E" />
+                  <stop offset="50%" stopColor="#2DE0B0" />
+                  <stop offset="100%" stopColor="#FFFFFF" />
                 </linearGradient>
               </defs>
             </svg>
-            <span className="font-sans text-[26px] font-extrabold tracking-tight uppercase text-[#1A1A2E]">Quantiva AI</span>
+            <span className="font-sans text-[26px] font-extrabold tracking-tight uppercase text-white">Quantiva AI</span>
           </div>
 
           {/* Beautiful dynamically shifting visual banners depending on Selected mode */}
           <div className="my-auto relative z-10 py-6 text-center">
             {mode === 'login' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-[#1A1A2E] text-center">
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-white text-center">
                   {getGreeting()}
                 </h2>
-                <p className="text-sm text-[#555566] leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
+                <p className="text-sm text-slate-300 leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
                   Establish a secure connection with your active enterprise analytics workspace dashboard.
                 </p>
                 <button
@@ -416,7 +416,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     setPasswordError(null);
                     setNameError(null);
                   }}
-                  className="px-8 py-3 rounded-lg border-2 border-[#3D3DC4] hover:bg-[#F3F3FE] text-[#3D3DC4] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
+                  className="px-8 py-3 rounded-full border-2 border-[#1DB88E] hover:bg-[#1DB88E]/10 text-[#1DB88E] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
                 >
                   CREATE NEW ACCOUNT
                 </button>
@@ -425,10 +425,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
             {mode === 'signup' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <h2 className="text-3xl md:text-3xl font-extrabold tracking-tight mb-4 text-[#1A1A2E] text-center">
+                <h2 className="text-3xl md:text-3xl font-extrabold tracking-tight mb-4 text-white text-center">
                   Secure Workspace Setup
                 </h2>
-                <p className="text-sm text-[#555566] leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
+                <p className="text-sm text-slate-300 leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
                   Construction of a new administrator node requires unique electronic identification.
                 </p>
                 <button
@@ -441,7 +441,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     setPasswordError(null);
                     setNameError(null);
                   }}
-                  className="px-8 py-3 rounded-lg border-2 border-[#3D3DC4] hover:bg-[#F3F3FE] text-[#3D3DC4] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
+                  className="px-8 py-3 rounded-full border-2 border-[#1DB88E] hover:bg-[#1DB88E]/10 text-[#1DB88E] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
                 >
                   ALREADY REGISTERED? SIGN IN
                 </button>
@@ -450,10 +450,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
             {mode === 'forgot' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <h2 className="text-3xl md:text-3.5xl font-extrabold tracking-tight mb-4 text-[#1A1A2E] text-center">
+                <h2 className="text-3xl md:text-3.5xl font-extrabold tracking-tight mb-4 text-white text-center">
                   Reset Password Flow
                 </h2>
-                <p className="text-sm text-[#555566] leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
+                <p className="text-sm text-slate-300 leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
                   Enter your electronic identity. We'll dispatch a cryptographic secure reset link instantly.
                 </p>
                 <button
@@ -465,7 +465,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     setEmailError(null);
                     setPasswordError(null);
                   }}
-                  className="px-8 py-3 rounded-lg border-2 border-[#3D3DC4] hover:bg-[#F3F3FE] text-[#3D3DC4] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
+                  className="px-8 py-3 rounded-full border-2 border-[#1DB88E] hover:bg-[#1DB88E]/10 text-[#1DB88E] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
                 >
                   RETURN TO SIGN IN
                 </button>
@@ -474,7 +474,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           </div>
 
           {/* Secure SSL Lock label footer details */}
-          <div className="text-[10px] text-[#555566]/70 font-semibold tracking-wider flex items-center gap-1.5 relative z-10 mt-8 md:mt-0 uppercase">
+          <div className="text-[10px] text-slate-400/80 font-semibold tracking-wider flex items-center gap-1.5 relative z-10 mt-8 md:mt-0 uppercase">
             <ShieldCheck className="w-3.5 h-3.5 text-[#1DB88E]" />
             <span>AES-256 SSL CLUSTER ACTIVE</span>
           </div>
