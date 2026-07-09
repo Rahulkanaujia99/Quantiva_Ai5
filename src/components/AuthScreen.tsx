@@ -298,7 +298,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
         
         {/* ================= PANEL A: THE DYNAMIC SLIDING BANNER (AQUAMARINE INTEGRATED DESIGN) ================= */}
         <div 
-          className={`w-full md:w-[41%] bg-gradient-to-b from-[#061F1A] to-[#030F0D] text-white p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-all duration-500 ${
+          className={`w-full md:w-[41%] bg-dark-panel p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-all duration-500 ${
             mode === 'login' ? 'md:order-last border-l border-[#061F1A]' : 'md:order-first border-r border-[#061F1A]'
           }`}
         >
