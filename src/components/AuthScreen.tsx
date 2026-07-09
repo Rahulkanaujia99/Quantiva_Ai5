@@ -485,13 +485,17 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
         {/* ================= PANEL B: AUTHENTICATION FORM WRAPPER (LIGHT SLEEK BACKGROUNDS) ================= */}
         <div 
-          className="w-full md:w-[59%] bg-white p-8 md:p-12 flex flex-col justify-center items-center transition-all duration-500"
+          className={`w-full md:w-[59%] bg-transparent p-8 md:p-12 flex flex-col justify-center items-center transition-transform duration-700 ease-in-out z-10 ${
+            mode === 'login' ? 'md:-translate-x-[69.5%]' : 'md:translate-x-0'
+          }`}
         >
           <div className="w-full max-w-[390px] flex flex-col">
             
             {/* Main Interactive Screen Title */}
             <div className="text-center mb-8">
-              <h1 className="text-[29.25px] font-sans font-extrabold text-[#3D3DC4] tracking-tight">
+              <h1 className={`text-[29.25px] font-sans font-extrabold tracking-tight transition-colors duration-500 ${
+                mode === 'login' ? 'text-[#1DB88E]' : 'text-[#3D3DC4]'
+              }`}>
                 {mode === 'login' && 'Welcome Analyst'}
                 {mode === 'signup' && 'Create Admin Account'}
                 {mode === 'forgot' && 'Reset Secure Secret'}
