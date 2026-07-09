@@ -710,7 +710,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3.5 btn-primary text-white font-extrabold text-xs tracking-widest uppercase transition-all duration-200 disabled:opacity-55 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full py-3.5 bg-[#1DB88E] hover:bg-[#169a77] text-white font-extrabold text-xs tracking-widest uppercase transition-all duration-300 disabled:opacity-55 disabled:cursor-not-allowed flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-[#1DB88E]/10 hover:shadow-[0_12px_24px_-4px_rgba(29,184,142,0.35)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 focus:outline-none"
                 >
                   {isLoading ? (
                     <>
