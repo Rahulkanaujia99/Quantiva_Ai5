@@ -253,14 +253,12 @@ const App: React.FC = () => {
         </span>
       )}
     </button>
-  );
-
-  return (
-    <div className={`min-h-screen flex selection:bg-blue-500/30 ${themeClasses.bg}`}>
+    return (
+    <div className={`min-h-screen flex selection:bg-[#3D3DC4]/30 ${themeClasses.bg}`}>
       {/* Sidebar */}
       <aside className={`w-[280px] fixed inset-y-0 border-r z-50 flex flex-col p-6 space-y-8 ${themeClasses.sidebar}`}>
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-black flex items-center gap-3">
+          <h1 className="text-3xl font-extrabold flex items-center gap-3">
             <svg className="w-9 h-9 flex-shrink-0 animate-pulse duration-[4000ms]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="50" cy="50" r="46" stroke="url(#logo-grad)" strokeWidth="1.5" strokeDasharray="2 2" className="opacity-45" />
               <g stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -295,25 +293,25 @@ const App: React.FC = () => {
                 {/* Leaf Element 5: Cosmos (288 deg) */}
                 <g transform="rotate(288, 50, 50)">
                   <path d="M50 12 C40 20 38 34 50 42 C62 34 60 20 50 12" />
-                  <circle cx="50" cy="28" r="3" fill="#4fc7cf" stroke="none" />
+                  <circle cx="50" cy="28" r="3" fill="#3D3DC4" stroke="none" />
                   <ellipse cx="50" cy="28" rx="6" ry="2" transform="rotate(-15, 50, 28)" strokeWidth="1.2" />
                 </g>
               </g>
               <defs>
                 <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#4fc7cf" />
-                  <stop offset="50%" stopColor="#35b0b8" />
-                  <stop offset="100%" stopColor="#10b981" />
+                  <stop offset="0%" stopColor="#3D3DC4" />
+                  <stop offset="50%" stopColor="#5B5BF5" />
+                  <stop offset="100%" stopColor="#1DB88E" />
                 </linearGradient>
               </defs>
             </svg>
-            <span className="text-[#eff4f9] tracking-tighter">Quantiva AI</span>
+            <span className="text-[#1A1A2E] tracking-tighter">Quantiva AI</span>
           </h1>
-          <p className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em] font-mono">Institutional Grade Intelligence</p>
+          <p className="text-[10px] font-black text-[#5B5BF5] uppercase tracking-[0.3em] font-mono">Institutional Grade Intelligence</p>
         </div>
 
         <div className="flex-1 space-y-2">
-          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-2 mb-4">Core Modules</p>
+          <p className="text-[10px] font-black text-[#888899] uppercase tracking-widest px-2 mb-4">Core Modules</p>
           <SidebarLink id="home" icon={Home} label="Home" onClick={handleHome} />
           <SidebarLink id="analysis" icon={FileText} label="Report analysis" />
           <SidebarLink id="qr-check" icon={Search} label="Check QR availability" />
@@ -321,29 +319,29 @@ const App: React.FC = () => {
           <SidebarLink id="archive" icon={Archive} label="Archive" />
         </div>
 
-        <div className="pt-6 border-t border-[#1e2433] space-y-4">
+        <div className="pt-6 border-t border-[#E5E5F0] space-y-4">
           <button 
-            className="w-full py-5 rounded-2xl gradient-button text-white font-black text-lg transition-all tracking-tight"
+            className="w-full py-3.5 rounded-lg btn-primary text-white font-semibold text-sm transition-all tracking-tight"
             onClick={() => fileInputRef.current?.click()}
           >
             Generate Report
           </button>
           
           <div className="flex items-center justify-between px-2 gap-4">
-            <button className="p-2 text-slate-500 hover:text-white transition-colors" title="Settings"><Settings className="w-5 h-5" /></button>
+            <button className="p-2 text-[#888899] hover:text-[#1A1A2E] transition-colors" title="Settings"><Settings className="w-5 h-5" /></button>
             <button 
               onClick={async () => {
                 try {
                   await signOut(auth);
                 } catch (e) {
                    console.error("Signout error:", e);
-                }
+                 }
               }}
-              className="flex items-center gap-2 p-2.5 px-4 gradient-button rounded-xl transition-all text-xs font-black uppercase tracking-wider focus:outline-none text-white shadow-lg active:scale-95"
+              className="flex items-center gap-2 p-2.5 px-4 btn-primary rounded-lg transition-all text-xs font-bold uppercase tracking-wider focus:outline-none"
               title="Sign Out"
             >
               <LogOut className="w-4 h-4 text-white" />
-              <span className="text-white">Log Out</span>
+              <span>Log Out</span>
             </button>
           </div>
         </div>
@@ -352,57 +350,55 @@ const App: React.FC = () => {
       {/* Main Content */}
       <main className="flex-1 ml-[280px] flex flex-col min-h-screen">
         {/* Top Navbar */}
-        <header className={`sticky top-0 z-40 border-b backdrop-blur-xl px-8 flex items-center justify-between h-20 ${themeClasses.nav}`}>
+        <header className="sticky top-0 z-40 border-b border-[#E5E5F0] bg-white px-8 flex items-center justify-between h-16">
           <div className="flex items-center gap-6 w-full max-w-xl">
              <div className="relative w-full group">
-               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
+               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899] group-focus-within:text-[#3D3DC4] transition-colors" />
                <input 
                   type="text" 
                   placeholder="Search insights..." 
-                  className={`w-full border rounded-xl py-2.5 pl-12 pr-4 text-sm font-semibold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 transition-all outline-none ${
-                    isDarkMode ? 'bg-slate-900/50 border-[#1e2433] text-white' : 'bg-slate-50 border-slate-200 text-slate-900'
-                  }`}
+                  className="w-full bg-[#FFFFFF] border border-[#E5E5F0] rounded-xl py-2 pl-10 pr-4 text-sm font-semibold focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] transition-all outline-none text-[#1A1A2E]"
                />
              </div>
           </div>
           
           <div className="flex items-center gap-4">
-            <button className="p-2.5 rounded-xl border border-[#1e2433] hover:bg-slate-800 transition-colors relative">
-               <Bell className="w-5 h-5 text-slate-400" />
-               <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-500 rounded-full border-2 border-[#111827]"></span>
+            <button className="p-2 rounded-xl border border-[#E5E5F0] hover:bg-[#F3F3FE] transition-colors relative">
+               <Bell className="w-5 h-5 text-[#555566]" />
+               <span className="absolute top-2 right-2 w-2 h-2 bg-[#3D3DC4] rounded-full border border-white"></span>
             </button>
             
             {/* Dynamic User profile info representing the logged-in user */}
-            <div className="flex items-center gap-3.5 pl-3 border-l border-[#1e2433] py-0.5">
+            <div className="flex items-center gap-3.5 pl-3 border-l border-[#E5E5F0] py-0.5">
               <div className="text-right hidden sm:block">
-                <p className="text-xs font-black text-white font-mono tracking-tight lowercase">
+                <p className="text-xs font-bold text-[#1A1A2E] font-mono tracking-tight lowercase">
                   {profile.loginID}
                 </p>
-                <p className="text-[10px] font-bold text-slate-500 lowercase tracking-wide mt-0.5">
+                <p className="text-[10px] font-semibold text-[#888899] lowercase tracking-wide mt-0.5">
                   {profile.email}
                 </p>
               </div>
               <div className="relative group">
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#26a69a] to-[#4fc7cf] opacity-35 blur-md group-hover:opacity-70 transition-opacity duration-300" />
-                <div className="relative p-[2px] rounded-xl bg-gradient-to-br from-[#1e2433] to-[#0d121d] border border-[#1e2439] group-hover:border-[#26a69a]/40 transition-all duration-300">
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#3D3DC4] to-[#5B5BF5] opacity-15 blur-md group-hover:opacity-30 transition-opacity duration-300" />
+                <div className="relative p-[2px] rounded-xl bg-white border border-[#E5E5F0] group-hover:border-[#3D3DC4]/40 transition-all duration-300">
                   {currentUser.photoURL ? (
                     <img 
                       src={currentUser.photoURL} 
                       alt="User" 
-                      className="w-8.5 h-8.5 rounded-lg object-cover"
+                      className="w-8 h-8 rounded-lg object-cover"
                       referrerPolicy="no-referrer"
                     />
                   ) : (
-                    <div className="w-8.5 h-8.5 rounded-lg bg-gradient-to-br from-[#111827] to-[#1e2433] flex items-center justify-center font-black text-xs text-[#26a69a] font-mono border border-[#26a69a]/20 shadow-inner">
+                    <div className="w-8 h-8 rounded-lg bg-[#F3F3FE] flex items-center justify-center font-bold text-xs text-[#5B5BF5] font-mono border border-[#5B5BF5]/20 shadow-inner">
                       {profile.initials}
                     </div>
                   )}
                 </div>
-                <span className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-[#26a69a] rounded-full border-2 border-[#090d16] shadow-[0_0_8px_rgba(38,166,154,0.6)] animate-pulse" />
+                <span className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-[#1DB88E] rounded-full border-2 border-white shadow-[0_0_8px_rgba(29,184,142,0.4)] animate-pulse" />
               </div>
             </div>
           </div>
-        </header>
+        </header>der>
 
         <div className="p-10 max-w-[1600px] mx-auto w-full space-y-10">
           {error && (
