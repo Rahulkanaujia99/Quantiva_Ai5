@@ -3,18 +3,17 @@ import React, { useState } from 'react';
 import { 
   Search, Calendar, ExternalLink, CheckCircle2, XCircle, 
   Clock, ArrowRight, Building2, ChevronDown, ListFilter,
-  BarChart3, Loader2, Edit3
+  BarChart3, Loader2, Edit3, X
 } from 'lucide-react';
 import { OIL_GAS_COMPANIES, POWER_COMPANIES } from '../constants';
 import { checkQRAvailability } from '../services/geminiService';
 import { QRAvailabilityStatus } from '../types';
 
 interface QRAvailabilityCheckProps {
-  isDarkMode: boolean;
   onClose: () => void;
 }
 
-const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, onClose }) => {
+const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ onClose }) => {
   const [selectedCompany, setSelectedCompany] = useState('');
   const [customCompany, setCustomCompany] = useState('');
   const [searchedCompany, setSearchedCompany] = useState('');
@@ -48,28 +47,26 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
   };
 
   const themeClasses = {
-    card: isDarkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-xl",
-    input: isDarkMode 
-      ? "bg-slate-950 border-slate-800 text-slate-200" 
-      : "bg-slate-50 border-slate-200 text-slate-900",
-    textMuted: isDarkMode ? "text-slate-400" : "text-slate-500",
-    accent: isDarkMode ? "text-indigo-400" : "text-indigo-600"
+    card: "bg-white border-[#E5E5F0] shadow-xl",
+    input: "bg-white border-[#E5E5F0] text-[#1A1A2E]",
+    textMuted: "text-[#888899]",
+    accent: "text-[#5B5BF5]"
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'Available': return <CheckCircle2 className="w-6 h-6 text-emerald-500" />;
+      case 'Available': return <CheckCircle2 className="w-6 h-6 text-[#1DB88E]" />;
       case 'Not Available': return <XCircle className="w-6 h-6 text-red-500" />;
-      case 'Coming Soon': return <Clock className="w-6 h-6 text-amber-500" />;
+      case 'Coming Soon': return <Clock className="w-6 h-6 text-[#5B5BF5]" />;
       default: return null;
     }
   };
 
   const getStatusBg = (status: string) => {
     switch (status) {
-      case 'Available': return isDarkMode ? 'bg-emerald-500/10' : 'bg-emerald-50';
-      case 'Not Available': return isDarkMode ? 'bg-red-500/10' : 'bg-red-50';
-      case 'Coming Soon': return isDarkMode ? 'bg-amber-500/10' : 'bg-amber-50';
+      case 'Available': return 'bg-[#EEF9F6] border-[#1DB88E]/20 text-[#1DB88E]';
+      case 'Not Available': return 'bg-red-50/70 border-red-200/50 text-red-600';
+      case 'Coming Soon': return 'bg-[#F3F3FE] border-[#5B5BF5]/20 text-[#5B5BF5]';
       default: return '';
     }
   };
@@ -78,21 +75,21 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in transition-all">
       <div className={`w-full max-w-2xl rounded-[2rem] border overflow-hidden animate-in zoom-in-95 duration-300 ${themeClasses.card}`}>
         {/* Header */}
-        <div className={`px-8 py-6 border-b flex items-center justify-between ${isDarkMode ? 'border-slate-800 bg-slate-900/50' : 'border-slate-100 bg-slate-50/50'}`}>
+        <div className="px-8 py-6 border-b border-[#E5E5F0] bg-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-xl bg-indigo-500`}>
+            <div className="p-2 rounded-xl bg-[#3D3DC4] text-white">
               <BarChart3 className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold tracking-tight">QR Availability Monitor</h2>
+              <h2 className="text-xl font-bold tracking-tight text-[#1A1A2E]">QR Availability Monitor</h2>
               <p className={`text-xs font-medium ${themeClasses.textMuted}`}>Check latest quarterly financial status</p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className={`p-2 rounded-lg hover:bg-slate-500/10 transition-colors ${themeClasses.textMuted}`}
+            className={`p-2 rounded-lg hover:bg-[#F3F3FE] transition-colors ${themeClasses.textMuted} hover:text-[#1A1A2E]`}
           >
-            <XCircle className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
@@ -108,7 +105,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
                 <select 
                   value={selectedCompany}
                   onChange={(e) => setSelectedCompany(e.target.value)}
-                  className={`w-full appearance-none px-4 py-3.5 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-medium ${themeClasses.input}`}
+                  className={`w-full appearance-none px-4 py-3.5 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] font-medium ${themeClasses.input}`}
                 >
                   <option value="">Select a company...</option>
                   <optgroup label="Oil & Gas Assets">
@@ -136,7 +133,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
                   value={customCompany}
                   onChange={(e) => setCustomCompany(e.target.value)}
                   placeholder="e.g. HDFC Bank, Infy"
-                  className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-medium ${themeClasses.input}`}
+                  className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] font-medium ${themeClasses.input}`}
                 />
               </div>
             )}
@@ -152,7 +149,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
                 placeholder="e.g. Q4 FY24"
-                className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-medium ${themeClasses.input}`}
+                className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] font-medium ${themeClasses.input}`}
               />
             </div>
           </div>
@@ -160,7 +157,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
           <button 
             onClick={handleCheck}
             disabled={(!selectedCompany || (selectedCompany === 'Other' && !customCompany.trim())) || isLoading}
-            className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-[0.98] group gradient-button`}
+            className="w-full py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-[0.98] group btn-primary"
           >
             {isLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -181,17 +178,17 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
 
           {/* Result Area */}
           {result && (
-            <div className={`p-6 rounded-2xl border-2 animate-in slide-in-from-top-4 duration-500 ${getStatusBg(result.status)} ${isDarkMode ? 'border-slate-800' : 'border-slate-100'}`}>
+            <div className={`p-6 rounded-2xl border-2 animate-in slide-in-from-top-4 duration-500 ${getStatusBg(result.status)} border-[#E5E5F0]`}>
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-white shadow-sm ring-1 ring-slate-100">
+                  <div className="p-3 rounded-xl bg-white shadow-sm border border-[#E5E5F0]">
                     {getStatusIcon(result.status)}
                   </div>
                   <div>
-                    <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-white shadow-sm border border-slate-100 mb-1 inline-block ${themeClasses.accent}`}>
+                    <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-white shadow-sm border border-[#E5E5F0] mb-1 inline-block text-[#5B5BF5]">
                       {result.status}
                     </span>
-                    <h3 className={`text-2xl font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{searchedCompany}</h3>
+                    <h3 className="text-2xl font-black tracking-tight text-[#1A1A2E]">{searchedCompany}</h3>
                   </div>
                 </div>
                 {result.sourceUrl && (
@@ -201,7 +198,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
                       href={result.sourceUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className={`p-2.5 rounded-xl bg-white shadow-lg border border-slate-100 hover:scale-110 transition-all flex items-center gap-2 ${themeClasses.accent}`}
+                      className={`p-2.5 rounded-xl bg-white shadow-md border border-[#E5E5F0] hover:scale-110 transition-all flex items-center gap-2 ${themeClasses.accent}`}
                       title={result.sourceTitle || 'View Source'}
                     >
                       <ExternalLink className="w-5 h-5" />
@@ -212,16 +209,16 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <div className={`p-4 rounded-xl border transition-all ${isDarkMode ? 'bg-slate-800/50 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}`}>
-                  <p className={`text-[10px] font-black uppercase tracking-wider mb-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>Release Information</p>
-                  <p className={`text-xl font-black flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                <div className="p-4 rounded-xl border border-[#E5E5F0] bg-white transition-all">
+                  <p className="text-[10px] font-black uppercase tracking-wider mb-2 text-[#888899]">Release Information</p>
+                  <p className="text-xl font-black flex items-center gap-2 text-[#1A1A2E]">
                     <Clock className={`w-5 h-5 ${themeClasses.accent}`} />
                     {result.expectedDate || 'Unknown Date'}
                   </p>
                 </div>
-                <div className={`p-4 rounded-xl border transition-all ${isDarkMode ? 'bg-slate-800/50 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}`}>
-                  <p className={`text-[10px] font-black uppercase tracking-wider mb-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>Target Period</p>
-                  <p className={`text-xl font-black flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                <div className="p-4 rounded-xl border border-[#E5E5F0] bg-white transition-all">
+                  <p className="text-[10px] font-black uppercase tracking-wider mb-2 text-[#888899]">Target Period</p>
+                  <p className="text-xl font-black flex items-center gap-2 text-[#1A1A2E]">
                     <Calendar className={`w-5 h-5 ${themeClasses.accent}`} />
                     {period}
                   </p>
@@ -229,12 +226,8 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
               </div>
 
               <div className="mt-6">
-                <p className={`text-[10px] font-black uppercase tracking-wider mb-3 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>Intelligence Summary</p>
-                <div className={`p-6 rounded-xl border leading-relaxed font-bold text-sm ${
-                  isDarkMode 
-                    ? 'bg-slate-800/40 border-slate-700/50 text-slate-100' 
-                    : 'bg-white border-slate-200 text-slate-800 shadow-sm'
-                }`}>
+                <p className="text-[10px] font-black uppercase tracking-wider mb-3 text-[#888899]">Intelligence Summary</p>
+                <div className="p-6 rounded-xl border border-[#E5E5F0] leading-relaxed font-bold text-sm bg-white text-[#555566]">
                   {result.summary}
                 </div>
               </div>
@@ -243,7 +236,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
                 <div className="flex items-center gap-2">
                   <ListFilter className={`w-4 h-4 ${themeClasses.accent}`} />
                   <span className={themeClasses.textMuted}>Information Source:</span>
-                  <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>
+                  <span className="text-[#1A1A2E]">
                     {result.sourceTitle || (result.sourceUrl ? new URL(result.sourceUrl).hostname : 'Institutional Registry')}
                   </span>
                 </div>
@@ -252,7 +245,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ isDarkMode, o
                     href={result.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all border border-indigo-500/20`}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F3F3FE] text-[#5B5BF5] hover:bg-[#5B5BF5]/10 transition-all border border-[#5B5BF5]/20"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     Open Source
