@@ -10,9 +10,7 @@ import { OIL_GAS_COMPANIES, POWER_COMPANIES } from '../constants';
 import { QRCompanyStatus } from '../types';
 import { checkQRAvailability } from '../services/geminiService';
 
-interface QRStatusProps {
-  isDarkMode: boolean;
-}
+interface QRStatusProps {}
 
 const QUARTERS = ["Q1FY25", "Q2FY25", "Q3FY25", "Q4FY25", "Q1FY26", "Q2FY26"];
 
@@ -40,7 +38,7 @@ const COMPANY_PRIMARY_URLS: Record<string, string> = {
   'JSW Energy': 'https://www.jswenergy.in/investors/energy/jsw-energy-fy-2025-26-financials-results'
 };
 
-const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
+const QRStatus: React.FC<QRStatusProps> = () => {
   const [category, setCategory] = useState<'Oil & Gas' | 'Power' | 'Other'>('Oil & Gas');
   const [otherCompanyNameInput, setOtherCompanyNameInput] = useState('');
   const [quarter, setQuarter] = useState('Q3FY26');
@@ -247,6 +245,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
     setData(prev => [newCompany, ...prev]);
     setOtherCompanyNameInput('');
   };
+
   const handleSort = (key: keyof QRCompanyStatus) => {
     let direction: 'asc' | 'desc' = 'asc';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -301,12 +300,12 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
   };
 
   const themeClasses = {
-    card: isDarkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-100 shadow-sm",
-    input: isDarkMode ? "bg-slate-950 border-slate-800 text-slate-200" : "bg-slate-50 border-slate-200 text-slate-900",
-    header: isDarkMode ? "bg-slate-900/50 border-slate-800" : "bg-slate-50/50 border-slate-100",
-    row: isDarkMode ? "hover:bg-slate-800/30 border-slate-800" : "hover:bg-slate-50 border-slate-100",
-    textMuted: isDarkMode ? "text-slate-400" : "text-slate-500",
-    tableHeader: isDarkMode ? "bg-[#0d111d] text-slate-400" : "bg-slate-100 text-slate-600"
+    card: "bg-white border-[#E5E5F0] shadow-sm",
+    input: "bg-white border-[#E5E5F0] text-[#1A1A2E]",
+    header: "bg-slate-50/50 border-[#E5E5F0]",
+    row: "hover:bg-[#F3F3FE]/30 border-[#E5E5F0]",
+    textMuted: "text-[#888899]",
+    tableHeader: "bg-[#F3F3FE] text-[#555566]"
   };
 
   return (
@@ -314,10 +313,10 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-xl bg-blue-600/10 text-blue-500">
+            <div className="p-2 rounded-xl bg-[#3D3DC4]/10 text-[#3D3DC4]">
               <BarChart3 className="w-6 h-6" />
             </div>
-            <h2 className={`text-4xl font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>QR Status Monitor</h2>
+            <h2 className="text-4xl font-extrabold tracking-tight text-[#1A1A2E]">QR Status Monitor</h2>
           </div>
           <p className={`text-[15px] font-bold ${themeClasses.textMuted}`}>Automated tracking of quarterly report availability across power and energy sectors.</p>
         </div>
@@ -326,14 +325,14 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
           <button 
             onClick={handleDeepScan}
             disabled={isRefreshing || data.length === 0}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 disabled:opacity-50"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-white font-bold text-sm transition-all shadow-lg active:scale-95 disabled:opacity-50 btn-primary"
           >
             {isRefreshing ? <RotateCcw className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4 text-yellow-300 fill-yellow-300" />}
             Run All
           </button>
           <button 
             onClick={exportToCSV}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-500 font-bold text-sm hover:bg-blue-500/20 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[#3D3DC4] font-bold text-sm transition-all btn-outline"
           >
             <FileSpreadsheet className="w-4 h-4" />
             Export CSV
@@ -342,9 +341,9 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
       </div>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+        <div className="bg-red-500/10 border border-red-500/30 text-red-600 p-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
           <AlertCircle className="w-5 h-5 flex-shrink-0" />
-          <p className="font-medium">{error}</p>
+          <p className="font-semibold">{error}</p>
         </div>
       )}
 
@@ -357,13 +356,13 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
               <select 
                 value={category}
                 onChange={(e) => setCategory(e.target.value as any)}
-                className={`w-full appearance-none px-4 py-3 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 font-bold text-sm ${themeClasses.input}`}
+                className={`w-full appearance-none px-4 py-3 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] font-bold text-sm ${themeClasses.input}`}
               >
                 <option value="Oil & Gas">Oil & Gas</option>
                 <option value="Power">Power</option>
                 <option value="Other">Other Company</option>
               </select>
-              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none opacity-50" />
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none opacity-50 text-[#888899]" />
             </div>
           </div>
 
@@ -378,12 +377,12 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                     placeholder="e.g. Reliance Industries"
                     onChange={(e) => setOtherCompanyNameInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleAddManualCompany()}
-                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 font-bold text-sm ${themeClasses.input}`}
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] font-bold text-sm ${themeClasses.input}`}
                   />
                 </div>
                 <button 
                   onClick={handleAddManualCompany}
-                  className="px-4 py-3 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-all"
+                  className="px-4 py-3 rounded-xl bg-[#3D3DC4] text-white font-bold text-sm hover:bg-[#5B5BF5] transition-all"
                 >
                   Add
                 </button>
@@ -400,7 +399,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                   value={quarter}
                   placeholder="e.g. Q3FY26"
                   onChange={(e) => setQuarter(e.target.value)}
-                  className={`w-full px-4 py-3 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 font-bold text-sm ${themeClasses.input}`}
+                  className={`w-full px-4 py-3 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] font-bold text-sm ${themeClasses.input}`}
                 />
               </div>
             </div>
@@ -409,13 +408,13 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
           <div className="md:col-span-2 space-y-2">
             <label className={`text-[10px] font-black uppercase tracking-widest ${themeClasses.textMuted}`}>Search Company</label>
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-50" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-50 text-[#888899]" />
               <input 
                 type="text" 
                 placeholder="Filter by company name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className={`w-full px-11 py-3 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 font-bold text-sm ${themeClasses.input}`}
+                className={`w-full px-11 py-3 rounded-xl border-2 transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] font-bold text-sm ${themeClasses.input}`}
               />
             </div>
           </div>
@@ -439,7 +438,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                   <th 
                     key={col.key}
                     onClick={() => handleSort(col.key as any)}
-                    className="p-5 text-[11px] font-black uppercase tracking-widest cursor-pointer hover:text-blue-500 transition-colors"
+                    className="p-5 text-[11px] font-black uppercase tracking-widest cursor-pointer hover:text-[#3D3DC4] transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       {col.label}
@@ -456,7 +455,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                   <tr key={idx} className={`border-b last:border-0 transition-colors ${themeClasses.row}`}>
                     <td className="p-5">
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-black text-xs ${isDarkMode ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-900'}`}>
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs bg-[#F3F3FE] text-[#5B5BF5]">
                           {row.companyName.charAt(0)}
                         </div>
                         <div className="flex flex-col">
@@ -464,7 +463,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                             href={COMPANY_PRIMARY_URLS[row.companyName] || row.downloadUrl || "#"} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="font-bold text-[14px] hover:text-blue-500 transition-colors underline decoration-blue-500/30 underline-offset-4 flex items-center gap-1.5"
+                            className="font-bold text-[14px] text-[#1A1A2E] hover:text-[#3D3DC4] transition-colors underline decoration-[#3D3DC4]/30 underline-offset-4 flex items-center gap-1.5"
                           >
                             {row.companyName}
                             <ExternalLink className="w-3 h-3 opacity-30" />
@@ -474,7 +473,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                               href={row.bseLink} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="text-[10px] font-black text-blue-500/60 hover:text-blue-500 transition-colors uppercase tracking-widest mt-1"
+                              className="text-[10px] font-black text-[#5B5BF5]/60 hover:text-[#3D3DC4] transition-colors uppercase tracking-widest mt-1"
                             >
                               BSE Announcements
                             </a>
@@ -488,12 +487,12 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                     <td className="p-5">
                       <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-tight ${
                         row.status === 'Available' 
-                          ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' 
+                          ? 'bg-[#EEF9F6] text-[#1DB88E] border border-[#1DB88E]/20' 
                           : row.status === 'Downloaded'
-                          ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20'
+                          ? 'bg-[#F3F3FE] text-[#5B5BF5] border border-[#5B5BF5]/20'
                           : row.status === 'Error'
-                          ? 'bg-red-500/10 text-red-500 border border-red-500/20'
-                          : 'bg-slate-500/10 text-slate-500 border border-slate-500/20'
+                          ? 'bg-red-50 text-red-600 border border-red-200'
+                          : 'bg-slate-100 text-slate-500 border border-slate-200'
                       }`}>
                         {row.status === 'Available' || row.status === 'Downloaded' ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
                         {row.status}
@@ -510,10 +509,10 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                         href={row.downloadUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-[13px] font-bold text-blue-500 hover:underline group"
+                        className="flex items-center gap-2 text-[13px] font-bold text-[#3D3DC4] hover:underline group"
                       >
                         {row.source.includes('BSE') || row.source.includes('NSE') ? (
-                          <div className="w-4 h-4 rounded bg-blue-500/10 flex items-center justify-center text-[10px] font-black group-hover:bg-blue-500/20 transition-colors">E</div>
+                          <div className="w-4 h-4 rounded bg-[#3D3DC4]/10 flex items-center justify-center text-[10px] font-black group-hover:bg-[#3D3DC4]/20 transition-colors">E</div>
                         ) : (
                           <Globe className="w-4 h-4 group-hover:scale-110 transition-transform" />
                         )}
@@ -528,7 +527,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                         {(row.status === 'Available' || row.status === 'Downloaded') ? (
                           <button 
                             onClick={() => handleDownload(row)}
-                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600/10 text-blue-500 font-black text-[11px] uppercase tracking-widest hover:bg-blue-600/20 transition-all group"
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3D3DC4]/10 text-[#3D3DC4] font-bold text-[11px] uppercase tracking-wider hover:bg-[#3D3DC4]/20 transition-all group"
                           >
                             <Download className="w-3 h-3 group-hover:scale-125 transition-transform" />
                             Download
@@ -536,7 +535,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                         ) : (
                           <button 
                             disabled
-                            className="px-4 py-2 rounded-lg bg-slate-500/10 text-slate-500 font-black text-[11px] uppercase tracking-widest cursor-not-allowed"
+                            className="px-4 py-2 rounded-lg bg-slate-100 text-slate-400 font-bold text-[11px] uppercase tracking-wider cursor-not-allowed border border-[#E5E5F0]"
                           >
                             N/A
                           </button>
@@ -544,7 +543,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                         <button 
                           onClick={() => handleSingleScan(row.companyName)}
                           disabled={isRefreshing || row.remarks === 'Scanning...'}
-                          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600/10 text-emerald-500 font-black text-[11px] uppercase tracking-widest hover:bg-emerald-600/20 transition-all active:scale-95 disabled:opacity-50"
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1DB88E]/10 text-[#1DB88E] font-bold text-[11px] uppercase tracking-wider hover:bg-[#1DB88E]/20 transition-all active:scale-95 disabled:opacity-50"
                         >
                           {row.remarks === 'Scanning...' ? (
                             <RotateCcw className="w-3 h-3 animate-spin" />
@@ -561,8 +560,8 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
                 <tr>
                   <td colSpan={7} className="p-20 text-center">
                     <div className="flex flex-col items-center gap-4 opacity-50">
-                      <Search className="w-12 h-12" />
-                      <p className="font-bold">No companies matching your filter criteria.</p>
+                      <Search className="w-12 h-12 text-[#888899]" />
+                      <p className="font-bold text-[#888899]">No companies matching your filter criteria.</p>
                     </div>
                   </td>
                 </tr>
@@ -572,9 +571,9 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
         </div>
       </div>
 
-      <div className={`p-6 rounded-3xl border border-dashed flex flex-col md:flex-row items-center justify-between gap-4 ${isDarkMode ? 'border-slate-800' : 'border-slate-200'}`}>
+      <div className="p-6 rounded-3xl border border-dashed flex flex-col md:flex-row items-center justify-between gap-4 border-[#E5E5F0]">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+          <div className="w-10 h-10 rounded-full bg-[#F3F3FE] flex items-center justify-center text-[#5B5BF5]">
             <Globe className="w-5 h-5" />
           </div>
           <p className={`text-[12px] font-bold leading-relaxed max-w-xl ${themeClasses.textMuted}`}>
@@ -583,7 +582,7 @@ const QRStatus: React.FC<QRStatusProps> = ({ isDarkMode }) => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+          <span className="w-2 h-2 bg-[#1DB88E] rounded-full animate-pulse"></span>
           <span className={`text-[10px] font-black uppercase tracking-widest ${themeClasses.textMuted}`}>Live Feed Connected</span>
         </div>
       </div>
