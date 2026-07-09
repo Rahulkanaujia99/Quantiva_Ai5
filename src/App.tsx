@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   Upload, Sun, Moon, AlertCircle, Loader2, LayoutDashboard,
   TrendingUp, Globe, Briefcase, Zap, PieChart, Pickaxe, BarChart3,
-  Search, Bell, Settings, User, FileText, Database, Archive, 
+  Search, Bell, Settings, User, FileText, Database, Archive, Mail,
   ChevronRight, ShieldCheck, Gauge, Layers, Plus, Sparkles, Home, LogOut
 } from 'lucide-react';
 import { analyzeDocuments } from './services/geminiService';
