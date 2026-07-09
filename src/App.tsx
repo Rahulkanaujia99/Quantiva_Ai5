@@ -398,45 +398,65 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
-        </header>der>
+        </header>
 
         <div className="p-10 max-w-[1600px] mx-auto w-full space-y-10">
           {error && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+            <div className="bg-red-500/10 border border-red-500/30 text-red-600 p-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
               <AlertCircle className="w-5 h-5 flex-shrink-0" />
-              <p className="font-medium">{error}</p>
+              <p className="font-semibold">{error}</p>
             </div>
           )}
 
           {/* Document Ingestion View (Welcome/Home) */}
           {activeTab === 'home' && !extractedData && !isProcessing && (
             <div className="space-y-12">
-              <div className="flex flex-col">
-                <div className="flex items-center gap-4 mb-2">
-                  <GreetingIcon className={`w-10 h-10 ${iconColor}`} />
-                  <h2 className={`text-6xl font-black tracking-tight leading-tight ${themeClasses.textHeading}`}>{greeting}</h2>
+              <div className="bg-hero-gradient rounded-[2rem] p-16 border border-[#E5E5F0] shadow-sm grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* Left Column: Hero Info */}
+                <div className="space-y-6">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F3F3FE] text-[#5B5BF5] border border-[#5B5BF5]/15">
+                    <GreetingIcon className="w-4 h-4" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">{greeting}</span>
+                  </div>
+                  <h2 className="text-[52px] font-extrabold tracking-tight leading-[1.1] text-[#1A1A2E]">
+                    Financial <span className="text-[#3D3DC4]">Intelligence</span> <span className="text-[#1DB88E]">Synthesized</span>
+                  </h2>
+                  <p className="text-base text-[#555566] leading-relaxed max-w-lg font-medium">
+                    {subText}. Quantiva's AI analyzer parses vectors of quarterly reports, ledger sheets, and filings into institutional-grade strategic insights instantly.
+                  </p>
+                  <div className="flex flex-wrap gap-4 pt-2">
+                    <button 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="btn-primary px-8 py-3.5 rounded-lg text-sm font-semibold transition-all"
+                    >
+                      Upload Report
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('qr-status')}
+                      className="btn-outline px-8 py-3.5 rounded-lg text-sm font-semibold transition-all"
+                    >
+                      View Monitor
+                    </button>
+                  </div>
                 </div>
-                <p className={`text-[19px] font-bold transition-colors ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>{subText}</p>
-              </div>
 
-              <div className="grid grid-cols-1 gap-8">
-                {/* Main Upload Area */}
+                {/* Right Column: Upload Area */}
                 <div 
-                  className={`w-full rounded-[2.5rem] p-12 flex flex-col items-center justify-center text-center transition-all bg-transparent group gradient-border-blue-green cursor-pointer`}
+                  className="w-full rounded-[1.5rem] border border-[#E5E5F0] bg-white p-10 flex flex-col items-center justify-center text-center transition-all card-hover cursor-pointer"
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  <div className="w-24 h-24 rounded-full bg-slate-900 border border-[#1e2433] flex items-center justify-center mb-8 shadow-2xl group-hover:scale-110 transition-transform">
-                    <Upload className="w-10 h-10 text-white opacity-40 group-hover:opacity-100 transition-opacity" />
+                  <div className="w-16 h-16 rounded-full bg-[#F3F3FE] border border-[#E5E5F0] flex items-center justify-center mb-6 shadow-sm">
+                    <Upload className="w-6 h-6 text-[#3D3DC4]" />
                   </div>
-                  <h3 className="text-2xl font-black text-white mb-4">Import Financial Documents</h3>
-                  <p className="text-slate-500 font-bold max-w-md mb-10 text-[15px] leading-relaxed">
-                    Drag and drop your Quarterly Reports, Ledger Sheets, or SEC Filings. Supported formats: PDF, XLSX, CSV, JSON.
+                  <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">Import Financial Documents</h3>
+                  <p className="text-[#555566] font-medium max-w-sm mb-6 text-sm leading-relaxed">
+                    Drag & drop files or click to browse. Supported formats: PDF, XLSX, CSV, JSON (Max 5 files).
                   </p>
-                  <button className="gradient-button px-16 py-5 rounded-3xl font-black text-2xl text-white active:scale-95 transition-all tracking-tight">
+                  <button className="btn-primary px-8 py-3 rounded-lg text-xs tracking-wider uppercase font-semibold">
                     Select Files
                   </button>
-                  <div className="mt-8 flex items-center gap-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">
-                    <ShieldCheck className="w-4 h-4" />
+                  <div className="mt-6 flex items-center gap-2 text-[10px] font-bold text-[#888899] uppercase tracking-wider">
+                    <ShieldCheck className="w-4 h-4 text-[#1DB88E]" />
                     AES-256 Encrypted Tunnel
                   </div>
                 </div>
@@ -445,48 +465,45 @@ const App: React.FC = () => {
               {/* Status Section */}
               <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <div className="xl:col-span-3 space-y-6">
-                  <div className={`p-8 rounded-[2rem] bg-transparent gradient-border-blue-green`}>
-                    <div className="flex items-center justify-between mb-8">
-                       <h4 className="text-[15px] font-black text-white">Active Processing Queue</h4>
-                       <span className="text-[10px] font-black px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  <div className="w-full rounded-[1.5rem] border border-[#E5E5F0] bg-white p-8">
+                    <div className="flex items-center justify-between mb-6">
+                       <h4 className="text-sm font-bold text-[#1A1A2E]">Active Processing Queue</h4>
+                       <span className="badge-pill bg-[#F3F3FE] text-[#5B5BF5] border border-[#5B5BF5]/15">
                          {isProcessing ? 'Active Processing' : 'Queue Empty'}
                        </span>
                     </div>
                     
                     {pdfFiles.length === 0 ? (
-                      <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
-                        <div className="p-4 rounded-full bg-slate-900 border border-[#1e2433]">
-                           <Database className="w-8 h-8 text-slate-600" />
+                      <div className="py-8 flex flex-col items-center justify-center text-center space-y-3">
+                        <div className="p-3 rounded-full bg-[#F3F3FE] border border-[#E5E5F0]">
+                           <Database className="w-6 h-6 text-[#888899]" />
                         </div>
-                        <p className="text-slate-500 font-bold text-[15px]">No documents in the current staging environment.</p>
+                        <p className="text-[#888899] font-semibold text-sm">No documents in the current staging environment.</p>
                       </div>
                     ) : (
-                      <div className="space-y-4">
+                      <div className="space-y-3">
                         {pdfFiles.map((file, i) => (
-                          <div key={i} className={`p-4 rounded-xl border flex items-center justify-between gap-6 ${
-                            isDarkMode ? 'bg-[#0d111d]/40 border-[#1e2433]' : 'bg-white border-slate-200 shadow-sm'
-                          }`}>
-                              <div className={`p-3 rounded-lg border ${isDarkMode ? 'bg-slate-900 border-[#1e2433]' : 'bg-slate-50 border-slate-100'}`}>
-                                <FileText className={`w-5 h-5 opacity-60 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+                          <div key={i} className="p-4 rounded-xl border border-[#E5E5F0] bg-white flex items-center justify-between gap-6 card-hover">
+                              <div className="p-3 rounded-lg border border-[#E5E5F0] bg-[#F3F3FE]">
+                                <FileText className="w-5 h-5 text-[#3D3DC4]" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex justify-between items-center mb-2">
                                     <div className="truncate">
-                                      <p className={`text-xs font-black truncate ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{file.name}</p>
-                                      <p className="text-[10px] font-bold text-slate-500">Ready for Analysis</p>
+                                      <p className="text-xs font-bold truncate text-[#1A1A2E]">{file.name}</p>
+                                      <p className="text-[10px] font-semibold text-[#888899]">Ready for Analysis</p>
                                     </div>
                                     <div className="text-right">
                                       <button 
                                         onClick={() => setShowQRCheck(true)}
-                                        className="flex items-center gap-2 px-6 py-2 rounded-xl gradient-button text-[10px] font-black text-white uppercase tracking-widest transition-all active:scale-95"
+                                        className="btn-outline px-4 py-2 text-[10px] tracking-wider uppercase font-semibold transition-all active:scale-95"
                                       >
-                                        <Search className="w-3 h-3" />
                                         Check Result Status
                                       </button>
                                     </div>
                                 </div>
-                                <div className={`h-1.5 w-full rounded-full overflow-hidden ${isDarkMode ? 'bg-slate-900' : 'bg-slate-100'}`}>
-                                    <div className="h-full bg-emerald-500 w-full rounded-full"></div>
+                                <div className="h-1.5 w-full rounded-full overflow-hidden bg-[#F3F3FE]">
+                                    <div className="h-full bg-[#1DB88E] w-full rounded-full"></div>
                                 </div>
                               </div>
                           </div>
@@ -503,23 +520,23 @@ const App: React.FC = () => {
           {isProcessing && (
             <div className="mt-20 flex flex-col items-center justify-center space-y-12">
                <div className="relative">
-                  <div className="absolute inset-x-[-100px] inset-y-[-100px] bg-blue-500/10 blur-[120px] rounded-full animate-pulse"></div>
-                  <Loader2 className="w-24 h-24 text-blue-500 animate-spin relative z-10" />
+                  <div className="absolute inset-x-[-100px] inset-y-[-100px] bg-[#3D3DC4]/5 blur-[120px] rounded-full animate-pulse"></div>
+                  <Loader2 className="w-20 h-20 text-[#3D3DC4] animate-spin relative z-10" />
                </div>
                <div className="text-center space-y-2 relative z-10">
-                  <h2 className="text-4xl font-black tracking-tight text-white">Neural Processing</h2>
-                  <p className="text-slate-500 font-bold text-[15px]">Synthesizing {pdfFiles.length} data streams into strategic intelligence...</p>
+                  <h2 className="text-3xl font-extrabold tracking-tight text-[#1A1A2E]">Neural Processing</h2>
+                  <p className="text-[#555566] font-semibold text-sm">Synthesizing {pdfFiles.length} data streams into strategic intelligence...</p>
                </div>
                
-               <div className="w-full max-w-2xl bg-slate-900/40 border border-[#1e2433] rounded-3xl p-8 space-y-6">
+               <div className="w-full max-w-2xl bg-white border border-[#E5E5F0] rounded-3xl p-8 space-y-6">
                   {pdfFiles.map((file, i) => (
                     <div key={i} className="space-y-3">
-                       <div className="flex justify-between text-xs font-black uppercase">
-                          <span className="text-white truncate max-w-[200px]">{file.name}</span>
-                          <span className="text-blue-400">Parsing Vector {i+1}...</span>
+                       <div className="flex justify-between text-xs font-bold uppercase">
+                          <span className="text-[#1A1A2E] truncate max-w-[200px]">{file.name}</span>
+                          <span className="text-[#5B5BF5]">Parsing Vector {i+1}...</span>
                        </div>
-                       <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-emerald-500 to-blue-600 rounded-full animate-[progress-loading_3s_ease-in-out_infinite]" style={{ animationDelay: `${i * 0.5}s` }}></div>
+                       <div className="h-1.5 w-full bg-[#F3F3FE] rounded-full overflow-hidden">
+                          <div className="h-full bg-[#1DB88E] rounded-full animate-[progress-loading_3s_ease-in-out_infinite]" style={{ animationDelay: `${i * 0.5}s` }}></div>
                        </div>
                     </div>
                   ))}
@@ -530,14 +547,14 @@ const App: React.FC = () => {
           {/* Report Analysis View */}
           {activeTab === 'analysis' && !extractedData && !isProcessing && (
             <div className="flex flex-col items-center justify-center p-20 text-center space-y-6">
-              <div className="p-6 rounded-full bg-blue-500/10 text-blue-500">
+              <div className="p-6 rounded-full bg-[#F3F3FE] text-[#5B5BF5]">
                 <FileText className="w-12 h-12" />
               </div>
-              <h3 className="text-2xl font-black text-white">No Report Active</h3>
-              <p className="text-slate-500 font-bold max-w-sm">Please upload a document on the Home screen to start a new analysis.</p>
+              <h3 className="text-2xl font-bold text-[#1A1A2E]">No Report Active</h3>
+              <p className="text-[#555566] font-medium max-w-sm">Please upload a document on the Home screen to start a new analysis.</p>
               <button 
                 onClick={() => setActiveTab('home')}
-                className="gradient-button px-8 py-3 rounded-2xl font-black text-white"
+                className="btn-primary px-8 py-3 rounded-lg font-semibold text-xs uppercase tracking-wider"
               >
                 Back to Home
               </button>
@@ -546,36 +563,36 @@ const App: React.FC = () => {
 
           {extractedData && (activeTab === 'analysis' || activeTab === 'home') && (
             <div className="animate-in fade-in slide-in-from-bottom-10 duration-1000">
-               <Dashboard data={extractedData} isDarkMode={isDarkMode} />
+               <Dashboard data={extractedData} />
             </div>
           )}
 
           {/* Deep Dive removed/disabled */}
 
           {activeTab === 'qr-status' && (
-            <QRStatus isDarkMode={isDarkMode} />
+            <QRStatus />
           )}
 
           {activeTab === 'qr-check' && (
             <div className="animate-in fade-in slide-in-from-bottom-10 duration-1000">
-              <QRAvailabilityCheck isDarkMode={isDarkMode} onClose={() => setActiveTab('home')} />
+               <QRAvailabilityCheck onClose={() => setActiveTab('home')} />
             </div>
           )}
 
           {activeTab === 'archive' && (
             <div className="animate-in fade-in slide-in-from-bottom-10 duration-1000 space-y-10">
               <div className="flex flex-col gap-2">
-                <h2 className={`text-4xl font-black tracking-tight ${themeClasses.textHeading}`}>Analysis Archive</h2>
-                <p className="text-slate-500 font-bold text-[15px]">Historical data from previously processed documents</p>
+                <h2 className={`text-4xl font-extrabold tracking-tight ${themeClasses.textHeading}`}>Analysis Archive</h2>
+                <p className="text-[#555566] font-semibold text-[15px]">Historical data from previously processed documents</p>
               </div>
 
               {archive.length === 0 ? (
-                <div className={`p-20 rounded-[3rem] border-2 border-dashed border-slate-800 flex flex-col items-center justify-center text-center space-y-4`}>
-                   <div className="p-6 rounded-full bg-slate-900 border border-[#1e2433]">
-                      <Archive className="w-12 h-12 text-slate-600" />
+                <div className="p-20 rounded-[3rem] border-2 border-dashed border-[#E5E5F0] bg-white flex flex-col items-center justify-center text-center space-y-4">
+                   <div className="p-6 rounded-full bg-[#F3F3FE] border border-[#E5E5F0]">
+                      <Archive className="w-12 h-12 text-[#888899]" />
                    </div>
-                   <h3 className="text-xl font-black text-white">No Archive Found</h3>
-                   <p className="text-slate-500 font-bold max-w-sm">
+                   <h3 className="text-xl font-bold text-[#1A1A2E]">No Archive Found</h3>
+                   <p className="text-[#555566] font-medium max-w-sm">
                       Your analysis history will appear here once you process some reports.
                    </p>
                 </div>
@@ -584,39 +601,39 @@ const App: React.FC = () => {
                   {archive.map((item, idx) => (
                     <div 
                       key={idx} 
-                      className={`p-6 rounded-3xl border ${themeClasses.card} group hover:border-blue-500/50 transition-all cursor-pointer relative overflow-hidden`}
+                      className={`p-6 rounded-3xl border ${themeClasses.card} group hover:border-[#5B5BF5] hover:shadow-[0_8px_32px_rgba(61,61,196,0.10)] transition-all cursor-pointer relative overflow-hidden`}
                       onClick={() => {
                         setExtractedData(item);
                         setActiveTab('analysis');
                       }}
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <div className={`p-2 rounded-lg bg-blue-500/10 text-blue-400`}>
+                        <div className="p-2 rounded-lg bg-[#F3F3FE] text-[#5B5BF5]">
                           <FileText className="w-5 h-5" />
                         </div>
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        <span className="text-[10px] font-bold text-[#888899] uppercase tracking-wider">
                           {idx === 0 ? 'Latest' : `Archive #${archive.length - idx}`}
                         </span>
                       </div>
                       
-                      <h4 className={`text-[15px] font-black leading-snug mb-3 line-clamp-2 ${themeClasses.textHeading}`}>
+                      <h4 className="text-[15px] font-bold leading-snug mb-3 line-clamp-2 text-[#1A1A2E]">
                         {item.headline || item.summary.split('.')[0]}
                       </h4>
                       
                       <div className="flex items-center gap-4 mb-6">
                         <div className="flex flex-col">
-                          <span className="text-[8px] font-black text-slate-600 uppercase tracking-widest">Revenue</span>
-                          <span className="text-xs font-black text-blue-400">{item.financials.revenue}</span>
+                          <span className="text-[8px] font-bold text-[#888899] uppercase tracking-wider">Revenue</span>
+                          <span className="text-xs font-bold text-[#3D3DC4]">{item.financials.revenue}</span>
                         </div>
-                        <div className="flex flex-col border-l border-slate-800 pl-4">
-                          <span className="text-[8px] font-black text-slate-600 uppercase tracking-widest">EBITDA</span>
-                          <span className="text-xs font-black text-indigo-400">{item.financials.ebitda}</span>
+                        <div className="flex flex-col border-l border-[#E5E5F0] pl-4">
+                          <span className="text-[8px] font-bold text-[#888899] uppercase tracking-wider">EBITDA</span>
+                          <span className="text-xs font-bold text-[#5B5BF5]">{item.financials.ebitda}</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t border-slate-800/40">
-                         <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">
-                            View Report <ChevronRight className="w-3 h-3" />
+                      <div className="flex items-center justify-between pt-4 border-t border-[#E5E5F0]">
+                         <span className="text-[10px] font-bold text-[#3D3DC4] uppercase tracking-wider flex items-center gap-1 group-hover:gap-2 transition-all">
+                            View Report <ChevronRight className="w-3.5 h-3.5" />
                          </span>
                       </div>
                     </div>
@@ -639,7 +656,6 @@ const App: React.FC = () => {
 
       {showQRCheck && (
         <QRAvailabilityCheck 
-          isDarkMode={isDarkMode} 
           onClose={() => setShowQRCheck(false)} 
         />
       )}
