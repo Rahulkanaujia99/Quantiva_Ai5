@@ -287,19 +287,19 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FC] flex flex-col justify-center items-center p-4 sm:p-6 select-none relative overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-gradient-to-tr from-[#F3F6FF] via-[#F8F9FC] to-[#EEF9F6] flex flex-col justify-center items-center p-4 sm:p-6 select-none relative overflow-x-hidden font-sans">
       
       {/* Dynamic Blur Shapes matching enterprise analytics portal dashboard code */}
-      <div className="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] bg-[#3D3DC4]/5 rounded-full blur-[100px] pointer-events-none transform rotate-45"></div>
-      <div className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#1DB88E]/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] bg-[#3D3DC4]/12 rounded-full blur-[100px] pointer-events-none transform rotate-45"></div>
+      <div className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#1DB88E]/12 rounded-full blur-[120px] pointer-events-none"></div>
 
       {/* Main interactive split card auth portal layout */}
-      <div id="auth-container-root" className="w-full max-w-[950px] bg-white rounded-[2.2rem] shadow-[0_24px_64px_rgba(61,61,196,0.06)] border border-[#E5E5F0] overflow-hidden min-h-[620px] flex flex-col md:flex-row relative z-10 transition-all duration-500">
+      <div id="auth-container-root" className="w-full max-w-[950px] bg-white/45 backdrop-blur-xl rounded-[2.2rem] shadow-[0_24px_64px_rgba(61,61,196,0.08)] border border-white/40 overflow-hidden min-h-[620px] flex flex-col md:flex-row relative z-10 transition-all duration-500">
         
         {/* ================= PANEL A: THE DYNAMIC SLIDING BANNER (AQUAMARINE INTEGRATED DESIGN) ================= */}
         <div 
-          className={`w-full md:w-[41%] bg-dark-panel p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-all duration-500 ${
-            mode === 'login' ? 'md:order-last border-l border-[#061F1A]' : 'md:order-first border-r border-[#061F1A]'
+          className={`w-full md:w-[41%] bg-dark-panel p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-transform duration-700 ease-in-out z-20 ${
+            mode === 'login' ? 'md:translate-x-[143.9%]' : 'md:translate-x-0'
           }`}
         >
           {/* Watermark Logo Backdrop (Perfect alignment & premium styling) */}
