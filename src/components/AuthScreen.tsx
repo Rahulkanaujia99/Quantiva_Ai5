@@ -393,7 +393,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                 </linearGradient>
               </defs>
             </svg>
-            <span className="font-sans text-[26px] font-extrabold tracking-tight uppercase text-white">Quantiva AI</span>
+            <div className="flex flex-col text-left">
+              <span className="font-serif text-[28px] font-bold leading-none tracking-normal text-white uppercase">Quantiva</span>
+              <span className="font-serif text-[28px] font-bold leading-none tracking-widest text-white uppercase mt-1">Ai</span>
+            </div>
           </div>
 
           {/* Beautiful dynamically shifting visual banners depending on Selected mode */}

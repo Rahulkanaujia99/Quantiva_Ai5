@@ -60,7 +60,7 @@ body {
 }
 
 .bg-dark-panel {
-  background: linear-gradient(to bottom, #061F1A 0%, #030F0D 100%) !important;
+  background: linear-gradient(135deg, #051613 0%, #072720 50%, #0E4B3E 100%) !important;
   color: #FFFFFF !important;
 }
 
