@@ -303,7 +303,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           }`}
         >
           {/* Watermark Logo Backdrop (Perfect alignment & premium styling) */}
-          <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none flex items-center justify-center select-none">
+          <div className="absolute inset-0 z-0 opacity-[0.24] pointer-events-none flex items-center justify-center select-none">
             <svg className="w-[320px] h-[320px] animate-[spin_180s_linear_infinite] text-[#1DB88E]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="50" cy="50" r="46" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
               <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
