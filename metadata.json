@@ -1,0 +1,8 @@
+{
+  "name": "Remix: working2: Quantiva AI",
+  "description": "A sophisticated financial intelligence tool that extracts strategic insights from corporate earnings reports and financial filings using the Gemini API.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
