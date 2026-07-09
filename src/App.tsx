@@ -401,6 +401,10 @@ const App: React.FC = () => {
                <span className="absolute top-2 right-2 w-2 h-2 bg-[#3D3DC4] rounded-full border border-white"></span>
             </button>
             
+            <div className="px-4 py-1.5 rounded-full bg-[#3D3DC4]/10 border border-[#3D3DC4]/20 text-[#3D3DC4] text-[11px] font-black uppercase tracking-wider font-mono">
+              {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
+            </div>
+            
             {/* Dynamic User profile info representing the logged-in user */}
             <div className="flex items-center gap-3.5 pl-3 border-l border-[#E5E5F0] py-0.5">
               <div className="text-right hidden sm:block">
