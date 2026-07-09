@@ -679,6 +679,162 @@ const App: React.FC = () => {
               )}
             </div>
           )}
+
+          {activeTab === 'settings' && (
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-500">
+              <div className="flex flex-col gap-2">
+                <span className="text-[10px] font-black text-[#5B5BF5] uppercase tracking-widest font-mono">INTELLIGENCE PROFILE</span>
+                <h2 className="text-4xl font-extrabold text-[#1A1A2E]">Profile Settings</h2>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Card: Avatar and Details */}
+                <div className="p-8 bg-white border border-[#E5E5F0] rounded-[1.5rem] flex flex-col items-center text-center space-y-6 card-hover shadow-sm transition-all">
+                  <div className="relative group">
+                    <div className="w-24 h-24 rounded-full bg-[#3D3DC4] flex items-center justify-center font-extrabold text-2xl text-white shadow-lg relative">
+                      {profile.initials}
+                    </div>
+                    <button className="absolute bottom-0 right-0 p-2 rounded-full bg-[#3D3DC4] hover:bg-[#5B5BF5] text-white shadow-md border-2 border-white transition-all cursor-pointer">
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                        <circle cx="12" cy="13" r="4" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-[#1A1A2E]">{profileName}</h3>
+                    <p className="text-xs text-[#888899] font-medium mt-1">{profileRole || 'Job Title Unset'}</p>
+                  </div>
+
+                  <div className="w-full border-t border-[#E5E5F0] pt-6 space-y-3.5 text-left text-xs font-semibold text-[#555566]">
+                    <div className="flex items-center gap-3">
+                      <Mail className="w-4 h-4 text-[#888899]" />
+                      <span className="truncate">{profileEmail}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Globe className="w-4 h-4 text-[#888899]" />
+                      <span>Preferred Region: <span className="text-[#3D3DC4] font-bold">{profileRegion || 'Unset'}</span></span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Briefcase className="w-4 h-4 text-[#888899]" />
+                      <span>Sector: <span className="text-[#3D3DC4] font-bold">{profileSector || 'Unset'}</span></span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Card: Settings Forms */}
+                <div className="lg:col-span-2 p-8 bg-white border border-[#E5E5F0] rounded-[1.5rem] card-hover shadow-sm transition-all space-y-8">
+                  <div className="space-y-6">
+                    <h3 className="text-base font-bold text-[#1A1A2E] pb-3 border-b border-[#E5E5F0]">Personal Information</h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider">Full Name</label>
+                        <div className="relative">
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
+                          <input 
+                            type="text" 
+                            value={profileName}
+                            onChange={(e) => setProfileName(e.target.value)}
+                            className="w-full bg-white border border-[#E5E5F0] rounded-xl py-3 pl-11 pr-4 text-xs font-bold focus:border-[#3D3DC4] focus:ring-4 focus:ring-[#3D3DC4]/10 transition-all outline-none text-[#1A1A2E]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider">Email Address (Advisory ID)</label>
+                        <div className="relative">
+                          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
+                          <input 
+                            type="email" 
+                            value={profileEmail}
+                            onChange={(e) => setProfileEmail(e.target.value)}
+                            className="w-full bg-white border border-[#E5E5F0] rounded-xl py-3 pl-11 pr-4 text-xs font-bold focus:border-[#3D3DC4] focus:ring-4 focus:ring-[#3D3DC4]/10 transition-all outline-none text-[#1A1A2E]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider">Organization / Advisory firm</label>
+                        <div className="relative">
+                          <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
+                          <input 
+                            type="text" 
+                            placeholder="E.g., McKinsey, BCG"
+                            value={profileOrg}
+                            onChange={(e) => setProfileOrg(e.target.value)}
+                            className="w-full bg-white border border-[#E5E5F0] rounded-xl py-3 pl-11 pr-4 text-xs font-bold focus:border-[#3D3DC4] focus:ring-4 focus:ring-[#3D3DC4]/10 transition-all outline-none text-[#1A1A2E]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider">Job Title / Corporate Role</label>
+                        <div className="relative">
+                          <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
+                          <input 
+                            type="text" 
+                            placeholder="E.g., Senior Associate, Lead Advisor"
+                            value={profileRole}
+                            onChange={(e) => setProfileRole(e.target.value)}
+                            className="w-full bg-white border border-[#E5E5F0] rounded-xl py-3 pl-11 pr-4 text-xs font-bold focus:border-[#3D3DC4] focus:ring-4 focus:ring-[#3D3DC4]/10 transition-all outline-none text-[#1A1A2E]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <h3 className="text-base font-bold text-[#1A1A2E] pb-3 border-b border-[#E5E5F0]">Advisory Preferences</h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider">Primary Region Index</label>
+                        <select 
+                          value={profileRegion}
+                          onChange={(e) => setProfileRegion(e.target.value)}
+                          className="w-full bg-white border border-[#E5E5F0] rounded-xl py-3 px-4 text-xs font-bold focus:border-[#3D3DC4] focus:ring-4 focus:ring-[#3D3DC4]/10 transition-all outline-none text-[#1A1A2E]"
+                        >
+                          <option value="">Select Region...</option>
+                          <option value="Americas">Americas</option>
+                          <option value="Asia Pacific">Asia Pacific</option>
+                          <option value="Europe">Europe</option>
+                          <option value="Middle East">Middle East</option>
+                        </select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider">Primary Focus Sector</label>
+                        <select 
+                          value={profileSector}
+                          onChange={(e) => setProfileSector(e.target.value)}
+                          className="w-full bg-white border border-[#E5E5F0] rounded-xl py-3 px-4 text-xs font-bold focus:border-[#3D3DC4] focus:ring-4 focus:ring-[#3D3DC4]/10 transition-all outline-none text-[#1A1A2E]"
+                        >
+                          <option value="">Select Focus Sector...</option>
+                          <option value="Energy & Utilities">Energy & Utilities</option>
+                          <option value="Oil & Gas">Oil & Gas</option>
+                          <option value="Technology & AI">Technology & AI</option>
+                          <option value="Healthcare & Bio">Healthcare & Bio</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4">
+                    <button 
+                      onClick={() => {
+                        alert("Settings saved successfully!");
+                      }}
+                      className="px-6 py-3.5 bg-[#3D3DC4] hover:bg-[#5B5BF5] text-white font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg active:scale-95 btn-primary"
+                    >
+                      Save Profile Changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <input 
