@@ -287,24 +287,24 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#07090e] flex flex-col justify-center items-center p-4 sm:p-6 select-none relative overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-[#F8F9FC] flex flex-col justify-center items-center p-4 sm:p-6 select-none relative overflow-x-hidden font-sans">
       
       {/* Dynamic Blur Shapes matching enterprise analytics portal dashboard code */}
-      <div className="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] bg-[#e15256]/5 rounded-full blur-[100px] pointer-events-none transform rotate-45"></div>
-      <div className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#26a69a]/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] bg-[#3D3DC4]/5 rounded-full blur-[100px] pointer-events-none transform rotate-45"></div>
+      <div className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#1DB88E]/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       {/* Main interactive split card auth portal layout */}
-      <div id="auth-container-root" className="w-full max-w-[950px] bg-[#0d121dd3] rounded-[2.2rem] shadow-[0_32px_80px_rgba(0,0,0,0.7),_0_0_50px_rgba(38,166,154,0.04)] border border-[#1e2439] overflow-hidden min-h-[620px] flex flex-col md:flex-row relative z-10 transition-all duration-500">
+      <div id="auth-container-root" className="w-full max-w-[950px] bg-white rounded-[2.2rem] shadow-[0_24px_64px_rgba(61,61,196,0.06)] border border-[#E5E5F0] overflow-hidden min-h-[620px] flex flex-col md:flex-row relative z-10 transition-all duration-500">
         
         {/* ================= PANEL A: THE DYNAMIC SLIDING BANNER (AQUAMARINE INTEGRATED DESIGN) ================= */}
         <div 
-          className={`w-full md:w-[41%] bg-gradient-to-br from-[#124d45] via-[#0d3b35] to-[#072420] text-slate-100 p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-all duration-500 ${
-            mode === 'login' ? 'md:order-last border-l border-[#1e2439]' : 'md:order-first border-r border-[#1e2439]'
+          className={`w-full md:w-[41%] bg-hero-gradient text-[#1A1A2E] p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-all duration-500 ${
+            mode === 'login' ? 'md:order-last border-l border-[#E5E5F0]' : 'md:order-first border-r border-[#E5E5F0]'
           }`}
         >
           {/* Watermark Logo Backdrop (Perfect alignment & premium styling) */}
-          <div className="absolute inset-0 z-0 opacity-[0.07] pointer-events-none flex items-center justify-center select-none">
-            <svg className="w-[320px] h-[320px] animate-[spin_180s_linear_infinite] text-[#26a69a]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="absolute inset-0 z-0 opacity-[0.05] pointer-events-none flex items-center justify-center select-none">
+            <svg className="w-[320px] h-[320px] animate-[spin_180s_linear_infinite] text-[#3D3DC4]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="50" cy="50" r="46" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
               <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 {/* Center linking ring */}
@@ -338,7 +338,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                 {/* Leaf Element 5: Cosmos (288 deg) */}
                 <g transform="rotate(288, 50, 50)">
                   <path d="M50 12 C40 20 38 34 50 42 C62 34 60 20 50 12" />
-                  <circle cx="50" cy="28" r="3" fill="#26a69a" stroke="none" />
+                  <circle cx="50" cy="28" r="3" fill="#3D3DC4" stroke="none" />
                   <ellipse cx="50" cy="28" rx="6" ry="2" transform="rotate(-15, 50, 28)" strokeWidth="1.0" />
                 </g>
               </g>
@@ -381,30 +381,30 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                 {/* Leaf Element 5: Cosmos (288 deg) */}
                 <g transform="rotate(288, 50, 50)">
                   <path d="M50 12 C40 20 38 34 50 42 C62 34 60 20 50 12" />
-                  <circle cx="50" cy="28" r="3" fill="#4fc7cf" stroke="none" />
+                  <circle cx="50" cy="28" r="3" fill="#3D3DC4" stroke="none" />
                   <ellipse cx="50" cy="28" rx="6" ry="2" transform="rotate(-15, 50, 28)" strokeWidth="1.2" />
                 </g>
               </g>
               <defs>
                 <linearGradient id="logo-grad-auth" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#4fc7cf" />
-                  <stop offset="50%" stopColor="#35b0b8" />
-                  <stop offset="100%" stopColor="#26a69a" />
+                  <stop offset="0%" stopColor="#3D3DC4" />
+                  <stop offset="50%" stopColor="#5B5BF5" />
+                  <stop offset="100%" stopColor="#1DB88E" />
                 </linearGradient>
               </defs>
             </svg>
-            <span className="font-['EB_Garamond',serif] text-[31.2812px] leading-[33.4375px] font-black tracking-widest uppercase text-white">Quantiva AI</span>
+            <span className="font-sans text-[26px] font-extrabold tracking-tight uppercase text-[#1A1A2E]">Quantiva AI</span>
           </div>
 
           {/* Beautiful dynamically shifting visual banners depending on Selected mode */}
           <div className="my-auto relative z-10 py-6 text-center">
             {mode === 'login' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-white text-center">
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-[#1A1A2E] text-center">
                   {getGreeting()}
                 </h2>
-                <p className="text-sm text-slate-300 leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
-                  Establish a secure connection with your active enterprise analytics workspace dashboard nodes.
+                <p className="text-sm text-[#555566] leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
+                  Establish a secure connection with your active enterprise analytics workspace dashboard.
                 </p>
                 <button
                   type="button"
@@ -416,7 +416,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     setPasswordError(null);
                     setNameError(null);
                   }}
-                  className="px-10 py-3 rounded-full border-2 border-[#26a69a] hover:bg-[#26a69a] hover:text-white text-[#26a69a] transition-all duration-300 text-xs font-black uppercase tracking-widest active:scale-95 shadow-md focus:outline-none"
+                  className="px-8 py-3 rounded-lg border-2 border-[#3D3DC4] hover:bg-[#F3F3FE] text-[#3D3DC4] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
                 >
                   CREATE NEW ACCOUNT
                 </button>
@@ -425,11 +425,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
             {mode === 'signup' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <h2 className="text-3xl md:text-3xl font-extrabold tracking-tight mb-4 text-white text-center">
+                <h2 className="text-3xl md:text-3xl font-extrabold tracking-tight mb-4 text-[#1A1A2E] text-center">
                   Secure Workspace Setup
                 </h2>
-                <p className="text-sm text-slate-300 leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
-                  Construction of a new administrator node requires unique electronic identification and auditing trail.
+                <p className="text-sm text-[#555566] leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
+                  Construction of a new administrator node requires unique electronic identification.
                 </p>
                 <button
                   type="button"
@@ -441,20 +441,20 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     setPasswordError(null);
                     setNameError(null);
                   }}
-                  className="px-10 py-3 rounded-full border-2 border-[#26a69a] hover:bg-[#26a69a] hover:text-white text-[#26a69a] transition-all duration-300 text-xs font-black uppercase tracking-widest active:scale-95 shadow-md focus:outline-none"
+                  className="px-8 py-3 rounded-lg border-2 border-[#3D3DC4] hover:bg-[#F3F3FE] text-[#3D3DC4] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
                 >
-                  ALREADY AN ADM MEMBER? SIGN IN
+                  ALREADY REGISTERED? SIGN IN
                 </button>
               </div>
             )}
 
             {mode === 'forgot' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <h2 className="text-3xl md:text-3.5xl font-extrabold tracking-tight mb-4 text-white text-center">
+                <h2 className="text-3xl md:text-3.5xl font-extrabold tracking-tight mb-4 text-[#1A1A2E] text-center">
                   Reset Password Flow
                 </h2>
-                <p className="text-sm text-slate-300 leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
-                  Enter your electronic identity. We'll dispatch a cryptographic secure rest link instantly.
+                <p className="text-sm text-[#555566] leading-relaxed max-w-[270px] mx-auto mb-8 font-medium text-center">
+                  Enter your electronic identity. We'll dispatch a cryptographic secure reset link instantly.
                 </p>
                 <button
                   type="button"
@@ -465,7 +465,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     setEmailError(null);
                     setPasswordError(null);
                   }}
-                  className="px-10 py-3 rounded-full border-2 border-[#26a69a] hover:bg-[#26a69a] hover:text-white text-[#26a69a] transition-all duration-300 text-xs font-black uppercase tracking-widest active:scale-95 shadow-md focus:outline-none"
+                  className="px-8 py-3 rounded-lg border-2 border-[#3D3DC4] hover:bg-[#F3F3FE] text-[#3D3DC4] transition-all duration-300 text-xs font-bold uppercase tracking-wider active:scale-95 shadow-sm focus:outline-none"
                 >
                   RETURN TO SIGN IN
                 </button>
@@ -474,26 +474,26 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
           </div>
 
           {/* Secure SSL Lock label footer details */}
-          <div className="text-[10px] text-[#26a69a]/70 font-semibold tracking-wider flex items-center gap-1.5 relative z-10 mt-8 md:mt-0 uppercase">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#26a69a]" />
+          <div className="text-[10px] text-[#555566]/70 font-semibold tracking-wider flex items-center gap-1.5 relative z-10 mt-8 md:mt-0 uppercase">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#1DB88E]" />
             <span>AES-256 SSL CLUSTER ACTIVE</span>
           </div>
         </div>
 
-        {/* ================= PANEL B: AUTHENTICATION FORM WRAPPER (DARK SLEEK BACKGROUNDS) ================= */}
+        {/* ================= PANEL B: AUTHENTICATION FORM WRAPPER (LIGHT SLEEK BACKGROUNDS) ================= */}
         <div 
-          className="w-full md:w-[59%] bg-[#090d16] p-8 md:p-12 flex flex-col justify-center items-center transition-all duration-500"
+          className="w-full md:w-[59%] bg-white p-8 md:p-12 flex flex-col justify-center items-center transition-all duration-500"
         >
           <div className="w-full max-w-[390px] flex flex-col">
             
             {/* Main Interactive Screen Title */}
             <div className="text-center mb-8">
-              <h1 className="text-[29.25px] font-['EB_Garamond',serif] font-black text-[#26a69a] tracking-tight">
-                {mode === 'login' && 'Welcome Analyst!!'}
+              <h1 className="text-[29.25px] font-sans font-extrabold text-[#3D3DC4] tracking-tight">
+                {mode === 'login' && 'Welcome Analyst'}
                 {mode === 'signup' && 'Create Admin Account'}
                 {mode === 'forgot' && 'Reset Secure Secret'}
               </h1>
-              <p className="font-['Times_New_Roman',serif] text-[14.1875px] leading-[12.25px] text-slate-400 mt-2 font-medium">
+              <p className="text-[14px] leading-relaxed text-[#555566] mt-2 font-medium">
                 {mode === 'login' && 'Enter verification credentials to access your database workspace'}
                 {mode === 'signup' && 'Register your identity on secure cloud node keys'}
                 {mode === 'forgot' && 'Provide your certified identity node email label'}
@@ -503,19 +503,19 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
             {/* Informational Error/Success Banners */}
             {errorMsg && (
               errorMsg.includes('unauthorized-domain') || errorMsg.includes('Authorized Domains') ? (
-                <div className="bg-amber-500/5 border border-amber-500/25 text-amber-300 p-4 rounded-[1.2rem] flex flex-col gap-3.5 mb-5 animate-in fade-in slide-in-from-top-1.5 duration-200">
+                <div className="bg-amber-500/5 border border-amber-500/25 text-amber-800 p-4 rounded-[1.2rem] flex flex-col gap-3.5 mb-5 animate-in fade-in slide-in-from-top-1.5 duration-200">
                   <div className="flex items-start gap-2.5">
-                    <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-500" />
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-600" />
                     <div>
-                      <h4 className="text-xs font-black text-amber-400 uppercase tracking-wider font-mono">Firebase Authorized Domain Required</h4>
-                      <p className="text-[11px] text-amber-200/80 leading-normal mt-0.5">
+                      <h4 className="text-xs font-bold text-amber-700 uppercase tracking-wider font-mono">Firebase Authorized Domain Required</h4>
+                      <p className="text-[11px] text-amber-800/80 leading-normal mt-0.5">
                         This preview environment is not listing this deployment domain under your Authorized Domains list in the Firebase console.
                       </p>
                     </div>
                   </div>
                   
-                  <div className="bg-[#070a11] border border-[#1e243a] p-2.5 rounded-lg flex items-center justify-between gap-3">
-                    <span className="text-[10px] font-mono text-slate-300 break-all select-all font-bold">
+                  <div className="bg-slate-50 border border-slate-200 p-2.5 rounded-lg flex items-center justify-between gap-3">
+                    <span className="text-[10px] font-mono text-slate-700 break-all select-all font-bold">
                       {window.location.hostname}
                     </span>
                     <button
@@ -525,48 +525,48 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
                       }}
-                      className="px-2.5 py-1.5 rounded-md bg-[#1d2433] hover:bg-[#2c374d] text-[10px] text-white flex items-center gap-1 font-bold transition-all shrink-0 uppercase active:scale-95"
+                      className="px-2.5 py-1.5 rounded-md bg-[#3D3DC4] hover:bg-[#5B5BF5] text-[10px] text-white flex items-center gap-1 font-bold transition-all shrink-0 uppercase active:scale-95"
                     >
                       {copied ? (
                         <>
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <Check className="w-3.5 h-3.5 text-white" />
                           <span>Copied!</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-3.5 h-3.5 text-[#26a69a]" />
+                          <Copy className="w-3.5 h-3.5 text-white" />
                           <span>Copy Client Host</span>
                         </>
                       )}
                     </button>
                   </div>
 
-                  <div className="text-[11px] text-slate-300 leading-relaxed font-medium space-y-1 bg-[#090d16]/30 p-2.5 rounded-lg">
-                    <p className="font-bold text-amber-300 flex items-center gap-1 text-[10px] uppercase font-mono tracking-wider mb-1">
+                  <div className="text-[11px] text-slate-600 leading-relaxed font-medium space-y-1 bg-slate-50 p-2.5 rounded-lg">
+                    <p className="font-bold text-amber-700 flex items-center gap-1 text-[10px] uppercase font-mono tracking-wider mb-1">
                       <span>Quick Resolution Steps:</span>
                     </p>
-                    <ol className="list-decimal pl-4 space-y-1 text-slate-300 text-[10.5px]">
-                      <li>Open the <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer" className="text-teal-400 font-bold hover:underline inline-flex items-center gap-0.5">Firebase Console <ExternalLink className="w-2.5 h-2.5 inline-block" /></a>.</li>
-                      <li>Go to <strong className="text-amber-100 font-bold">Authentication</strong> &gt; <strong className="text-amber-100 font-bold">Settings</strong> tab.</li>
-                      <li>On the left menu, click on <strong className="text-amber-100 font-bold">Authorized domains</strong>.</li>
-                      <li>Click <strong className="text-emerald-400 font-bold">Add domain</strong>, paste the domain copied above, and save.</li>
+                    <ol className="list-decimal pl-4 space-y-1 text-slate-600 text-[10.5px]">
+                      <li>Open the <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer" className="text-[#3D3DC4] font-bold hover:underline inline-flex items-center gap-0.5">Firebase Console <ExternalLink className="w-2.5 h-2.5 inline-block" /></a>.</li>
+                      <li>Go to <strong className="text-slate-800 font-bold">Authentication</strong> &gt; <strong className="text-slate-800 font-bold">Settings</strong> tab.</li>
+                      <li>On the left menu, click on <strong className="text-slate-800 font-bold">Authorized domains</strong>.</li>
+                      <li>Click <strong className="text-[#1DB88E] font-bold">Add domain</strong>, paste the domain copied above, and save.</li>
                     </ol>
                   </div>
                 </div>
               ) : (
-                <div className="bg-red-500/5 border border-red-500/15 text-red-400 p-3.5 rounded-xl flex items-start gap-2.5 mb-5 animate-in fade-in slide-in-from-top-1.5 duration-200">
+                <div className="bg-red-500/5 border border-red-500/15 text-red-600 p-3.5 rounded-xl flex items-start gap-2.5 mb-5 animate-in fade-in slide-in-from-top-1.5 duration-200">
                   <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-500" />
-                  <p className="text-xs text-red-300 leading-tight font-bold">{errorMsg}</p>
+                  <p className="text-xs text-red-600 leading-tight font-bold">{errorMsg}</p>
                 </div>
               )
             )}
 
             {successMsg && (
-              <div className="bg-[#26a69a]/5 border border-[#26a69a]/20 text-[#26a69a] p-3.5 rounded-xl flex items-center gap-2.5 mb-5 animate-in fade-in duration-200">
-                <div className="w-4.5 h-4.5 rounded-full bg-[#26a69a]/10 flex items-center justify-center flex-shrink-0">
-                  <Check className="w-3 h-3 text-[#26a69a] stroke-[3.5]" />
+              <div className="bg-[#1DB88E]/5 border border-[#1DB88E]/20 text-[#1DB88E] p-3.5 rounded-xl flex items-center gap-2.5 mb-5 animate-in fade-in duration-200">
+                <div className="w-4.5 h-4.5 rounded-full bg-[#1DB88E]/10 flex items-center justify-center flex-shrink-0">
+                  <Check className="w-3 h-3 text-[#1DB88E] stroke-[3.5]" />
                 </div>
-                <p className="text-xs font-bold text-emerald-400 leading-snug">{successMsg}</p>
+                <p className="text-xs font-bold text-[#1DB88E] leading-snug">{successMsg}</p>
               </div>
             )}
 
@@ -576,21 +576,21 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
               {/* Registration full-name input field (visible on signup only) */}
               {mode === 'signup' && (
                 <div className="space-y-1 animate-in slide-in-from-top-1 duration-200">
-                  <span className="text-[12px] font-[Verdana,sans-serif] font-bold uppercase text-slate-400 tracking-wider">FULL NAME</span>
+                  <span className="text-[12px] font-bold uppercase text-[#555566] tracking-wider">FULL NAME</span>
                   <div className="relative">
-                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
                     <input
                       type="text"
                       placeholder="Jane Doe"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className={`w-full bg-[#070a11] text-white border rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none ${
-                        nameError ? 'border-red-500/40 focus:border-red-500/60' : 'border-[#1e243a] focus:border-[#26a69a]/50'
+                      className={`w-full bg-white text-[#1A1A2E] border rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none ${
+                        nameError ? 'border-red-500/40 focus:border-red-500/60' : 'border-[#E5E5F0] focus:border-[#3D3DC4]/50'
                       }`}
                     />
                   </div>
                   {nameError && (
-                    <p className="text-[10px] font-bold text-red-400 mt-1 flex items-center gap-0.5">
+                    <p className="text-[10px] font-bold text-red-500 mt-1 flex items-center gap-0.5">
                       <AlertCircle className="w-3 h-3" />
                       {nameError}
                     </p>
@@ -600,24 +600,24 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
               {/* Email credentials authentication input label node */}
               <div className="space-y-1">
-                <span className="text-[12px] font-[Verdana,sans-serif] font-bold uppercase text-slate-400 tracking-wider">EMAIL ADDRESS</span>
+                <span className="text-[12px] font-bold uppercase text-[#555566] tracking-wider">EMAIL ADDRESS</span>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
                   <input
                     type="email"
                     value={email}
                     disabled={isLoading}
                     onChange={handleEmailChange}
                     placeholder="certified@enterprise.com"
-                    className={`w-full bg-[#070a11] border text-white rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none ${
+                    className={`w-full bg-white border text-[#1A1A2E] rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none ${
                       emailError 
                         ? 'border-red-500/40 focus:border-red-500/60' 
-                        : 'border-[#1e243a] focus:border-[#26a69a]/50'
+                        : 'border-[#E5E5F0] focus:border-[#3D3DC4]/50'
                     }`}
                   />
                 </div>
                 {emailError && (
-                  <p className="text-[10px] font-bold text-red-400 mt-1 flex items-center gap-0.5 ml-1">
+                  <p className="text-[10px] font-bold text-red-500 mt-1 flex items-center gap-0.5 ml-1">
                     <AlertCircle className="w-3 h-3" />
                     {emailError}
                   </p>
@@ -628,36 +628,36 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
               {mode !== 'forgot' && (
                 <div className="space-y-1">
                   <div className="flex justify-between items-center mb-0.5">
-                    <span className="text-[12px] font-[Verdana,sans-serif] font-bold uppercase text-slate-400 tracking-wider">PASSWORD SECRET</span>
+                    <span className="text-[12px] font-bold uppercase text-[#555566] tracking-wider">PASSWORD SECRET</span>
                     {mode === 'signup' && (
-                      <span className="text-[9px] text-[#26a69a] font-mono select-none">REQUIRED: 1 CAPITAL, MIN 8 CHARS</span>
+                      <span className="text-[9px] text-[#3D3DC4] font-mono select-none">REQUIRED: 1 CAPITAL, MIN 8 CHARS</span>
                     )}
                   </div>
                   <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       disabled={isLoading}
                       onChange={handlePasswordChange}
                       placeholder={mode === 'signup' ? "Create strong password" : "••••••••"}
-                      className={`w-full bg-[#070a11] border text-white rounded-xl py-3 pl-11 pr-11 text-xs font-bold transition-all outline-none ${
+                      className={`w-full bg-white border text-[#1A1A2E] rounded-xl py-3 pl-11 pr-11 text-xs font-bold transition-all outline-none ${
                         passwordError 
                           ? 'border-red-500/40 focus:border-red-500/60' 
-                          : 'border-[#1e243a] focus:border-[#26a69a]/50'
+                          : 'border-[#E5E5F0] focus:border-[#3D3DC4]/50'
                       }`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-slate-500 hover:text-slate-300 transition-colors focus:outline-none"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-[#888899] hover:text-[#555566] transition-colors focus:outline-none"
                       tabIndex={-1}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                   {passwordError && (
-                    <p className="text-[10px] font-bold text-red-400 mt-1 flex items-center gap-0.5 ml-1">
+                    <p className="text-[10px] font-bold text-red-500 mt-1 flex items-center gap-0.5 ml-1">
                       <AlertCircle className="w-3 h-3" />
                       {passwordError}
                     </p>
@@ -667,7 +667,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
               {/* Remember user cookies checkbox & Forget Link navigation switches */}
               {mode === 'login' && (
-                <div className="flex items-center justify-between pt-1 text-[11px] font-bold text-slate-400">
+                <div className="flex items-center justify-between pt-1 text-[11px] font-bold text-[#555566]">
                   <label className="flex items-center gap-2 cursor-pointer group select-none">
                     <input
                       type="checkbox"
@@ -678,12 +678,12 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     />
                     <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
                       rememberMe 
-                        ? "bg-[#26a69a] border-[#26a69a] text-white" 
-                        : "border-[#1e243a] bg-[#070a11] group-hover:border-slate-500"
+                        ? "bg-[#3D3DC4] border-[#3D3DC4] text-white" 
+                        : "border-[#E5E5F0] bg-white group-hover:border-slate-500"
                     }`}>
                       {rememberMe && <Check className="w-3.5 h-3.5 stroke-[3.5]" />}
                     </div>
-                    <span className="group-hover:text-slate-300">Remember Me</span>
+                    <span className="group-hover:text-slate-700">Remember Me</span>
                   </label>
 
                   <button 
@@ -695,7 +695,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                       setEmailError(null);
                       setPasswordError(null);
                     }}
-                    className="hover:text-[#26a69a] transition-colors focus:outline-none text-slate-400 hover:text-teal-400 tracking-wide font-mono text-[10px]"
+                    className="transition-colors focus:outline-none text-[#555566] hover:text-[#3D3DC4] tracking-wide font-mono text-[10px]"
                   >
                     Forgot Password?
                   </button>
@@ -707,7 +707,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3.5 rounded-full bg-[#26a69a] hover:bg-[#208a80] hover:shadow-lg hover:shadow-teal-600/10 active:scale-[0.98] text-white font-black text-xs tracking-widest uppercase transition-all duration-200 disabled:opacity-55 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full py-3.5 btn-primary text-white font-extrabold text-xs tracking-widest uppercase transition-all duration-200 disabled:opacity-55 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
@@ -730,7 +730,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
             {/* Alternating access gateways (Log in vs Sign up helper) */}
             <div className="mt-5 text-center">
               {mode === 'login' ? (
-                <p className="text-xs text-slate-400 font-medium">
+                <p className="text-xs text-[#555566] font-medium">
                   Don't have an administrator access node yet?{' '}
                   <button
                     type="button"
@@ -741,13 +741,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                       setEmailError(null);
                       setPasswordError(null);
                     }}
-                    className="text-[#26a69a] hover:text-teal-400 font-bold underline outline-none"
+                    className="text-[#3D3DC4] hover:text-[#5B5BF5] font-bold underline outline-none"
                   >
                     Create Account
                   </button>
                 </p>
               ) : mode === 'signup' ? (
-                <p className="text-xs text-slate-400 font-medium">
+                <p className="text-xs text-[#555566] font-medium">
                   Already registered in security database node?{' '}
                   <button
                     type="button"
@@ -758,7 +758,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                       setEmailError(null);
                       setPasswordError(null);
                     }}
-                    className="text-[#26a69a] hover:text-teal-400 font-bold underline outline-none"
+                    className="text-[#3D3DC4] hover:text-[#5B5BF5] font-bold underline outline-none"
                   >
                     Sign In
                   </button>
@@ -772,8 +772,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     setSuccessMsg(null);
                     setEmailError(null);
                     setPasswordError(null);
+                    setSuccessMsg(null);
                   }}
-                  className="text-xs text-[#26a69a] hover:text-teal-400 font-bold underline outline-none"
+                  className="text-xs text-[#3D3DC4] hover:text-[#5B5BF5] font-bold underline outline-none"
                 >
                   Back to Sign In Gateway
                 </button>
@@ -784,8 +785,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
             {mode !== 'forgot' && (
               <>
                 <div className="relative flex items-center justify-center my-6">
-                  <div className="w-full border-t border-[#1e2439]"></div>
-                  <span className="absolute px-3.5 bg-[#090d16] text-[9px] font-bold text-slate-500 uppercase tracking-widest font-mono">
+                  <div className="w-full border-t border-[#E5E5F0]"></div>
+                  <span className="absolute px-3.5 bg-white text-[9px] font-bold text-[#888899] uppercase tracking-widest font-mono">
                     FEDERATED IDENTITY LOG IN
                   </span>
                 </div>
@@ -797,7 +798,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={isLoading}
-                    className="flex items-center justify-center gap-1.5 py-3 rounded-xl bg-[#070a11] border border-[#1e243a] hover:border-slate-500 hover:bg-[#0e131f] text-slate-300 hover:text-white font-bold text-[10.5px] transition-all focus:outline-none uppercase active:scale-[0.98]"
+                    className="flex items-center justify-center gap-1.5 py-3 rounded-xl bg-white border border-[#E5E5F0] hover:border-[#5B5BF5] hover:bg-[#F3F3FE] text-[#555566] hover:text-[#1A1A2E] font-bold text-[10.5px] transition-all focus:outline-none uppercase active:scale-[0.98]"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24">
                       <path
@@ -825,7 +826,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     type="button"
                     onClick={handleMicrosoftSignIn}
                     disabled={isLoading}
-                    className="flex items-center justify-center gap-1.5 py-3 rounded-xl bg-[#070a11] border border-[#1e243a] hover:border-slate-500 hover:bg-[#0e131f] text-slate-300 hover:text-white font-bold text-[10.5px] transition-all focus:outline-none uppercase active:scale-[0.98]"
+                    className="flex items-center justify-center gap-1.5 py-3 rounded-xl bg-white border border-[#E5E5F0] hover:border-[#5B5BF5] hover:bg-[#F3F3FE] text-[#555566] hover:text-[#1A1A2E] font-bold text-[10.5px] transition-all focus:outline-none uppercase active:scale-[0.98]"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 23 23">
                       <path fill="#f35325" d="M0 0h11v11H0z" />
@@ -841,7 +842,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
                     type="button"
                     onClick={handleGithubSignIn}
                     disabled={isLoading}
-                    className="flex items-center justify-center gap-1.5 py-3 rounded-xl bg-[#070a11] border border-[#1e243a] hover:border-slate-500 hover:bg-[#0e131f] text-slate-300 hover:text-white font-bold text-[10.5px] transition-all focus:outline-none uppercase active:scale-[0.98]"
+                    className="flex items-center justify-center gap-1.5 py-3 rounded-xl bg-white border border-[#E5E5F0] hover:border-[#5B5BF5] hover:bg-[#F3F3FE] text-[#555566] hover:text-[#1A1A2E] font-bold text-[10.5px] transition-all focus:outline-none uppercase active:scale-[0.98]"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                       <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
