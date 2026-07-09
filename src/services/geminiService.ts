@@ -2,7 +2,17 @@
 import { GoogleGenAI, Type, GenerateContentResponse } from "@google/genai";
 import { ExtractedData, QRAvailabilityStatus } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const getApiKey = (): string => {
+  try {
+    const key = process.env.GEMINI_API_KEY;
+    if (key && key !== 'undefined' && key.trim() !== '') {
+      return key;
+    }
+  } catch (e) {}
+  return "AQ.Ab8RN6K9p7OhCcGG4lLYCryHApv3nweq2mKKUUq46hpYkdJYAQ";
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 export const analyzeDocuments = async (base64Pdfs: string[]): Promise<ExtractedData> => {
   const model = 'gemini-3.5-flash';
