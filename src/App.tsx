@@ -322,7 +322,7 @@ const App: React.FC = () => {
                 </linearGradient>
               </defs>
             </svg>
-            <span className="text-[#1A1A2E] tracking-tighter">Quantiva AI</span>
+            <span className="tracking-tighter font-extrabold"><span className="text-[#1DB88E]">Quantiva</span> <span className="text-[#3D3DC4]">Ai</span></span>
           </h1>
           <p className="text-[10px] font-black text-[#5B5BF5] uppercase tracking-[0.3em] font-mono">Institutional Grade Intelligence</p>
         </div>
