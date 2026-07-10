@@ -23,11 +23,16 @@ const firebaseConfig = {
   appId: "1:519512601774:web:f3125ff2cb67b4fc5d693f"
 };
 
+import { getFirestore } from "firebase/firestore";
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication
 export const auth = getAuth(app);
+
+// Initialize Firestore
+export const db = getFirestore(app);
 
 // Setup Google Auth Provider
 export const googleProvider = new GoogleAuthProvider();

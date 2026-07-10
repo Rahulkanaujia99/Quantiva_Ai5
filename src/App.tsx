@@ -11,7 +11,8 @@ import { ExtractedData } from './types';
 import Dashboard from './components/Dashboard';
 import QRAvailabilityCheck from './components/QRAvailabilityCheck';
 import QRStatus from './components/QRStatus';
-import { auth, signOut, onAuthStateChanged, User as FirebaseUser } from './services/firebase';
+import { auth, db, signOut, onAuthStateChanged, User as FirebaseUser } from './services/firebase';
+import { collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
 import { AuthScreen } from './components/AuthScreen';
 
 const App: React.FC = () => {
@@ -67,6 +68,39 @@ const App: React.FC = () => {
       console.error("Failed to save archive:", e);
     }
   }, [archive]);
+
+  // Load archives from Firestore when user is logged in
+  useEffect(() => {
+    const loadFirestoreArchive = async () => {
+      if (!currentUser) {
+        setArchive([]);
+        return;
+      }
+
+      try {
+        const q = query(
+          collection(db, "users", currentUser.uid, "archives"),
+          orderBy("createdAt", "desc")
+        );
+        const querySnapshot = await getDocs(q);
+        const docs: ExtractedData[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data && data.extractedData) {
+            docs.push(data.extractedData);
+          }
+        });
+        
+        if (docs.length > 0) {
+          setArchive(docs);
+        }
+      } catch (e) {
+        console.error("Error loading archives from Firestore:", e);
+      }
+    };
+
+    loadFirestoreArchive();
+  }, [currentUser]);
 
   if (isAuthChecking) {
     return (
@@ -235,6 +269,16 @@ const App: React.FC = () => {
       const result = await analyzeDocuments(base64List);
       setExtractedData(result);
       setArchive(prev => [result, ...prev]);
+      if (currentUser) {
+        try {
+          await addDoc(collection(db, "users", currentUser.uid, "archives"), {
+            extractedData: result,
+            createdAt: new Date().toISOString()
+          });
+        } catch (fsErr) {
+          console.error("Error saving archive to Firestore:", fsErr);
+        }
+      }
     } catch (err: unknown) {
       console.error("Processing Error:", err);
       const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred while analyzing the documents.";
