@@ -26,6 +26,7 @@ const App: React.FC = () => {
   const isDarkMode = false;
   const [showQRCheck, setShowQRCheck] = useState(false);
   const [activeTab, setActiveTab] = useState<'home' | 'analysis' | 'archive' | 'qr-status' | 'qr-check' | 'settings'>('home');
+  const [showNotifications, setShowNotifications] = useState(false);
   
   // Profile settings states
   const [profileName, setProfileName] = useState<string>('rahul Kanaujia');
@@ -338,7 +339,7 @@ const App: React.FC = () => {
 
         <div className="pt-6 border-t border-[#E5E5F0] space-y-4">
           <button 
-            className="w-full py-3.5 rounded-lg btn-primary text-white font-semibold text-sm transition-all tracking-tight"
+            className="w-full py-3.5 rounded-lg btn-green text-white font-semibold text-sm transition-all tracking-tight"
             onClick={() => fileInputRef.current?.click()}
           >
             Generate Report
@@ -396,10 +397,41 @@ const App: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-4">
-            <button className="p-2 rounded-xl border border-[#E5E5F0] hover:bg-[#F3F3FE] transition-colors relative">
-               <Bell className="w-5 h-5 text-[#555566]" />
-               <span className="absolute top-2 right-2 w-2 h-2 bg-[#3D3DC4] rounded-full border border-white"></span>
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setShowNotifications(!showNotifications)}
+                className={`p-2 rounded-xl border border-[#E5E5F0] hover:bg-[#F3F3FE] transition-all relative ${showNotifications ? 'bg-[#F3F3FE]' : ''}`}
+                title="Recent Changes"
+              >
+                 <Bell className="w-5 h-5 text-[#555566]" />
+                 <span className="absolute top-2 right-2 w-2 h-2 bg-[#3D3DC4] rounded-full border border-white"></span>
+              </button>
+
+              {showNotifications && (
+                <div className="absolute right-0 mt-2.5 w-80 bg-white border border-[#E5E5F0] rounded-2xl shadow-xl z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="flex items-center justify-between pb-2 border-b border-[#E5E5F0] mb-3">
+                    <h5 className="text-xs font-black uppercase tracking-widest text-[#1A1A2E]">Recent Changes</h5>
+                    <span className="text-[10px] font-bold text-[#3D3DC4] bg-[#3D3DC4]/10 px-2 py-0.5 rounded-full">Updates</span>
+                  </div>
+                  <div className="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-1">
+                    {[
+                      { title: "Heartbeat Loader", desc: "Replaced circular loader with a heartbeat pulse animation for report parsing.", time: "Just now" },
+                      { title: "Performance Cards", desc: "Added colored backgrounds (#EFF6FF, #F5F3FF, #ECFDF5) and hover elevations.", time: "Just now" },
+                      { title: "Source Indicators", desc: "Displayed source page numbers in the top-right corner of driver cards.", time: "Just now" },
+                      { title: "Graph Tooltips", desc: "Enhanced charts with detailed hover tooltips showing values and quarters.", time: "Just now" }
+                    ].map((item, index) => (
+                      <div key={index} className="text-left space-y-1 p-2 rounded-lg hover:bg-[#F3F3FE]/50 transition-colors">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-[#1A1A2E]">{item.title}</span>
+                          <span className="text-[9px] text-[#888899] font-semibold">{item.time}</span>
+                        </div>
+                        <p className="text-[11px] text-[#555566] leading-relaxed">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             
             <div className="px-4 py-1.5 rounded-full bg-[#3D3DC4]/10 border border-[#3D3DC4]/20 text-[#3D3DC4] text-[11px] font-black uppercase tracking-wider font-mono">
               {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
@@ -558,7 +590,22 @@ const App: React.FC = () => {
             <div className="mt-20 flex flex-col items-center justify-center space-y-12">
                <div className="relative">
                   <div className="absolute inset-x-[-100px] inset-y-[-100px] bg-[#3D3DC4]/5 blur-[120px] rounded-full animate-pulse"></div>
-                  <Loader2 className="w-20 h-20 text-[#3D3DC4] animate-spin relative z-10" />
+                  <div className="relative z-10 flex items-center justify-center w-28 h-28 bg-white rounded-full border border-[#E5E5F0] shadow-sm animate-heartbeat-container">
+                     <svg
+                       viewBox="0 0 100 40"
+                       className="w-20 h-12 text-[#3D3DC4]"
+                       fill="none"
+                       stroke="currentColor"
+                       strokeWidth="3.5"
+                       strokeLinecap="round"
+                       strokeLinejoin="round"
+                     >
+                       <path
+                         className="heartbeat-path"
+                         d="M 10,20 L 35,20 L 40,5 L 45,35 L 50,15 L 53,23 L 56,20 L 90,20"
+                       />
+                     </svg>
+                  </div>
                </div>
                <div className="text-center space-y-2 relative z-10">
                   <h2 className="text-3xl font-extrabold tracking-tight text-[#1A1A2E]">Neural Processing</h2>
