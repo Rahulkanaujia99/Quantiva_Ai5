@@ -22,14 +22,7 @@ const App: React.FC = () => {
   const [pdfBase64List, setPdfBase64List] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [extractedData, setExtractedData] = useState<ExtractedData | null>(null);
-  const [archive, setArchive] = useState<ExtractedData[]>(() => {
-    try {
-      const saved = localStorage.getItem('quantiva_archive');
-      return saved ? JSON.parse(saved) : [];
-    } catch (e) {
-      return [];
-    }
-  });
+  const [archive, setArchive] = useState<ExtractedData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const isDarkMode = false;
   const [showQRCheck, setShowQRCheck] = useState(false);
@@ -61,22 +54,23 @@ const App: React.FC = () => {
     }
   }, [currentUser]);
 
+  // Load archives when currentUser is set
   useEffect(() => {
-    try {
-      localStorage.setItem('quantiva_archive', JSON.stringify(archive));
-    } catch (e) {
-      console.error("Failed to save archive:", e);
+    if (!currentUser) {
+      setArchive([]);
+      return;
     }
-  }, [archive]);
 
-  // Load archives from Firestore when user is logged in
-  useEffect(() => {
-    const loadFirestoreArchive = async () => {
-      if (!currentUser) {
-        setArchive([]);
-        return;
+    // Try loading from localStorage first for instant display
+    try {
+      const saved = localStorage.getItem(`quantiva_archive_${currentUser.uid}`);
+      if (saved) {
+        setArchive(JSON.parse(saved));
       }
+    } catch (e) {}
 
+    // Then fetch latest from Firestore to sync
+    const loadFirestoreArchive = async () => {
       try {
         const q = query(
           collection(db, "users", currentUser.uid, "archives"),
@@ -93,6 +87,7 @@ const App: React.FC = () => {
         
         if (docs.length > 0) {
           setArchive(docs);
+          localStorage.setItem(`quantiva_archive_${currentUser.uid}`, JSON.stringify(docs));
         }
       } catch (e) {
         console.error("Error loading archives from Firestore:", e);
@@ -101,6 +96,17 @@ const App: React.FC = () => {
 
     loadFirestoreArchive();
   }, [currentUser]);
+
+  // Sync state changes to user-specific local storage
+  useEffect(() => {
+    if (currentUser && archive.length > 0) {
+      try {
+        localStorage.setItem(`quantiva_archive_${currentUser.uid}`, JSON.stringify(archive));
+      } catch (e) {
+        console.error("Failed to save archive:", e);
+      }
+    }
+  }, [archive, currentUser]);
 
   if (isAuthChecking) {
     return (
@@ -269,15 +275,16 @@ const App: React.FC = () => {
       const result = await analyzeDocuments(base64List);
       setExtractedData(result);
       setArchive(prev => [result, ...prev]);
+      setIsProcessing(false); // Hide the loader immediately when the analysis is ready!
+      
+      // Save to Firestore in the background without blocking the UI
       if (currentUser) {
-        try {
-          await addDoc(collection(db, "users", currentUser.uid, "archives"), {
-            extractedData: result,
-            createdAt: new Date().toISOString()
-          });
-        } catch (fsErr) {
+        addDoc(collection(db, "users", currentUser.uid, "archives"), {
+          extractedData: result,
+          createdAt: new Date().toISOString()
+        }).catch((fsErr) => {
           console.error("Error saving archive to Firestore:", fsErr);
-        }
+        });
       }
     } catch (err: unknown) {
       console.error("Processing Error:", err);
