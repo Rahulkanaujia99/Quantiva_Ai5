@@ -21,7 +21,14 @@ const App: React.FC = () => {
   const [pdfBase64List, setPdfBase64List] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [extractedData, setExtractedData] = useState<ExtractedData | null>(null);
-  const [archive, setArchive] = useState<ExtractedData[]>([]);
+  const [archive, setArchive] = useState<ExtractedData[]>(() => {
+    try {
+      const saved = localStorage.getItem('quantiva_archive');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
   const [error, setError] = useState<string | null>(null);
   const isDarkMode = false;
   const [showQRCheck, setShowQRCheck] = useState(false);
@@ -52,6 +59,14 @@ const App: React.FC = () => {
       setProfileEmail(currentUser.email || 'rkanaujia75@gmail.com');
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('quantiva_archive', JSON.stringify(archive));
+    } catch (e) {
+      console.error("Failed to save archive:", e);
+    }
+  }, [archive]);
 
   if (isAuthChecking) {
     return (
