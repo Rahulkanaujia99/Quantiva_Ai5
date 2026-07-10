@@ -285,6 +285,9 @@ const App: React.FC = () => {
       setError(errorMessage);
     } finally {
       setIsProcessing(false);
+      if (e.target) {
+        e.target.value = '';
+      }
     }
   };
 
@@ -303,6 +306,7 @@ const App: React.FC = () => {
     setPdfBase64List([]);
     setActiveTab('home');
     setError(null);
+    setIsProcessing(false);
   };
 
   const SidebarLink = ({ id, icon: Icon, label, status, onClick }: { id: 'analysis' | 'archive' | 'home' | 'qr-check' | 'qr-status', icon: React.ElementType, label: string, status?: string, onClick?: () => void }) => (
@@ -398,10 +402,11 @@ const App: React.FC = () => {
 
         <div className="pt-6 border-t border-[#E5E5F0] space-y-4">
           <button 
-            className="w-full py-3.5 rounded-lg btn-green text-white font-semibold text-sm transition-all tracking-tight"
+            disabled={isProcessing}
+            className={`w-full py-3.5 rounded-lg btn-green text-white font-semibold text-sm transition-all tracking-tight ${isProcessing ? 'opacity-60 cursor-not-allowed' : ''}`}
             onClick={() => fileInputRef.current?.click()}
           >
-            Generate Report
+            {isProcessing ? 'Processing...' : 'Generate Report'}
           </button>
           
           <div className="flex items-center justify-between px-1 gap-2">
@@ -554,10 +559,11 @@ const App: React.FC = () => {
                   </p>
                   <div className="flex flex-wrap gap-4 pt-2">
                     <button 
-                      onClick={() => fileInputRef.current?.click()}
-                      className="btn-primary px-8 py-3.5 rounded-lg text-sm font-semibold transition-all"
+                      disabled={isProcessing}
+                      onClick={() => !isProcessing && fileInputRef.current?.click()}
+                      className={`btn-primary px-8 py-3.5 rounded-lg text-sm font-semibold transition-all ${isProcessing ? 'opacity-60 cursor-not-allowed' : ''}`}
                     >
-                      Upload Report
+                      {isProcessing ? 'Processing...' : 'Upload Report'}
                     </button>
                     <button 
                       onClick={() => setActiveTab('qr-status')}
@@ -570,8 +576,8 @@ const App: React.FC = () => {
 
                 {/* Right Column: Upload Area */}
                 <div 
-                  className="w-full rounded-[1.5rem] border border-[#E5E5F0] bg-white p-10 flex flex-col items-center justify-center text-center transition-all card-hover cursor-pointer"
-                  onClick={() => fileInputRef.current?.click()}
+                  className={`w-full rounded-[1.5rem] border border-[#E5E5F0] bg-white p-10 flex flex-col items-center justify-center text-center transition-all card-hover ${isProcessing ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}`}
+                  onClick={() => !isProcessing && fileInputRef.current?.click()}
                 >
                   <div className="w-16 h-16 rounded-full bg-[#F3F3FE] border border-[#E5E5F0] flex items-center justify-center mb-6 shadow-sm">
                     <Upload className="w-6 h-6 text-[#3D3DC4]" />
@@ -580,9 +586,12 @@ const App: React.FC = () => {
                   <p className="text-[#555566] font-medium max-w-sm mb-6 text-sm leading-relaxed">
                     Drag & drop files or click to browse. Supported formats: PDF, XLSX, CSV, JSON (Max 5 files).
                   </p>
-                  <button className="btn-primary px-8 py-3 rounded-lg text-xs tracking-wider uppercase font-semibold">
-                    Select Files
-                  </button>
+                   <button 
+                     disabled={isProcessing}
+                     className={`btn-primary px-8 py-3 rounded-lg text-xs tracking-wider uppercase font-semibold ${isProcessing ? 'opacity-60 cursor-not-allowed' : ''}`}
+                   >
+                     {isProcessing ? 'Processing...' : 'Select Files'}
+                   </button>
                   <div className="mt-6 flex items-center gap-2 text-[10px] font-bold text-[#888899] uppercase tracking-wider">
                     <ShieldCheck className="w-4 h-4 text-[#1DB88E]" />
                     AES-256 Encrypted Tunnel
@@ -645,7 +654,7 @@ const App: React.FC = () => {
           )}
 
           {/* Processing State */}
-          {isProcessing && (
+          {isProcessing && (activeTab === 'home' || activeTab === 'analysis') && (
             <div className="mt-20 flex flex-col items-center justify-center space-y-12">
                <div className="relative">
                   <div className="absolute inset-x-[-100px] inset-y-[-100px] bg-[#3D3DC4]/5 blur-[120px] rounded-full animate-pulse"></div>
