@@ -15,7 +15,7 @@ const getApiKey = (): string => {
 const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 export const analyzeDocuments = async (base64Pdfs: string[]): Promise<ExtractedData> => {
-  const model = 'gemini-3.5-flash';
+  const model = 'gemini-2.5-flash';
   
   const fileParts = base64Pdfs.map(base64 => ({
     inlineData: { mimeType: "application/pdf", data: base64 }
@@ -204,7 +204,7 @@ export const analyzeDocuments = async (base64Pdfs: string[]): Promise<ExtractedD
 };
 
 export const chatWithDocuments = async (base64Pdfs: string[], history: { role: string, text: string }[], message: string): Promise<string> => {
-  const model = 'gemini-3.5-flash';
+  const model = 'gemini-2.5-flash';
   
   const fileParts = base64Pdfs.map(base64 => ({
     inlineData: { mimeType: "application/pdf", data: base64 }
@@ -384,7 +384,7 @@ export const checkQRAvailability = async (company: string, period: string): Prom
   }
 
   // Flash is more than sufficient for this check and has higher rate limits/lower quota impact
-  const model = 'gemini-3.5-flash';
+  const model = 'gemini-2.5-flash';
 
   const systemPrompt = `
     You are a high-precision financial intelligence agent. Your job is to verify if a specific Indian company has released its quarterly financial results/reports for a given period (e.g., Q3FY26) based ONLY on the provided web search results.
