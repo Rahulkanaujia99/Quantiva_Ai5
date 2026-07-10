@@ -28,6 +28,22 @@ const App: React.FC = () => {
   const [showQRCheck, setShowQRCheck] = useState(false);
   const [activeTab, setActiveTab] = useState<'home' | 'analysis' | 'archive' | 'qr-status' | 'qr-check' | 'settings'>('home');
   const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState<{ id: string; title: string; desc: string; time: string; type: 'info' | 'success' | 'warning' | 'error' }[]>([
+    { id: '1', title: "System Active", desc: "Quantiva's AI secure parsing engine is fully operational.", time: "10:00 AM", type: "success" }
+  ]);
+
+  const addNotification = (title: string, desc: string, type: 'info' | 'success' | 'warning' | 'error' = 'info') => {
+    setNotifications(prev => [
+      {
+        id: Math.random().toString(36).substring(2, 9),
+        title,
+        desc,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        type
+      },
+      ...prev
+    ]);
+  };
   
   // Profile settings states
   const [profileName, setProfileName] = useState<string>('rahul Kanaujia');
@@ -268,6 +284,7 @@ const App: React.FC = () => {
     setPdfFiles(validFiles);
     setIsProcessing(true);
     setExtractedData(null);
+    addNotification("Report Uploaded", `Staged ${validFiles.length} file(s) for analysis.`, "info");
 
     try {
       const base64List = await Promise.all(validFiles.map(fileToBase64));
@@ -276,20 +293,25 @@ const App: React.FC = () => {
       setExtractedData(result);
       setArchive(prev => [result, ...prev]);
       setIsProcessing(false); // Hide the loader immediately when the analysis is ready!
+      addNotification("Analysis Completed", `Successfully parsed results for ${result.headline.split(':')[0] || 'uploaded report'}.`, "success");
       
       // Save to Firestore in the background without blocking the UI
       if (currentUser) {
         addDoc(collection(db, "users", currentUser.uid, "archives"), {
           extractedData: result,
           createdAt: new Date().toISOString()
+        }).then(() => {
+          addNotification("Archive Synced", "New analysis backed up to secure cloud database.", "success");
         }).catch((fsErr) => {
           console.error("Error saving archive to Firestore:", fsErr);
+          addNotification("Sync Failed", "Could not back up to server, saved locally.", "warning");
         });
       }
     } catch (err: unknown) {
       console.error("Processing Error:", err);
       const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred while analyzing the documents.";
       setError(errorMessage);
+      addNotification("Analysis Failed", errorMessage, "error");
     } finally {
       setIsProcessing(false);
       if (e.target) {
@@ -437,6 +459,7 @@ const App: React.FC = () => {
               <button 
                 onClick={async () => {
                   try {
+                    setNotifications([]);
                     await signOut(auth);
                   } catch (e) {
                      console.error("Signout error:", e);
@@ -472,33 +495,50 @@ const App: React.FC = () => {
               <button 
                 onClick={() => setShowNotifications(!showNotifications)}
                 className={`p-2 rounded-xl border border-[#E5E5F0] hover:bg-[#F3F3FE] transition-all relative ${showNotifications ? 'bg-[#F3F3FE]' : ''}`}
-                title="Recent Changes"
+                title="Notifications"
               >
                  <Bell className="w-5 h-5 text-[#555566]" />
-                 <span className="absolute top-2 right-2 w-2 h-2 bg-[#3D3DC4] rounded-full border border-white"></span>
+                 {notifications.length > 0 && (
+                   <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-[#3D3DC4] rounded-full border-2 border-white"></span>
+                 )}
               </button>
 
               {showNotifications && (
                 <div className="absolute right-0 mt-2.5 w-80 bg-white border border-[#E5E5F0] rounded-2xl shadow-xl z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="flex items-center justify-between pb-2 border-b border-[#E5E5F0] mb-3">
-                    <h5 className="text-xs font-black uppercase tracking-widest text-[#1A1A2E]">Recent Changes</h5>
-                    <span className="text-[10px] font-bold text-[#3D3DC4] bg-[#3D3DC4]/10 px-2 py-0.5 rounded-full">Updates</span>
+                    <h5 className="text-xs font-black uppercase tracking-widest text-[#1A1A2E]">App Activity</h5>
+                    {notifications.length > 0 && (
+                      <button 
+                        onClick={() => setNotifications([])}
+                        className="text-[10px] font-bold text-[#3D3DC4] hover:text-[#252597] transition-all"
+                      >
+                        Clear All
+                      </button>
+                    )}
                   </div>
                   <div className="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-1">
-                    {[
-                      { title: "Heartbeat Loader", desc: "Replaced circular loader with a heartbeat pulse animation for report parsing.", time: "Just now" },
-                      { title: "Performance Cards", desc: "Added colored backgrounds (#EFF6FF, #F5F3FF, #ECFDF5) and hover elevations.", time: "Just now" },
-                      { title: "Source Indicators", desc: "Displayed source page numbers in the top-right corner of driver cards.", time: "Just now" },
-                      { title: "Graph Tooltips", desc: "Enhanced charts with detailed hover tooltips showing values and quarters.", time: "Just now" }
-                    ].map((item, index) => (
-                      <div key={index} className="text-left space-y-1 p-2 rounded-lg hover:bg-[#F3F3FE]/50 transition-colors">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-[#1A1A2E]">{item.title}</span>
-                          <span className="text-[9px] text-[#888899] font-semibold">{item.time}</span>
-                        </div>
-                        <p className="text-[11px] text-[#555566] leading-relaxed">{item.desc}</p>
+                    {notifications.length === 0 ? (
+                      <div className="text-center py-6 text-xs text-[#888899] font-medium">
+                        No recent updates or notifications.
                       </div>
-                    ))}
+                    ) : (
+                      notifications.map((item) => (
+                        <div key={item.id} className="text-left space-y-1 p-2 rounded-lg hover:bg-[#F3F3FE]/50 transition-colors">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-[#1A1A2E] flex items-center gap-1.5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${
+                                item.type === 'success' ? 'bg-[#1DB88E]' :
+                                item.type === 'error' ? 'bg-red-500' :
+                                item.type === 'warning' ? 'bg-amber-500' : 'bg-[#3D3DC4]'
+                              }`} />
+                              {item.title}
+                            </span>
+                            <span className="text-[9px] text-[#888899] font-semibold">{item.time}</span>
+                          </div>
+                          <p className="text-[11px] text-[#555566] leading-relaxed">{item.desc}</p>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               )}
