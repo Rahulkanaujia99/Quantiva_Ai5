@@ -298,7 +298,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
         
         {/* ================= PANEL A: THE DYNAMIC SLIDING BANNER (AQUAMARINE INTEGRATED DESIGN) ================= */}
         <div 
-          className={`w-full md:w-[41%] bg-dark-panel p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-transform duration-700 ease-in-out z-20 ${
+          className={`w-full md:w-[41%] bg-dark-panel p-8 md:p-12 flex flex-col justify-between items-center text-center relative overflow-hidden transition-transform duration-500 ease-in-out z-20 ${
             mode === 'login' ? 'md:translate-x-[143.9%]' : 'md:translate-x-0'
           }`}
         >
@@ -485,7 +485,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
         {/* ================= PANEL B: AUTHENTICATION FORM WRAPPER (LIGHT SLEEK BACKGROUNDS) ================= */}
         <div 
-          className={`w-full md:w-[59%] bg-transparent p-8 md:p-12 flex flex-col justify-center items-center transition-transform duration-700 ease-in-out z-10 ${
+          className={`w-full md:w-[59%] bg-transparent p-8 md:p-12 flex flex-col justify-center items-center transition-transform duration-500 ease-in-out z-10 ${
             mode === 'login' ? 'md:-translate-x-[69.5%]' : 'md:translate-x-0'
           }`}
         >
@@ -580,30 +580,32 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
             {/* Main authorization client control form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               
-              {/* Registration full-name input field (visible on signup only) */}
-              {mode === 'signup' && (
-                <div className="space-y-1 animate-in slide-in-from-top-1 duration-200">
-                  <span className="text-[12px] font-bold uppercase text-[#555566] tracking-wider">FULL NAME</span>
-                  <div className="relative">
-                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
-                    <input
-                      type="text"
-                      placeholder="Jane Doe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className={`w-full bg-[#F3F6FF] text-[#1A1A2E] border rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none focus:bg-white focus:ring-4 focus:ring-[#3D3DC4]/10 ${
-                        nameError ? 'border-red-500/40 focus:border-red-500/60' : 'border-[#D8E2FD] focus:border-[#3D3DC4]/50'
-                      }`}
-                    />
-                  </div>
-                  {nameError && (
-                    <p className="text-[10px] font-bold text-red-500 mt-1 flex items-center gap-0.5">
-                      <AlertCircle className="w-3 h-3" />
-                      {nameError}
-                    </p>
-                  )}
+              {/* Registration full-name input field (visible on signup only, smoothly animated) */}
+              <div className={`space-y-1 transition-all duration-300 ease-in-out overflow-hidden origin-top ${
+                mode === 'signup' 
+                  ? 'max-h-24 opacity-100 transform translate-y-0 mb-4' 
+                  : 'max-h-0 opacity-0 transform -translate-y-2 pointer-events-none'
+              }`}>
+                <span className="text-[12px] font-bold uppercase text-[#555566] tracking-wider">FULL NAME</span>
+                <div className="relative">
+                  <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
+                  <input
+                    type="text"
+                    placeholder="Jane Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className={`w-full bg-[#F3F6FF] text-[#1A1A2E] border rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none focus:bg-white focus:ring-4 focus:ring-[#3D3DC4]/10 ${
+                      nameError ? 'border-red-500/40 focus:border-red-500/60' : 'border-[#D8E2FD] focus:border-[#3D3DC4]/50'
+                    }`}
+                  />
                 </div>
-              )}
+                {nameError && (
+                  <p className="text-[10px] font-bold text-red-500 mt-1 flex items-center gap-0.5">
+                    <AlertCircle className="w-3 h-3" />
+                    {nameError}
+                  </p>
+                )}
+              </div>
 
               {/* Email credentials authentication input label node */}
               <div className="space-y-1">

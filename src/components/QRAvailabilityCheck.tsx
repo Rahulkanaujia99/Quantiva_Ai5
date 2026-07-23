@@ -57,7 +57,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ onClose }) =>
     switch (status) {
       case 'Available': return <CheckCircle2 className="w-6 h-6 text-[#1DB88E]" />;
       case 'Not Available': return <XCircle className="w-6 h-6 text-red-500" />;
-      case 'Coming Soon': return <Clock className="w-6 h-6 text-[#5B5BF5]" />;
+      case 'Not confirmed': return <Clock className="w-6 h-6 text-[#E67E22]" />;
       default: return null;
     }
   };
@@ -66,7 +66,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ onClose }) =>
     switch (status) {
       case 'Available': return 'bg-[#EEF9F6] border-[#1DB88E]/20 text-[#1DB88E]';
       case 'Not Available': return 'bg-red-50/70 border-red-200/50 text-red-600';
-      case 'Coming Soon': return 'bg-[#F3F3FE] border-[#5B5BF5]/20 text-[#5B5BF5]';
+      case 'Not confirmed': return 'bg-[#FEF3EB] border-[#E67E22]/20 text-[#E67E22]';
       default: return '';
     }
   };
@@ -213,7 +213,7 @@ const QRAvailabilityCheck: React.FC<QRAvailabilityCheckProps> = ({ onClose }) =>
                   <p className="text-[10px] font-black uppercase tracking-wider mb-2 text-[#888899]">Release Information</p>
                   <p className="text-xl font-black flex items-center gap-2 text-[#1A1A2E]">
                     <Clock className={`w-5 h-5 ${themeClasses.accent}`} />
-                    {result.expectedDate || 'Unknown Date'}
+                    {result.expectedDate || (result.status === 'Available' ? 'Released' : (result.status === 'Not confirmed' ? 'TBA' : 'Pending'))}
                   </p>
                 </div>
                 <div className="p-4 rounded-xl border border-[#E5E5F0] bg-white transition-all">

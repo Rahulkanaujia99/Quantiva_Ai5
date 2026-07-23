@@ -154,9 +154,11 @@ const QRStatus: React.FC<QRStatusProps> = () => {
       if (result) {
         newData[dataIdx] = {
           ...company,
-          status: result.status === 'Available' ? 'Available' : (result.status === 'Error' ? 'Error' : 'Not Available'),
-          publishedDate: result.expectedDate || (result.status === 'Available' ? 'Released' : 'Pending'),
-          source: result.sourceTitle || (result.status === 'Available' ? 'Official Portal' : 'Public Record'),
+          status: result.status === 'Available' ? 'Available' :
+                  result.status === 'Not confirmed' ? 'Not confirmed' :
+                  result.status === 'Error' ? 'Error' : 'Not Available',
+          publishedDate: result.expectedDate || (result.status === 'Available' ? 'Released' : (result.status === 'Not confirmed' ? 'TBA' : 'Pending')),
+          source: result.sourceTitle || (result.status === 'Available' ? 'Official Portal' : 'Official Portal'),
           downloadUrl: result.sourceUrl || company.downloadUrl,
           remarks: result.summary,
         };
@@ -200,9 +202,11 @@ const QRStatus: React.FC<QRStatusProps> = () => {
         if (result) {
           newData[i] = {
             ...newData[i],
-            status: result.status === 'Available' ? 'Available' : (result.status === 'Error' ? 'Error' : 'Not Available'),
-            publishedDate: result.expectedDate || (result.status === 'Available' ? 'Released' : 'Pending'),
-            source: result.sourceTitle || (result.status === 'Available' ? 'Official Portal' : 'Public Record'),
+            status: result.status === 'Available' ? 'Available' :
+                    result.status === 'Not confirmed' ? 'Not confirmed' :
+                    result.status === 'Error' ? 'Error' : 'Not Available',
+            publishedDate: result.expectedDate || (result.status === 'Available' ? 'Released' : (result.status === 'Not confirmed' ? 'TBA' : 'Pending')),
+            source: result.sourceTitle || (result.status === 'Available' ? 'Official Portal' : 'Official Portal'),
             downloadUrl: result.sourceUrl || company.downloadUrl,
             remarks: result.summary,
           };
@@ -492,9 +496,17 @@ const QRStatus: React.FC<QRStatusProps> = () => {
                           ? 'bg-[#F3F3FE] text-[#5B5BF5] border border-[#5B5BF5]/20'
                           : row.status === 'Error'
                           ? 'bg-red-50 text-red-600 border border-red-200'
+                          : row.status === 'Not confirmed'
+                          ? 'bg-[#FEF3EB] text-[#E67E22] border border-[#E67E22]/20'
                           : 'bg-slate-100 text-slate-500 border border-slate-200'
                       }`}>
-                        {row.status === 'Available' || row.status === 'Downloaded' ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                        {row.status === 'Available' || row.status === 'Downloaded' ? (
+                          <CheckCircle2 className="w-3 h-3" />
+                        ) : row.status === 'Not confirmed' ? (
+                          <Clock className="w-3 h-3" />
+                        ) : (
+                          <XCircle className="w-3 h-3" />
+                        )}
                         {row.status}
                       </div>
                     </td>

@@ -52,7 +52,7 @@ export enum Category {
 }
 
 export interface QRAvailabilityStatus {
-  status: 'Available' | 'Not Available' | 'Coming Soon' | 'Error';
+  status: 'Available' | 'Not Available' | 'Not confirmed' | 'Error';
   expectedDate?: string;
   sourceUrl?: string;
   sourceTitle?: string;
@@ -62,7 +62,7 @@ export interface QRAvailabilityStatus {
 export interface QRCompanyStatus {
   companyName: string;
   quarter: string;
-  status: 'Available' | 'Not Available' | 'Downloaded' | 'Error';
+  status: 'Available' | 'Not Available' | 'Not confirmed' | 'Downloaded' | 'Error';
   publishedDate: string;
   source: string;
   downloadUrl?: string;

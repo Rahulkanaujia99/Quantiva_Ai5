@@ -204,27 +204,34 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
           {items.map((item, i) => (
             <div 
               key={i} 
-              className="p-4 rounded-xl border bg-white group hover:border-[#5B5BF5] transition-all"
+              className="hover-drawer-card cursor-pointer"
               style={{ borderColor: theme.borderColor || '#E5E5F0' }}
             >
-              <div className="flex justify-between items-start mb-2 gap-2">
-                <h5 className="text-sm font-bold leading-tight text-[#1A1A2E]">{item.title}</h5>
+              {/* Header/Title Bar always visible */}
+              <div className="p-4 flex justify-between items-center bg-slate-50/20 hover:bg-[#F3F3FE]/10 transition-colors gap-3">
+                <h5 className="text-[13px] font-bold leading-snug text-[#1A1A2E]">{item.title}</h5>
                 {item.value && (
-                  <span className={`shrink-0 badge-pill ${theme.badgeBg} ${theme.badgeColor}`}>
+                  <span className={`shrink-0 badge-pill ${theme.badgeBg} ${theme.badgeColor} text-[10px]`}>
                      {item.value}
                   </span>
                 )}
               </div>
-              <p className="text-[13px] font-medium leading-relaxed mb-3 text-[#555566]">
-                {item.details}
-              </p>
-              {item.impact && (
-                <div className="pt-3 border-t border-[#E5E5F0]">
-                  <p className="text-[10px] font-semibold text-[#1DB88E] uppercase tracking-wider leading-normal">
-                    # IMPACT: {item.impact}
+              
+              {/* Details box visible only on hover */}
+              <div className="hover-drawer-content">
+                <div className="p-4 border-t border-[#E5E5F0] bg-white space-y-3">
+                  <p className="text-[13px] font-medium leading-relaxed text-[#555566]">
+                    {item.details}
                   </p>
+                  {item.impact && (
+                    <div className="pt-3 border-t border-[#E5E5F0]">
+                      <p className="text-[10px] font-semibold text-[#1DB88E] uppercase tracking-wider leading-normal">
+                        # IMPACT: {item.impact}
+                      </p>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           ))}
           {items.length === 0 && (

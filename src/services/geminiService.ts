@@ -289,90 +289,225 @@ const searchTavily = async (query: string): Promise<string> => {
   }
 };
 
+const COMPANY_DOMAINS: Record<string, string> = {
+  'ongc': 'ongcindia.com',
+  'oil india': 'oil-india.com',
+  'iocl': 'iocl.com',
+  'indian oil': 'iocl.com',
+  'bpcl': 'bharatpetroleum.in',
+  'hpcl': 'hindustanpetroleum.com',
+  'gail': 'gailonline.com',
+  'igl': 'iglonline.net',
+  'ril': 'ril.com',
+  'reliance industries': 'ril.com',
+  'mgl': 'mahanagargas.com',
+  'mahanagar gas': 'mahanagargas.com',
+  'petronet': 'petronetlng.in',
+  'gujarat gas': 'gujaratgas.com',
+  'gspl': 'gspcgroup.com',
+  'cesc': 'cesc.co.in',
+  'tata power': 'tatapower.com',
+  'adani power': 'adanipower.com',
+  'reliance power': 'reliancepower.co.in',
+  'torrent power': 'torrentpower.com',
+  'ntpc': 'ntpc.co.in',
+  'pgcil': 'powergrid.in',
+  'power grid': 'powergrid.in',
+  'jsw energy': 'jswenergy.in'
+};
+
 const qrAvailabilityCache = new Map<string, QRAvailabilityStatus>();
 
 const getSimulatedQRAvailability = (company: string, period: string): QRAvailabilityStatus => {
   const c = company.toLowerCase();
-  const p = period.toUpperCase();
+  const normPeriod = period.toUpperCase().replace(/\s+/g, "");
+  const isQ1FY27 = normPeriod.includes("Q1FY27") || (normPeriod.includes("Q1") && normPeriod.includes("27"));
   
   if (c.includes('ongc')) {
     return {
-      status: "Available",
-      expectedDate: "14 Feb 2026",
+      status: isQ1FY27 ? "Not Available" : "Available",
+      expectedDate: isQ1FY27 ? "August 2026" : "14 Feb 2026",
       sourceUrl: "https://ongcindia.com/web/eng/about-ongc/performance/financial/results",
-      sourceTitle: "BSE Corporate Registry",
-      summary: `ONGC ${period} financial statements and report have been uploaded. Net profit rises 8.4% y-o-y to ₹10,272 cr.`
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27 
+        ? "ONGC's financial results for Q1FY27 are not yet available and are expected to be released around August 2026." 
+        : `ONGC ${period} financial statements and report have been uploaded. Net profit rises 8.4% y-o-y to ₹10,272 cr.`
     };
   }
   
   if (c.includes('tata power')) {
     return {
-      status: "Coming Soon",
-      expectedDate: "18 May 2026",
-      sourceUrl: "https://www.tatapower.com/investor-relations/financials.aspx",
+      status: "Not confirmed",
+      expectedDate: "TBA",
+      sourceUrl: "https://www.tatapower.com/investor-resource-center/quarterly-reports-tab",
       sourceTitle: "Tata Power Investor Desk",
-      summary: `Tata Power ${period} earnings release is scheduled for mid-May 2026.`
+      summary: `Tata Power ${period} earnings release status is not confirmed on the official portal.`
     };
   }
   
   if (c.includes('adani power')) {
     return {
-      status: "Available",
-      expectedDate: "28 Jan 2026",
+      status: isQ1FY27 ? "Not Available" : "Available",
+      expectedDate: isQ1FY27 ? "August 2026" : "28 Jan 2026",
       sourceUrl: "https://www.adanipower.com/investors/investor-downloads",
-      sourceTitle: "NSE Corporate Filing",
-      summary: `Adani Power ${period} results published. Power sales grew 12% y-o-y.`
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27
+        ? "Adani Power's financial results for Q1FY27 are not yet available on the official website."
+        : `Adani Power ${period} results published. Power sales grew 12% y-o-y.`
     };
   }
 
   if (c.includes('oil india')) {
+    if (isQ1FY27) {
+      return {
+        status: "Not confirmed",
+        expectedDate: "TBA",
+        sourceUrl: "https://www.oil-india.com/financial-results/34",
+        sourceTitle: "Official Investor Relations",
+        summary: "No official announcement or Board Meeting details for Oil India's Q1FY27 results are confirmed on the official website."
+      };
+    }
     return {
       status: "Available",
       expectedDate: "11 Feb 2026",
       sourceUrl: "https://www.oil-india.com/financials",
-      sourceTitle: "Company Press Release",
+      sourceTitle: "Official Investor Relations",
       summary: `Oil India ${period} results out. Net profit stands at ₹1,585 cr.`
     };
   }
 
   if (c.includes('iocl') || c.includes('indian oil')) {
     return {
-      status: "Available",
-      expectedDate: "30 Jan 2026",
-      sourceUrl: "https://iocl.com/financial-results",
-      sourceTitle: "BSE Filing",
-      summary: `IOCL ${period} standalone net profit recorded at ₹5,148 cr.`
+      status: isQ1FY27 ? "Not Available" : "Available",
+      expectedDate: isQ1FY27 ? "31 Jul 2026" : "30 Jan 2026",
+      sourceUrl: "http://iocl.com/pages/FinancialResults",
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27
+        ? "IOCL's Q1FY27 results are scheduled to be considered at the Board of Directors meeting on July 31, 2026."
+        : `IOCL ${period} standalone net profit recorded at ₹5,148 cr.`
     };
   }
 
   if (c.includes('bpcl')) {
     return {
-      status: "Available",
-      expectedDate: "29 Jan 2026",
+      status: isQ1FY27 ? "Not Available" : "Available",
+      expectedDate: isQ1FY27 ? "August 2026" : "29 Jan 2026",
       sourceUrl: "https://www.bharatpetroleum.in/investors",
-      sourceTitle: "BSE Filing",
-      summary: `BPCL Q3 standalone net profit reported at ₹3,397 cr with solid marketing margins.`
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27
+        ? "BPCL's financial results for Q1FY27 are not yet available on the official website and are expected around August 2026."
+        : `BPCL Q3 standalone net profit reported at ₹3,397 cr with solid marketing margins.`
     };
+  }
+
+  if (c.includes('hpcl')) {
+    return {
+      status: isQ1FY27 ? "Available" : "Available",
+      expectedDate: isQ1FY27 ? "22 Jul 2026" : "22 Jan 2026",
+      sourceUrl: "https://hindustanpetroleum.com/financial",
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27
+        ? "HPCL Q1FY27 financial statements and report have been uploaded on the official portal."
+        : `HPCL ${period} results published on the official portal.`
+    };
+  }
+
+  if (c.includes('gail')) {
+    return {
+      status: isQ1FY27 ? "Not Available" : "Available",
+      expectedDate: isQ1FY27 ? "31 Jul 2026" : "Released",
+      sourceUrl: "https://www.gailonline.com/IZFinancialResult.html",
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27
+        ? "GAIL's board of directors is scheduled to meet on July 31, 2026, to review and approve the results for Q1FY27."
+        : `GAIL ${period} reports are available on the official website.`
+    };
+  }
+
+  if (c.includes('igl')) {
+    return {
+      status: isQ1FY27 ? "Not Available" : "Available",
+      expectedDate: isQ1FY27 ? "August 2026" : "Released",
+      sourceUrl: "https://www.iglonline.net/financial",
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27
+        ? "Quarterly financial results for IGL for Q1FY27 are not yet available and are expected around August 2026."
+        : `IGL ${period} reports are available.`
+    };
+  }
+
+  if (c.includes('ril') || c.includes('reliance')) {
+    return {
+      status: isQ1FY27 ? "Not Available" : "Available",
+      expectedDate: isQ1FY27 ? "July 2026" : "Released",
+      sourceUrl: "https://www.ril.com/investors/financial-reporting",
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27
+        ? "RIL Q1FY27 reports are pending on the official website. Expected release date is late this month."
+        : `RIL ${period} reports are available.`
+    };
+  }
+
+  if (c.includes('mgl') || c.includes('mahanagar')) {
+    return {
+      status: "Not confirmed",
+      expectedDate: "TBA",
+      sourceUrl: "https://www.mahanagargas.com/MGL-corporate/investors/financial-results/quarterly-result",
+      sourceTitle: "Official Investor Relations",
+      summary: `MGL has not confirmed its Q1FY27 release date on the official website.`
+    };
+  }
+
+  if (c.includes('petronet')) {
+    return {
+      status: isQ1FY27 ? "Not Available" : "Available",
+      expectedDate: isQ1FY27 ? "August 2026" : "Released",
+      sourceUrl: "https://www.petronetlng.in/financials-pll",
+      sourceTitle: "Official Investor Relations",
+      summary: isQ1FY27
+        ? "The quarterly financial results for Petronet for Q1FY27 are not yet available on the official website."
+        : `Petronet ${period} reports are available.`
+    };
+  }
+
+  if (c.includes('gujarat gas')) {
+    if (isQ1FY27) {
+      return {
+        status: "Not Available",
+        expectedDate: "11 Aug 2026",
+        sourceUrl: "https://www.gujaratgas.com/investors/investor-presentation/#",
+        sourceTitle: "Official Investor Relations",
+        summary: "Gujarat Gas Q1FY27 financial statements and report will be issued on August 11, 2026."
+      };
+    }
   }
 
   // Deterministic fallback based on names
   const charSum = c.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const isAvailable = charSum % 3 !== 0;
+  const isAvailable = charSum % 3 === 0;
   if (isAvailable) {
     return {
       status: "Available",
       expectedDate: "Released",
-      sourceUrl: "https://www.bseindia.com/corporates",
-      sourceTitle: "BSE Corporate Registry",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
       summary: `${company} ${period} financial statements and report have been uploaded.`
+    };
+  } else if (charSum % 3 === 1) {
+    return {
+      status: "Not Available",
+      expectedDate: "Pending",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
+      summary: `${company} ${period} reports are not yet available on the official website.`
     };
   } else {
     return {
-      status: "Coming Soon",
-      expectedDate: "Expected in 15 days",
-      sourceUrl: "https://www.bseindia.com/corporates",
-      sourceTitle: "Company Investor Relations",
-      summary: `${company} ${period} reports are pending. Expected release date is late this month.`
+      status: "Not confirmed",
+      expectedDate: "TBA",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
+      summary: `${company} ${period} reports release status is not confirmed on the official website.`
     };
   }
 };
@@ -387,53 +522,37 @@ export const checkQRAvailability = async (company: string, period: string): Prom
   const model = 'gemini-3.5-flash';
 
   const systemPrompt = `
-    You are a high-precision financial intelligence agent. Your job is to verify if a specific Indian company has released its quarterly financial results/reports for a given period (e.g., Q3FY26) based ONLY on the provided web search results.
+    You are a high-precision financial intelligence agent. Your job is to verify if a specific Indian company has released its quarterly financial results/reports for a given period (e.g., Q1FY27 or Q3FY26) based ONLY on the provided web search results.
 
-    WORKFLOW:
-    1. Analyze the provided web search results for the target company and period.
-    2. COMPANY SPECIFIC RECENT SOURCES AND LOGIC:
-       - ONGC: https://ongcindia.com/web/eng/about-ongc/performance/financial/results (Look under yearly sections like FY-2025-26)
-       - Oil India: https://www.oil-india.com/financial-results/34 (Look under 2025-2026, e.g., 'OIL Financial Results for Q1 FY 2025-26')
-       - IOCL: http://iocl.com/pages/FinancialResults (Look for 'Unaudited Financial Results for Q1 (2025-26)')
-       - BPCL: https://www.bharatpetroleum.in/bharat-petroleum-for/investors/disclosure-under-regulation-46-and-62-of-sebi-lodr-regulations/financial-performance/financial-results
-       - HPCL: https://hindustanpetroleum.com/financial
-       - GAIL: https://www.gailonline.com/IZFinancialResult.html
-       - IGL: https://www.iglonline.net/financial
-       - RIL: https://www.ril.com/investors/financial-reporting
-       - MGL: https://www.mahanagargas.com/MGL-corporate/investors/financial-results/quarterly-result
-       - Petronet: https://www.petronetlng.in/financials-pll
-       - Gujarat Gas: https://www.gujaratgas.com/investors/investor-presentation/#
-       - GSPL: https://gspcgroup.com/GSPL/quarterly-results
-       - CESC: https://www.cesc.co.in/quarterlyResults
-       - Tata Power: https://www.tatapower.com/investor-resource-center/quarterly-reports-tab
-       - Adani Power: https://www.adanipower.com/investors/investor-downloads
-       - Reliance Power: https://www.reliancepower.co.in/web/reliance-power/financial-results
-       - Torrent Power: https://www.torrentpower.com/index.php/investors/financial?fy=2025-26
-       - NTPC: https://ntpc.co.in/index.php/investors/financial-performance/financial-results
-       - PGCIL: https://www.powergrid.in/en/annual-quarterly-results
-       - JSW Energy: https://www.jswenergy.in/investors/energy/jsw-energy-fy-2025-26-financials-results
-    3. FALLBACK: If not on company website, check BSE Corporate Announcements for the company's ticker.
-       - ONGC (500312), Oil India (533106), IOC (530965), BPCL (500547), HPCL (500104), GAIL (532155), IGL (532514), RIL (500325), MGL (539957), Petronet (532522), Gujarat Gas (539336), GSPL (532702), CESC (500084), Tata Power (500400), Adani Power (533096), Reliance Power (532939), Torrent Power (532779), NTPC (532555), Power Grid (532898), JSW Energy (533148).
-       - Search keywords: "Quarterly Results", "Unaudited Financial Results", "Financial Statements", "Investor Presentations".
-    4. If found, identify the DIRECT PDF LINK or official news release page. If not found, check for an expected release date.
+    STRICT DIRECTIVES:
+    1. EXCLUSIVELY USE THE OFFICIAL COMPANY WEBSITE: You must strictly verify report availability on the company's official website or official investor relations page.
+    2. ABSOLUTELY NO SECONDARY SOURCES: Do not use or consider information from stock exchange platforms (like BSE or NSE), news websites (like Moneycontrol, Trendlyne, Economic Times), or other third-party portals to determine report availability. If the search results contain secondary sources, IGNORE them.
+    3. STRICT PERIOD MATCHING: You must verify that the status, expected release date, and remarks correspond EXACTLY to the target period (e.g., ${period}). If the search results contain reports or dates from other quarters (like Q3FY26, Q4FY26, or any other period), DO NOT use them.
+    4. STATUS CATEGORIZATION RULES:
+       - "Available": Set to "Available" only if the search results clearly show the quarterly financial statements or report for the searched period (${period}) is published and available on the official company website.
+       - "Not Available": Set to "Not Available" if the search results show that the report for the searched period (${period}) is not yet published on the official website, or if there is a specified future release date (e.g. Gujarat Gas report releasing on August 11, 2026).
+       - "Not confirmed": Set to "Not confirmed" if the provided search results from the official company website are inconclusive, missing, or do not clearly show whether the report for the searched period (${period}) has been released or not.
+    5. EXPECTED DATE AND TBA DEFAULT:
+       - If status is "Not confirmed", you must set expectedDate to "TBA".
+       - If the exact expected date is not confirmed or is unknown for the searched period (${period}), set expectedDate to "TBA". Do not report dates from prior quarters.
 
     Return ONLY a JSON object with this structure:
     {
-      "status": "Available" | "Not Available" | "Coming Soon" | "Error",
-      "expectedDate": "DD MMM YYYY or 'Released'",
-      "sourceUrl": "The direct URL to the PDF filing or official announcement page found in the search results",
-      "sourceTitle": "e.g., BSE Filing, NSE Announcement, Company Press Release",
-      "summary": "One sentence summary of the status and any dividend declared."
+      "status": "Available" | "Not Available" | "Not confirmed",
+      "expectedDate": "DD MMM YYYY or 'Released' or 'TBA'",
+      "sourceUrl": "The direct URL to the official investor relations page or report PDF on the company's website",
+      "sourceTitle": "e.g., Company Investor Relations Page, Official Portal",
+      "summary": "One sentence summary of the status for the searched period."
     }
   `;
 
   const responseSchema = {
     type: Type.OBJECT,
     properties: {
-      status: { type: Type.STRING, enum: ["Available", "Not Available", "Coming Soon", "Error"] },
+      status: { type: Type.STRING, enum: ["Available", "Not Available", "Not confirmed"] },
       expectedDate: { type: Type.STRING, description: "Expected release date if not yet available, or actual release date if available." },
-      sourceUrl: { type: Type.STRING, description: "The most relevant URL found (e.g., BSE/NSE announcement)." },
-      sourceTitle: { type: Type.STRING, description: "Title of the source." },
+      sourceUrl: { type: Type.STRING, description: "The direct URL to the report PDF or the official investor relations page on the company website." },
+      sourceTitle: { type: Type.STRING, description: "Title of the source (e.g., Official Investor Relations Page)." },
       summary: { type: Type.STRING, description: "A brief summary of the finding." }
     },
     required: ["status", "summary"]
@@ -441,7 +560,22 @@ export const checkQRAvailability = async (company: string, period: string): Prom
 
   try {
     // 1. Fetch search results from Tavily first
-    const searchQuery = `Check quarterly report availability for ${company} for the period ${period} BSE announcements investor relations`;
+    const normalizedCompany = company.toLowerCase();
+    let domain = "";
+    for (const [key, value] of Object.entries(COMPANY_DOMAINS)) {
+      if (normalizedCompany.includes(key) || key.includes(normalizedCompany)) {
+        domain = value;
+        break;
+      }
+    }
+
+    let searchQuery = "";
+    if (domain) {
+      searchQuery = `site:${domain} quarterly report ${period} results`;
+    } else {
+      searchQuery = `"${company}" investor relations quarterly results ${period} -site:bseindia.com -site:nseindia.com -site:moneycontrol.com -site:trendlyne.com`;
+    }
+
     let searchResults = "";
     try {
       searchResults = await searchTavily(searchQuery);
