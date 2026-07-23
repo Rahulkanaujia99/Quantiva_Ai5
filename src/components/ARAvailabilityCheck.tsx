@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Search, Calendar, ExternalLink, CheckCircle2, XCircle, 
   Clock, ArrowRight, Building2, ChevronDown, ListFilter,
-  BarChart3, Loader2, Edit3, X
+  BarChart3, Loader2, Edit3, X, Globe
 } from 'lucide-react';
 import { OIL_GAS_COMPANIES, POWER_COMPANIES } from '../constants';
 import { checkARAvailability } from '../services/geminiService';
@@ -190,21 +190,32 @@ const ARAvailabilityCheck: React.FC<ARAvailabilityCheckProps> = ({ onClose }) =>
                     <h3 className="text-2xl font-black tracking-tight text-[#1A1A2E]">{searchedCompany}</h3>
                   </div>
                 </div>
-                {result.sourceUrl && (
-                  <div className="flex flex-col items-end">
-                    <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Source Registry</span>
-                    <a 
-                      href={result.sourceUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className={`p-2.5 rounded-xl bg-white shadow-md border border-[#E5E5F0] hover:scale-110 transition-all flex items-center gap-2 ${themeClasses.accent}`}
-                      title={result.sourceTitle || 'View Source'}
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                      <span className="text-xs font-black uppercase tracking-tight">Access</span>
-                    </a>
-                  </div>
-                )}
+                {(() => {
+                  const displayUrl = result.sourceUrl || '';
+                  const displayTitle = result.sourceTitle || 'Official Website';
+                  return (
+                    <div className="flex flex-col items-end">
+                      <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Source Registry</span>
+                      {displayUrl ? (
+                        <a 
+                          href={displayUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className={`p-2.5 rounded-xl bg-white shadow-md border border-[#E5E5F0] hover:scale-110 transition-all flex items-center gap-2 ${themeClasses.accent}`}
+                          title={displayTitle}
+                        >
+                          <ExternalLink className="w-5 h-5" />
+                          <span className="text-xs font-black uppercase tracking-tight">Access</span>
+                        </a>
+                      ) : (
+                        <span className="p-2.5 rounded-xl bg-white shadow-md border border-[#E5E5F0] flex items-center gap-2 text-[#888899] text-xs font-bold">
+                          <Globe className="w-5 h-5" />
+                          {displayTitle}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">

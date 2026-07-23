@@ -1,21 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
-  Building2, Search, Filter, Download, FileSpreadsheet, 
+  Building2, Search, Download, Plus, X, Trash2,
   ExternalLink, CheckCircle2, XCircle, Clock, RotateCcw,
-  ArrowUpDown, ChevronDown, ListFilter, Globe, BookOpen,
+  ArrowUpDown, ChevronDown,
   Zap, AlertCircle, BarChart3
 } from 'lucide-react';
-import { OIL_GAS_COMPANIES, POWER_COMPANIES } from '../constants';
 import { QRCompanyStatus } from '../types';
 import { checkARAvailability } from '../services/geminiService';
 
 interface ARStatusProps {}
 
-const YEARS = ["FY24", "FY25", "FY26", "FY27"];
+const YEARS = ["FY23", "FY24", "FY25", "FY26", "FY27"];
 
 const ARStatus: React.FC<ARStatusProps> = () => {
-  const [category, setCategory] = useState<'Oil & Gas' | 'Power' | 'Other'>('Oil & Gas');
-  const [otherCompanyNameInput, setOtherCompanyNameInput] = useState('');
+  const [companyInput, setCompanyInput] = useState('');
   const [year, setYear] = useState('FY26');
   const [searchTerm, setSearchTerm] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -23,27 +21,36 @@ const ARStatus: React.FC<ARStatusProps> = () => {
   const [sortConfig, setSortConfig] = useState<{ key: keyof QRCompanyStatus, direction: 'asc' | 'desc' } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize with mapping
-  useEffect(() => {
-    if (category === 'Other') {
-      setData([]);
+  const handleAddCompany = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!companyInput.trim()) return;
+
+    // Prevent duplicates
+    const exists = data.some(d => d.companyName.toLowerCase() === companyInput.trim().toLowerCase());
+    if (exists) {
+      setError(`"${companyInput.trim()}" is already in the monitor list.`);
+      setTimeout(() => setError(null), 3000);
       return;
     }
 
-    const companies = category === 'Oil & Gas' ? OIL_GAS_COMPANIES : POWER_COMPANIES;
-    const initialData: QRCompanyStatus[] = companies.map(c => ({
-      companyName: c.name,
-      quarter: year, // use quarter field to store year for compatibility
+    const newCompany: QRCompanyStatus = {
+      companyName: companyInput.trim(),
+      quarter: year,
       status: 'Not Available',
-      publishedDate: 'Checking...',
+      publishedDate: 'Pending scan',
       source: 'Awaited',
-      bseLink: c.bseLink,
-      remarks: 'Sync required',
-      category: category,
-      downloadUrl: c.website || c.bseLink
-    }));
-    setData(initialData);
-  }, [category, year]);
+      remarks: 'Click "Run Scan" to check availability',
+      category: 'Other',
+      downloadUrl: ''
+    };
+
+    setData(prev => [...prev, newCompany]);
+    setCompanyInput('');
+  };
+
+  const handleRemoveCompany = (companyName: string) => {
+    setData(prev => prev.filter(d => d.companyName !== companyName));
+  };
 
   const handleDownload = async (row: QRCompanyStatus) => {
     if (!row.downloadUrl) return;
@@ -122,7 +129,7 @@ const ARStatus: React.FC<ARStatusProps> = () => {
                   result.status === 'Not confirmed' ? 'Not confirmed' :
                   result.status === 'Error' ? 'Error' : 'Not Available',
           publishedDate: result.expectedDate || (result.status === 'Available' ? 'Released' : (result.status === 'Not confirmed' ? 'TBA' : 'Pending')),
-          source: result.sourceTitle || (result.status === 'Available' ? 'Official Portal' : 'Official Portal'),
+          source: result.sourceTitle || 'Official Portal',
           downloadUrl: result.sourceUrl || company.downloadUrl,
           remarks: result.summary,
         };
@@ -135,11 +142,11 @@ const ARStatus: React.FC<ARStatusProps> = () => {
   };
 
   const handleDeepScan = async () => {
+    if (data.length === 0) return;
     setIsRefreshing(true);
     setError(null);
     const newData = [...data];
 
-    // Set all to checking state
     for (let i = 0; i < newData.length; i++) {
       newData[i] = { ...newData[i], remarks: 'Scan queued...', publishedDate: '...' };
     }
@@ -176,7 +183,7 @@ const ARStatus: React.FC<ARStatusProps> = () => {
                     result.status === 'Not confirmed' ? 'Not confirmed' :
                     result.status === 'Error' ? 'Error' : 'Not Available',
             publishedDate: result.expectedDate || (result.status === 'Available' ? 'Released' : (result.status === 'Not confirmed' ? 'TBA' : 'Pending')),
-            source: result.sourceTitle || (result.status === 'Available' ? 'Official Portal' : 'Official Portal'),
+            source: result.sourceTitle || 'Official Portal',
             downloadUrl: result.sourceUrl || company.downloadUrl,
             remarks: result.summary,
           };
@@ -192,29 +199,9 @@ const ARStatus: React.FC<ARStatusProps> = () => {
         setData([...newData]);
       }
 
-      // Add a slight delay between requests to help respect rate limits
       await new Promise(resolve => setTimeout(resolve, 3000));
     }
     setIsRefreshing(false);
-  };
-
-  const handleAddCustomCompany = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!otherCompanyNameInput.trim()) return;
-
-    const newCompany: QRCompanyStatus = {
-      companyName: otherCompanyNameInput.trim(),
-      quarter: year,
-      status: 'Not Available',
-      publishedDate: 'Checking...',
-      source: 'Awaited',
-      remarks: 'Custom addition',
-      category: 'Other',
-      downloadUrl: ''
-    };
-
-    setData(prev => [...prev, newCompany]);
-    setOtherCompanyNameInput('');
   };
 
   const handleSort = (key: keyof QRCompanyStatus) => {
@@ -296,7 +283,7 @@ const ARStatus: React.FC<ARStatusProps> = () => {
           </div>
           <h2 className="text-4xl font-extrabold text-[#1A1A2E] tracking-tight">Annual Report Status Monitor</h2>
           <p className="text-[#555566] text-sm font-semibold max-w-2xl">
-            Real-time checking and retrieval of official corporate annual reports directly from investor relations portals.
+            Add companies to monitor and verify annual report availability directly from official investor relations portals.
           </p>
         </div>
 
@@ -326,38 +313,34 @@ const ARStatus: React.FC<ARStatusProps> = () => {
         </div>
       )}
 
-      {/* Control Filters Board */}
-      <div className="p-6 bg-white border border-[#E5E5F0] rounded-3xl flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-          <button 
-            onClick={() => setCategory('Oil & Gas')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${category === 'Oil & Gas' ? 'bg-[#3D3DC4] text-white border-[#3D3DC4] shadow-md shadow-blue-500/10' : 'bg-transparent text-[#555566] border-[#E5E5F0] hover:bg-[#F3F3FE] hover:text-[#1A1A2E]'}`}
-          >
-            Oil & Gas Sector
-          </button>
-          <button 
-            onClick={() => setCategory('Power')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${category === 'Power' ? 'bg-[#3D3DC4] text-white border-[#3D3DC4] shadow-md shadow-blue-500/10' : 'bg-transparent text-[#555566] border-[#E5E5F0] hover:bg-[#F3F3FE] hover:text-[#1A1A2E]'}`}
-          >
-            Power Sector
-          </button>
-          <button 
-            onClick={() => setCategory('Other')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${category === 'Other' ? 'bg-[#3D3DC4] text-white border-[#3D3DC4] shadow-md shadow-blue-500/10' : 'bg-transparent text-[#555566] border-[#E5E5F0] hover:bg-[#F3F3FE] hover:text-[#1A1A2E]'}`}
-          >
-            Custom Registry
-          </button>
-        </div>
+      {/* Search Company + Add + Financial Period */}
+      <div className="p-6 bg-white border border-[#E5E5F0] rounded-3xl shadow-sm space-y-4">
+        <form onSubmit={handleAddCompany} className="flex flex-col sm:flex-row gap-4 items-end">
+          <div className="space-y-2 flex-1 w-full">
+            <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider flex items-center gap-2">
+              <Building2 className="w-3.5 h-3.5" />
+              Search & Add Company
+            </label>
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
+              <input 
+                type="text"
+                placeholder="e.g., ONGC, Tata Power, Reliance Industries..."
+                value={companyInput}
+                onChange={(e) => setCompanyInput(e.target.value)}
+                className="w-full bg-[#FFFFFF] border border-[#E5E5F0] rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] text-[#1A1A2E]"
+              />
+            </div>
+          </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-          {/* Target Financial Year Selector */}
-          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
-            <span className="text-xs font-bold text-[#888899] uppercase tracking-wider shrink-0">Fiscal Year:</span>
-            <div className="relative w-full sm:w-36">
+          {/* Financial Period Selector */}
+          <div className="space-y-2 w-full sm:w-40 shrink-0">
+            <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider">Financial Period</label>
+            <div className="relative">
               <select 
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
-                className="w-full bg-[#FFFFFF] border border-[#E5E5F0] rounded-xl py-2.5 pl-4 pr-10 text-xs font-bold text-[#1A1A2E] appearance-none outline-none focus:border-[#3D3DC4] focus:ring-4 focus:ring-[#3D3DC4]/10 transition-all cursor-pointer"
+                className="w-full bg-[#FFFFFF] border border-[#E5E5F0] rounded-xl py-3 pl-4 pr-10 text-xs font-bold text-[#1A1A2E] appearance-none outline-none focus:border-[#3D3DC4] focus:ring-4 focus:ring-[#3D3DC4]/10 transition-all cursor-pointer"
               >
                 {YEARS.map(y => (
                   <option key={y} value={y}>{y}</option>
@@ -367,134 +350,158 @@ const ARStatus: React.FC<ARStatusProps> = () => {
             </div>
           </div>
 
-          <div className="relative w-full sm:w-64">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
+          <button 
+            type="submit"
+            disabled={!companyInput.trim()}
+            className="btn-primary w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider shrink-0 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Plus className="w-4 h-4" />
+            Add
+          </button>
+        </form>
+
+        {/* Company Tags */}
+        {data.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-[#E5E5F0]">
+            <span className="text-[10px] font-bold text-[#888899] uppercase tracking-wider self-center mr-1">Monitoring:</span>
+            {data.map((item) => (
+              <span 
+                key={item.companyName}
+                className="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-lg bg-[#F3F3FE] text-[#3D3DC4] text-xs font-bold border border-[#3D3DC4]/10 group"
+              >
+                {item.companyName}
+                <button 
+                  onClick={() => handleRemoveCompany(item.companyName)}
+                  className="p-0.5 rounded hover:bg-[#3D3DC4]/10 text-[#888899] hover:text-red-500 transition-all"
+                  title="Remove"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Search filter for existing table */}
+        {data.length > 3 && (
+          <div className="relative w-full sm:w-64 pt-2">
+            <Search className="absolute left-3.5 top-1/2 translate-y-[-25%] w-4 h-4 text-[#888899]" />
             <input 
               type="text"
-              placeholder="Search companies..."
+              placeholder="Filter monitored companies..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-[#FFFFFF] border border-[#E5E5F0] rounded-xl py-2 pl-10 pr-4 text-xs font-semibold focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] transition-all outline-none text-[#1A1A2E]"
             />
           </div>
-        </div>
+        )}
       </div>
 
-      {category === 'Other' && (
-        <form onSubmit={handleAddCustomCompany} className="p-6 bg-white border border-[#E5E5F0] rounded-3xl flex flex-col sm:flex-row gap-4 items-end shadow-sm">
-          <div className="space-y-2 flex-1 w-full">
-            <label className="text-[11px] font-bold uppercase text-[#555566] tracking-wider">Add Custom Registry Company</label>
-            <div className="relative">
-              <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888899]" />
-              <input 
-                type="text"
-                placeholder="e.g., Bharat Heavy Electricals Limited"
-                value={otherCompanyNameInput}
-                onChange={(e) => setOtherCompanyNameInput(e.target.value)}
-                className="w-full bg-[#FFFFFF] border border-[#E5E5F0] rounded-xl py-3 pl-11 pr-4 text-xs font-bold transition-all outline-none focus:ring-4 focus:ring-[#3D3DC4]/10 focus:border-[#3D3DC4] text-[#1A1A2E]"
-              />
-            </div>
+      {/* Empty State */}
+      {data.length === 0 && (
+        <div className="p-16 rounded-[2rem] border-2 border-dashed border-[#E5E5F0] bg-white flex flex-col items-center justify-center text-center space-y-4">
+          <div className="p-5 rounded-full bg-[#F3F3FE] border border-[#E5E5F0]">
+            <Building2 className="w-10 h-10 text-[#888899]" />
           </div>
-          <button 
-            type="submit"
-            className="btn-primary w-full sm:w-auto px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider shrink-0"
-          >
-            Add to Monitor
-          </button>
-        </form>
+          <h3 className="text-xl font-bold text-[#1A1A2E]">No Companies Added</h3>
+          <p className="text-[#555566] font-medium max-w-sm text-sm">
+            Use the search box above to add companies you want to monitor for annual report availability.
+          </p>
+        </div>
       )}
 
       {/* Main Companies Registry Table */}
-      <div className="bg-white border border-[#E5E5F0] rounded-3xl overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-[#E5E5F0] bg-slate-50/50 text-[10px] font-bold text-[#888899] uppercase tracking-wider">
-                <th className="py-4 px-6 select-none cursor-pointer hover:bg-slate-50" onClick={() => handleSort('companyName')}>
-                  <div className="flex items-center gap-1">
-                    Company Name
-                    <ArrowUpDown className="w-3 h-3" />
-                  </div>
-                </th>
-                <th className="py-4 px-6 select-none cursor-pointer hover:bg-slate-50" onClick={() => handleSort('quarter')}>
-                  <div className="flex items-center gap-1">
-                    Fiscal Year
-                    <ArrowUpDown className="w-3 h-3" />
-                  </div>
-                </th>
-                <th className="py-4 px-6 select-none cursor-pointer hover:bg-slate-50" onClick={() => handleSort('status')}>
-                  <div className="flex items-center gap-1">
-                    Status
-                    <ArrowUpDown className="w-3 h-3" />
-                  </div>
-                </th>
-                <th className="py-4 px-6 select-none cursor-pointer hover:bg-slate-50" onClick={() => handleSort('publishedDate')}>
-                  <div className="flex items-center gap-1">
-                    Published / Expected
-                    <ArrowUpDown className="w-3 h-3" />
-                  </div>
-                </th>
-                <th className="py-4 px-6">Official Registry Link</th>
-                <th className="py-4 px-6">Intelligence Summary & Remarks</th>
-                <th className="py-4 px-6 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#E5E5F0] text-[13px]">
-              {sortedData.map((row, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/30 transition-colors">
-                  <td className="py-4.5 px-6 font-extrabold text-[#1A1A2E]">{row.companyName}</td>
-                  <td className="py-4.5 px-6 font-bold text-[#888899]">{row.quarter}</td>
-                  <td className="py-4.5 px-6">{getStatusBadge(row.status)}</td>
-                  <td className="py-4.5 px-6 font-bold text-[#555566]">
-                    {row.publishedDate}
-                  </td>
-                  <td className="py-4.5 px-6">
-                    {row.downloadUrl ? (
-                      <a 
-                        href={row.downloadUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-[#3D3DC4] hover:text-[#5B5BF5] font-bold"
+      {data.length > 0 && (
+        <div className="bg-white border border-[#E5E5F0] rounded-3xl overflow-hidden shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-[#E5E5F0] bg-slate-50/50 text-[10px] font-bold text-[#888899] uppercase tracking-wider">
+                  <th className="py-4 px-6 select-none cursor-pointer hover:bg-slate-50" onClick={() => handleSort('companyName')}>
+                    <div className="flex items-center gap-1">
+                      Company Name
+                      <ArrowUpDown className="w-3 h-3" />
+                    </div>
+                  </th>
+                  <th className="py-4 px-6 select-none cursor-pointer hover:bg-slate-50" onClick={() => handleSort('quarter')}>
+                    <div className="flex items-center gap-1">
+                      Fiscal Year
+                      <ArrowUpDown className="w-3 h-3" />
+                    </div>
+                  </th>
+                  <th className="py-4 px-6 select-none cursor-pointer hover:bg-slate-50" onClick={() => handleSort('status')}>
+                    <div className="flex items-center gap-1">
+                      Status
+                      <ArrowUpDown className="w-3 h-3" />
+                    </div>
+                  </th>
+                  <th className="py-4 px-6 select-none cursor-pointer hover:bg-slate-50" onClick={() => handleSort('publishedDate')}>
+                    <div className="flex items-center gap-1">
+                      Published / Expected
+                      <ArrowUpDown className="w-3 h-3" />
+                    </div>
+                  </th>
+                  <th className="py-4 px-6">Official Source</th>
+                  <th className="py-4 px-6">Intelligence Summary & Remarks</th>
+                  <th className="py-4 px-6 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E5E5F0] text-[13px]">
+                {sortedData.map((row, idx) => (
+                  <tr key={idx} className="hover:bg-slate-50/30 transition-colors">
+                    <td className="py-4.5 px-6 font-extrabold text-[#1A1A2E]">{row.companyName}</td>
+                    <td className="py-4.5 px-6 font-bold text-[#888899]">{row.quarter}</td>
+                    <td className="py-4.5 px-6">{getStatusBadge(row.status)}</td>
+                    <td className="py-4.5 px-6 font-bold text-[#555566]">
+                      {row.publishedDate}
+                    </td>
+                    <td className="py-4.5 px-6">
+                      {row.downloadUrl ? (
+                        <a 
+                          href={row.downloadUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[#3D3DC4] hover:text-[#5B5BF5] font-bold"
+                        >
+                          Investor Portal
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      ) : (
+                        <span className="text-[#888899] italic font-semibold">Pending scan</span>
+                      )}
+                    </td>
+                    <td className="py-4.5 px-6 font-semibold text-[#555566] max-w-sm truncate" title={row.remarks}>
+                      {row.remarks}
+                    </td>
+                    <td className="py-4.5 px-6 text-right space-x-2 shrink-0 whitespace-nowrap">
+                      <button 
+                        onClick={() => handleSingleScan(row.companyName)}
+                        className="px-3 py-1.5 rounded-lg border border-[#E5E5F0] hover:border-[#3D3DC4] hover:bg-[#F3F3FE] text-xs font-bold text-[#555566] hover:text-[#3D3DC4] transition-all"
                       >
-                        Investor Portal
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    ) : (
-                      <span className="text-[#888899] italic font-semibold">Not Linkable</span>
-                    )}
-                  </td>
-                  <td className="py-4.5 px-6 font-semibold text-[#555566] max-w-sm truncate" title={row.remarks}>
-                    {row.remarks}
-                  </td>
-                  <td className="py-4.5 px-6 text-right space-x-2 shrink-0 whitespace-nowrap">
-                    <button 
-                      onClick={() => handleSingleScan(row.companyName)}
-                      className="px-3 py-1.5 rounded-lg border border-[#E5E5F0] hover:border-[#3D3DC4] hover:bg-[#F3F3FE] text-xs font-bold text-[#555566] hover:text-[#3D3DC4] transition-all"
-                    >
-                      Run Scan
-                    </button>
-                    <button 
-                      disabled={row.status !== 'Available' && row.status !== 'Downloaded'}
-                      onClick={() => handleDownload(row)}
-                      className="p-1.5 rounded-lg border border-[#E5E5F0] hover:border-emerald-600 hover:bg-[#ECFDF5] text-xs font-bold text-[#555566] hover:text-emerald-600 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-[#E5E5F0] disabled:hover:bg-transparent disabled:hover:text-[#555566]"
-                      title="Download PDF"
-                    >
-                      <Download className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {sortedData.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="py-12 text-center text-xs font-bold text-[#888899] italic uppercase tracking-wider bg-slate-50/10">
-                    No matching companies found in this monitor category.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                        Run Scan
+                      </button>
+                      <button 
+                        onClick={() => handleRemoveCompany(row.companyName)}
+                        className="p-1.5 rounded-lg border border-[#E5E5F0] hover:border-red-400 hover:bg-red-50 text-xs font-bold text-[#555566] hover:text-red-500 transition-all"
+                        title="Remove company"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {sortedData.length === 0 && data.length > 0 && (
+                  <tr>
+                    <td colSpan={7} className="py-12 text-center text-xs font-bold text-[#888899] italic uppercase tracking-wider bg-slate-50/10">
+                      No matching companies found for the current filter.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

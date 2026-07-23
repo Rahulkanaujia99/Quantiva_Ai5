@@ -482,14 +482,22 @@ const getSimulatedQRAvailability = (company: string, period: string): QRAvailabi
     }
   }
 
-  // Deterministic fallback based on names
+  // Deterministic fallback based on names — always provide source URL
+  let fallbackUrl = "";
+  for (const [key, domain] of Object.entries(COMPANY_DOMAINS)) {
+    if (c.includes(key) || key.includes(c)) {
+      fallbackUrl = `https://${domain}`;
+      break;
+    }
+  }
+
   const charSum = c.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const isAvailable = charSum % 3 === 0;
   if (isAvailable) {
     return {
       status: "Available",
       expectedDate: "Released",
-      sourceUrl: "",
+      sourceUrl: fallbackUrl,
       sourceTitle: "Official Website",
       summary: `${company} ${period} financial statements and report have been uploaded.`
     };
@@ -497,7 +505,7 @@ const getSimulatedQRAvailability = (company: string, period: string): QRAvailabi
     return {
       status: "Not Available",
       expectedDate: "Pending",
-      sourceUrl: "",
+      sourceUrl: fallbackUrl,
       sourceTitle: "Official Website",
       summary: `${company} ${period} reports are not yet available on the official website.`
     };
@@ -505,7 +513,7 @@ const getSimulatedQRAvailability = (company: string, period: string): QRAvailabi
     return {
       status: "Not confirmed",
       expectedDate: "TBA",
-      sourceUrl: "",
+      sourceUrl: fallbackUrl,
       sourceTitle: "Official Website",
       summary: `${company} ${period} reports release status is not confirmed on the official website.`
     };
@@ -675,14 +683,22 @@ const getSimulatedARAvailability = (company: string, period: string): QRAvailabi
     }
   }
 
-  // Deterministic fallback based on names
+  // Deterministic fallback — always provide source URL
+  let fallbackUrl = "";
+  for (const [key, domain] of Object.entries(COMPANY_DOMAINS)) {
+    if (c.includes(key) || key.includes(c)) {
+      fallbackUrl = `https://${domain}`;
+      break;
+    }
+  }
+
   const charSum = c.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const isAvailable = charSum % 3 === 0;
   if (isAvailable) {
     return {
       status: "Available",
       expectedDate: "Released",
-      sourceUrl: "",
+      sourceUrl: fallbackUrl,
       sourceTitle: "Official Website",
       summary: `${company} ${period} annual report and financial statements have been uploaded.`
     };
@@ -690,7 +706,7 @@ const getSimulatedARAvailability = (company: string, period: string): QRAvailabi
     return {
       status: "Not Available",
       expectedDate: "Pending",
-      sourceUrl: "",
+      sourceUrl: fallbackUrl,
       sourceTitle: "Official Website",
       summary: `${company} ${period} annual report is not yet available on the official website.`
     };
@@ -698,7 +714,7 @@ const getSimulatedARAvailability = (company: string, period: string): QRAvailabi
     return {
       status: "Not confirmed",
       expectedDate: "TBA",
-      sourceUrl: "",
+      sourceUrl: fallbackUrl,
       sourceTitle: "Official Website",
       summary: `${company} ${period} annual report release status is not confirmed on the official website.`
     };
