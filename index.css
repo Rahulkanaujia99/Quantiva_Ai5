@@ -210,15 +210,12 @@ body {
   border-color: rgba(61, 61, 196, 0.15) !important;
 }
 
-/* Hover Drawer Card */
-.hover-drawer-card {
-  border: 1px solid #E5E5F0;
-  border-radius: 12px;
-  background-color: #FFFFFF;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+/* Mini Card Hover Effect */
+.mini-card-hover {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.hover-drawer-card:hover {
+.mini-card-hover:hover {
   transform: translateY(-2px);
   box-shadow: 
     -5px 5px 20px -3px rgba(61, 61, 196, 0.18), 

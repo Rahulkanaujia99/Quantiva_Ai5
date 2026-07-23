@@ -200,38 +200,31 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
           </div>
         </div>
         
-        <div className="space-y-4 overflow-visible pr-2 flex-1">
+        <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1">
           {items.map((item, i) => (
             <div 
               key={i} 
-              className="hover-drawer-card group relative cursor-pointer"
+              className="p-4 rounded-xl border bg-white transition-all mini-card-hover cursor-pointer"
               style={{ borderColor: theme.borderColor || '#E5E5F0' }}
             >
-              {/* Header/Title Bar always visible */}
-              <div className="p-4 flex justify-between items-center bg-slate-50/20 hover:bg-[#F3F3FE]/10 transition-colors gap-3">
-                <h5 className="text-[13px] font-bold leading-snug text-[#1A1A2E]">{item.title}</h5>
+              <div className="flex justify-between items-start mb-2 gap-2">
+                <h5 className="text-sm font-bold leading-tight text-[#1A1A2E]">{item.title}</h5>
                 {item.value && (
-                  <span className={`shrink-0 badge-pill ${theme.badgeBg} ${theme.badgeColor} text-[10px]`}>
+                  <span className={`shrink-0 badge-pill ${theme.badgeBg} ${theme.badgeColor}`}>
                      {item.value}
                   </span>
                 )}
               </div>
-              
-              {/* Floating detail box (popover style) */}
-              <div className="absolute left-0 right-0 top-full mt-1.5 z-50 p-5 rounded-2xl border border-[#E5E5F0] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] pointer-events-none opacity-0 -translate-y-2 transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0">
-                <div className="space-y-3">
-                  <p className="text-[13px] font-medium leading-relaxed text-[#555566]">
-                    {item.details}
+              <p className="text-[13px] font-medium leading-relaxed mb-3 text-[#555566]">
+                {item.details}
+              </p>
+              {item.impact && (
+                <div className="pt-3 border-t border-[#E5E5F0]">
+                  <p className="text-[10px] font-semibold text-[#1DB88E] uppercase tracking-wider leading-normal">
+                    # IMPACT: {item.impact}
                   </p>
-                  {item.impact && (
-                    <div className="pt-3 border-t border-[#E5E5F0]">
-                      <p className="text-[10px] font-semibold text-[#1DB88E] uppercase tracking-wider leading-normal">
-                        # IMPACT: {item.impact}
-                      </p>
-                    </div>
-                  )}
                 </div>
-              </div>
+              )}
             </div>
           ))}
           {items.length === 0 && (
