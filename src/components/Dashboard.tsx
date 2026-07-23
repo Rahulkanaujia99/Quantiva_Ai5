@@ -200,7 +200,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
           </div>
         </div>
         
-        <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1">
+        <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2 pt-1.5 pb-1.5 flex-1">
           {items.map((item, i) => (
             <div 
               key={i} 
