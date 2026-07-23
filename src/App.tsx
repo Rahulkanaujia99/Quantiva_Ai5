@@ -11,6 +11,8 @@ import { ExtractedData } from './types';
 import Dashboard from './components/Dashboard';
 import QRAvailabilityCheck from './components/QRAvailabilityCheck';
 import QRStatus from './components/QRStatus';
+import ARAvailabilityCheck from './components/ARAvailabilityCheck';
+import ARStatus from './components/ARStatus';
 import { auth, db, signOut, onAuthStateChanged, User as FirebaseUser } from './services/firebase';
 import { collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
 import { AuthScreen } from './components/AuthScreen';
@@ -26,7 +28,9 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const isDarkMode = false;
   const [showQRCheck, setShowQRCheck] = useState(false);
-  const [activeTab, setActiveTab] = useState<'home' | 'analysis' | 'archive' | 'qr-status' | 'qr-check' | 'settings'>('home');
+  const [qrMenuOpen, setQrMenuOpen] = useState(true);
+  const [arMenuOpen, setArMenuOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState<'home' | 'analysis' | 'archive' | 'qr-status' | 'qr-check' | 'ar-status' | 'ar-check' | 'settings'>('home');
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<{ id: string; title: string; desc: string; time: string; type: 'info' | 'success' | 'warning' | 'error' }[]>([
     { id: '1', title: "System Active", desc: "Quantiva's AI secure parsing engine is fully operational.", time: "10:00 AM", type: "success" }
@@ -338,21 +342,20 @@ const App: React.FC = () => {
     setIsProcessing(false);
   };
 
-  const SidebarLink = ({ id, icon: Icon, label, status, onClick }: { id: 'analysis' | 'archive' | 'home' | 'qr-check' | 'qr-status', icon: React.ElementType, label: string, status?: string, onClick?: () => void }) => (
+  const SidebarLink = ({ id, icon: Icon, label, status, onClick }: { id: 'analysis' | 'archive' | 'home' | 'qr-check' | 'qr-status' | 'ar-check' | 'ar-status', icon: React.ElementType, label: string, status?: string, onClick?: () => void }) => (
     <button 
       onClick={() => {
         if (onClick) onClick();
-        else if (id === 'qr-check') setShowQRCheck(true);
-        else setActiveTab(id as any);
+        else setActiveTab(id);
       }}
       className={`w-full flex items-center justify-between p-3.5 rounded-xl transition-all group border border-transparent ${
-        ((id === activeTab && id !== 'qr-check') || (id === 'qr-check' && showQRCheck))
+        id === activeTab
           ? "bg-[#3D3DC4]/10 text-[#3D3DC4] border-[#3D3DC4]/20" 
           : "text-[#555566] hover:text-[#1A1A2E] hover:bg-[#F3F3FE]"
       }`}
     >
       <div className="flex items-center gap-3">
-        <Icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${((id === activeTab && id !== 'qr-check') || (id === 'qr-check' && showQRCheck)) ? 'text-[#3D3DC4]' : 'text-[#888899]'}`} />
+        <Icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${id === activeTab ? 'text-[#3D3DC4]' : 'text-[#888899]'}`} />
         <span className="text-[15px] font-bold tracking-tight">{label}</span>
       </div>
       {status && (
@@ -420,12 +423,49 @@ const App: React.FC = () => {
           <p className="text-[10px] font-black text-[#5B5BF5] uppercase tracking-[0.3em] font-mono">Institutional Grade Intelligence</p>
         </div>
 
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-1">
           <p className="text-[10px] font-black text-[#888899] uppercase tracking-widest px-2 mb-4">Core Modules</p>
           <SidebarLink id="home" icon={Home} label="Home" onClick={handleHome} />
           <SidebarLink id="analysis" icon={FileText} label="Report analysis" />
-          <SidebarLink id="qr-check" icon={Search} label="Check QR availability" />
-          <SidebarLink id="qr-status" icon={BarChart3} label="QR Status" />
+          
+          {/* QR Analysis Collapsible Section */}
+          <div className="space-y-1">
+            <button 
+              onClick={() => setQrMenuOpen(!qrMenuOpen)}
+              className="w-full flex items-center justify-between p-3.5 rounded-xl transition-all hover:bg-[#F3F3FE] text-[#555566] hover:text-[#1A1A2E] group"
+            >
+              <div className="flex items-center gap-3">
+                <Layers className="w-5 h-5 text-[#888899] group-hover:scale-110 transition-transform" />
+                <span className="text-[15px] font-bold tracking-tight">QR Analysis</span>
+              </div>
+              <ChevronRight className={`w-4 h-4 text-[#888899] transition-transform duration-300 ${qrMenuOpen ? 'rotate-90' : ''}`} />
+            </button>
+            
+            <div className={`pl-4 space-y-1 transition-all duration-300 overflow-hidden ${qrMenuOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+              <SidebarLink id="qr-check" icon={Search} label="Check QR availability" />
+              <SidebarLink id="qr-status" icon={BarChart3} label="QR Status" />
+            </div>
+          </div>
+
+          {/* Annual Report Analysis Collapsible Section */}
+          <div className="space-y-1">
+            <button 
+              onClick={() => setArMenuOpen(!arMenuOpen)}
+              className="w-full flex items-center justify-between p-3.5 rounded-xl transition-all hover:bg-[#F3F3FE] text-[#555566] hover:text-[#1A1A2E] group"
+            >
+              <div className="flex items-center gap-3">
+                <Database className="w-5 h-5 text-[#888899] group-hover:scale-110 transition-transform" />
+                <span className="text-[15px] font-bold tracking-tight">Annual Report Analysis</span>
+              </div>
+              <ChevronRight className={`w-4 h-4 text-[#888899] transition-transform duration-300 ${arMenuOpen ? 'rotate-90' : ''}`} />
+            </button>
+            
+            <div className={`pl-4 space-y-1 transition-all duration-300 overflow-hidden ${arMenuOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+              <SidebarLink id="ar-check" icon={Search} label="Check AR availability" />
+              <SidebarLink id="ar-status" icon={BarChart3} label="AR Status" />
+            </div>
+          </div>
+
           <SidebarLink id="archive" icon={Archive} label="Archive" />
         </div>
 
@@ -775,6 +815,16 @@ const App: React.FC = () => {
           {activeTab === 'qr-check' && (
             <div className="animate-in fade-in slide-in-from-bottom-10 duration-1000">
                <QRAvailabilityCheck onClose={() => setActiveTab('home')} />
+            </div>
+          )}
+
+          {activeTab === 'ar-status' && (
+            <ARStatus />
+          )}
+
+          {activeTab === 'ar-check' && (
+            <div className="animate-in fade-in slide-in-from-bottom-10 duration-1000">
+               <ARAvailabilityCheck onClose={() => setActiveTab('home')} />
             </div>
           )}
 
