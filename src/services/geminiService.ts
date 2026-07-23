@@ -8,7 +8,7 @@ const getApiKey = (): string => {
     if (key && key !== 'undefined' && key.trim() !== '') {
       return key;
     }
-  } catch (e) {}
+  } catch (e) { }
   return "AQ.Ab8RN6K9p7OhCcGG4lLYCryHApv3nweq2mKKUUq46hpYkdJYAQ";
 };
 
@@ -16,7 +16,7 @@ const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 export const analyzeDocuments = async (base64Pdfs: string[]): Promise<ExtractedData> => {
   const model = 'gemini-3.5-flash';
-  
+
   const fileParts = base64Pdfs.map(base64 => ({
     inlineData: { mimeType: "application/pdf", data: base64 }
   }));
@@ -192,7 +192,7 @@ export const analyzeDocuments = async (base64Pdfs: string[]): Promise<ExtractedD
 
   const text = result.text;
   if (!text) throw new Error("Gemini AI returned an empty response. This might be due to safety filters or a temporary service issue.");
-  
+
   try {
     // Handle potential markdown wrapping
     const cleanJson = text.replace(/```json\n?|```/g, "").trim();
@@ -205,7 +205,7 @@ export const analyzeDocuments = async (base64Pdfs: string[]): Promise<ExtractedD
 
 export const chatWithDocuments = async (base64Pdfs: string[], history: { role: string, text: string }[], message: string): Promise<string> => {
   const model = 'gemini-3.5-flash';
-  
+
   const fileParts = base64Pdfs.map(base64 => ({
     inlineData: { mimeType: "application/pdf", data: base64 }
   }));
@@ -245,7 +245,7 @@ const searchTavily = async (query: string): Promise<string> => {
       if (key && key !== 'undefined' && key.trim() !== '') {
         return key;
       }
-    } catch (e) {}
+    } catch (e) { }
     return "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";
   };
   const apiKey = getTavilyApiKey();
@@ -275,7 +275,7 @@ const searchTavily = async (query: string): Promise<string> => {
 
     const data = await response.json();
     const results = data.results || [];
-    
+
     if (results.length === 0) {
       return "No search results found.";
     }
@@ -318,7 +318,7 @@ const COMPANY_DOMAINS: Record<string, string> = {
 
 const isFuturePeriod = (period: string, type: 'QR' | 'AR'): boolean => {
   const norm = period.toUpperCase().replace(/\s+/g, "");
-  
+
   if (type === 'AR') {
     const fyMatch = norm.match(/FY(\d{2})/);
     if (fyMatch) {
@@ -332,7 +332,7 @@ const isFuturePeriod = (period: string, type: 'QR' | 'AR'): boolean => {
     }
     return false;
   }
-  
+
   if (type === 'QR') {
     const fyMatch = norm.match(/FY(\d{2})/);
     const qMatch = norm.match(/Q([1-4])/);
@@ -357,7 +357,7 @@ const qrAvailabilityCache = new Map<string, QRAvailabilityStatus>();
 
 const getSimulatedQRAvailability = (company: string, period: string): QRAvailabilityStatus => {
   const c = company.toLowerCase();
-  
+
   if (isFuturePeriod(period, 'QR')) {
     return {
       status: "Not Available",
@@ -370,19 +370,19 @@ const getSimulatedQRAvailability = (company: string, period: string): QRAvailabi
 
   const normPeriod = period.toUpperCase().replace(/\s+/g, "");
   const isQ1FY27 = normPeriod.includes("Q1FY27") || (normPeriod.includes("Q1") && normPeriod.includes("27"));
-  
+
   if (c.includes('ongc')) {
     return {
       status: isQ1FY27 ? "Not Available" : "Available",
       expectedDate: isQ1FY27 ? "August 2026" : "14 Feb 2026",
       sourceUrl: "https://ongcindia.com/web/eng/about-ongc/performance/financial/results",
       sourceTitle: "Official Investor Relations",
-      summary: isQ1FY27 
-        ? "ONGC's financial results for Q1FY27 are not yet available and are expected to be released around August 2026." 
+      summary: isQ1FY27
+        ? "ONGC's financial results for Q1FY27 are not yet available and are expected to be released around August 2026."
         : `ONGC ${period} financial statements and report have been uploaded. Net profit rises 8.4% y-o-y to ₹10,272 cr.`
     };
   }
-  
+
   if (c.includes('tata power')) {
     return {
       status: "Not confirmed",
@@ -392,7 +392,7 @@ const getSimulatedQRAvailability = (company: string, period: string): QRAvailabi
       summary: `Tata Power ${period} earnings release status is not confirmed on the official portal.`
     };
   }
-  
+
   if (c.includes('adani power')) {
     return {
       status: isQ1FY27 ? "Not Available" : "Available",
@@ -679,11 +679,11 @@ export const checkQRAvailability = async (company: string, period: string): Prom
 
     const text = response.text;
     if (!text) throw new Error("No response from Gemini AI for availability check.");
-    
+
     // Handle potential markdown wrapping and robust parsing
     const cleanJson = text.replace(/```json\n?|```/g, "").trim();
     const result = JSON.parse(cleanJson) as QRAvailabilityStatus;
-    
+
     qrAvailabilityCache.set(cacheKey, result);
     return result;
   } catch (error) {
@@ -698,7 +698,7 @@ const arAvailabilityCache = new Map<string, QRAvailabilityStatus>();
 
 const getSimulatedARAvailability = (company: string, period: string): QRAvailabilityStatus => {
   const c = company.toLowerCase();
-  
+
   if (isFuturePeriod(period, 'AR')) {
     return {
       status: "Not Available",
@@ -712,7 +712,7 @@ const getSimulatedARAvailability = (company: string, period: string): QRAvailabi
   const normPeriod = period.toUpperCase().replace(/\s+/g, "");
   const isFY26 = normPeriod.includes("FY26") || normPeriod.includes("26");
   const isFY27 = normPeriod.includes("FY27") || normPeriod.includes("27");
-  
+
   if (c.includes('ongc')) {
     return {
       status: isFY26 || isFY27 ? "Not Available" : "Available",
@@ -720,11 +720,11 @@ const getSimulatedARAvailability = (company: string, period: string): QRAvailabi
       sourceUrl: "https://ongcindia.com/web/eng/about-ongc/performance/financial/results",
       sourceTitle: "Official Investor Relations",
       summary: isFY26 || isFY27
-        ? `ONGC's annual report for ${period} is not yet available and is expected around August ${isFY26 ? '2026' : '2027'}.` 
+        ? `ONGC's annual report for ${period} is not yet available and is expected around August ${isFY26 ? '2026' : '2027'}.`
         : `ONGC ${period} annual report has been uploaded on the official website.`
     };
   }
-  
+
   if (c.includes('tata power')) {
     return {
       status: "Not confirmed",
@@ -903,10 +903,10 @@ export const checkARAvailability = async (company: string, period: string): Prom
 
     const text = response.text;
     if (!text) throw new Error("No response from Gemini AI for availability check.");
-    
+
     const cleanJson = text.replace(/```json\n?|```/g, "").trim();
     const result = JSON.parse(cleanJson) as QRAvailabilityStatus;
-    
+
     arAvailabilityCache.set(cacheKey, result);
     return result;
   } catch (error) {
