@@ -200,11 +200,11 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
           </div>
         </div>
         
-        <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1">
+        <div className="space-y-4 overflow-visible pr-2 flex-1">
           {items.map((item, i) => (
             <div 
               key={i} 
-              className="hover-drawer-card cursor-pointer"
+              className="hover-drawer-card group relative cursor-pointer"
               style={{ borderColor: theme.borderColor || '#E5E5F0' }}
             >
               {/* Header/Title Bar always visible */}
@@ -217,9 +217,9 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
                 )}
               </div>
               
-              {/* Details box visible only on hover */}
-              <div className="hover-drawer-content">
-                <div className="p-4 border-t border-[#E5E5F0] bg-white space-y-3">
+              {/* Floating detail box (popover style) */}
+              <div className="absolute left-0 right-0 top-full mt-1.5 z-50 p-5 rounded-2xl border border-[#E5E5F0] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] pointer-events-none opacity-0 -translate-y-2 transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0">
+                <div className="space-y-3">
                   <p className="text-[13px] font-medium leading-relaxed text-[#555566]">
                     {item.details}
                   </p>
