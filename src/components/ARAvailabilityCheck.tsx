@@ -185,7 +185,7 @@ const ARAvailabilityCheck: React.FC<ARAvailabilityCheckProps> = ({ onClose }) =>
                   </div>
                   <div>
                     <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-white shadow-sm border border-[#E5E5F0] mb-1 inline-block text-[#5B5BF5]">
-                      {result.status}
+                      {result.status === 'Available' ? 'Annual Report Uploaded' : (result.status === 'Not Available' ? 'Annual Report Not Yet Released' : result.status)}
                     </span>
                     <h3 className="text-2xl font-black tracking-tight text-[#1A1A2E]">{searchedCompany}</h3>
                   </div>
@@ -208,9 +208,8 @@ const ARAvailabilityCheck: React.FC<ARAvailabilityCheckProps> = ({ onClose }) =>
                           <span className="text-xs font-black uppercase tracking-tight">Access</span>
                         </a>
                       ) : (
-                        <span className="p-2.5 rounded-xl bg-white shadow-md border border-[#E5E5F0] flex items-center gap-2 text-[#888899] text-xs font-bold">
-                          <Globe className="w-5 h-5" />
-                          {displayTitle}
+                        <span className="text-red-500 font-bold italic text-xs">
+                          No verified sources available
                         </span>
                       )}
                     </div>

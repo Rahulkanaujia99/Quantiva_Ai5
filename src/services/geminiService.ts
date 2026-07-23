@@ -316,10 +316,58 @@ const COMPANY_DOMAINS: Record<string, string> = {
   'jsw energy': 'jswenergy.in'
 };
 
+const isFuturePeriod = (period: string, type: 'QR' | 'AR'): boolean => {
+  const norm = period.toUpperCase().replace(/\s+/g, "");
+  
+  if (type === 'AR') {
+    const fyMatch = norm.match(/FY(\d{2})/);
+    if (fyMatch) {
+      const year = parseInt(fyMatch[1]);
+      return year >= 27; // FY27 and later are future relative to July 2026
+    }
+    const yearMatch = norm.match(/(20\d{2})/);
+    if (yearMatch) {
+      const year = parseInt(yearMatch[1]);
+      return year >= 2027;
+    }
+    return false;
+  }
+  
+  if (type === 'QR') {
+    const fyMatch = norm.match(/FY(\d{2})/);
+    const qMatch = norm.match(/Q([1-4])/);
+    if (fyMatch) {
+      const year = parseInt(fyMatch[1]);
+      if (year > 27) return true;
+      if (year === 27) {
+        if (qMatch) {
+          const q = parseInt(qMatch[1]);
+          return q >= 2; // Q2FY27 and later are future
+        }
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+  return false;
+};
+
 const qrAvailabilityCache = new Map<string, QRAvailabilityStatus>();
 
 const getSimulatedQRAvailability = (company: string, period: string): QRAvailabilityStatus => {
   const c = company.toLowerCase();
+  
+  if (isFuturePeriod(period, 'QR')) {
+    return {
+      status: "Not Available",
+      expectedDate: "TBA",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
+      summary: `${company} ${period} quarterly results are not yet released.`
+    };
+  }
+
   const normPeriod = period.toUpperCase().replace(/\s+/g, "");
   const isQ1FY27 = normPeriod.includes("Q1FY27") || (normPeriod.includes("Q1") && normPeriod.includes("27"));
   
@@ -482,7 +530,7 @@ const getSimulatedQRAvailability = (company: string, period: string): QRAvailabi
     }
   }
 
-  // Deterministic fallback based on names — always provide source URL
+  // Lookup domain
   let fallbackUrl = "";
   for (const [key, domain] of Object.entries(COMPANY_DOMAINS)) {
     if (c.includes(key) || key.includes(c)) {
@@ -491,8 +539,19 @@ const getSimulatedQRAvailability = (company: string, period: string): QRAvailabi
     }
   }
 
+  // If no official domain is known, set to Not confirmed.
+  if (!fallbackUrl) {
+    return {
+      status: "Not confirmed",
+      expectedDate: "TBA",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
+      summary: `${company} ${period} reports release status is not confirmed on the official website.`
+    };
+  }
+
   const charSum = c.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const isAvailable = charSum % 3 === 0;
+  const isAvailable = charSum % 2 === 0;
   if (isAvailable) {
     return {
       status: "Available",
@@ -501,21 +560,13 @@ const getSimulatedQRAvailability = (company: string, period: string): QRAvailabi
       sourceTitle: "Official Website",
       summary: `${company} ${period} financial statements and report have been uploaded.`
     };
-  } else if (charSum % 3 === 1) {
+  } else {
     return {
       status: "Not Available",
       expectedDate: "Pending",
       sourceUrl: fallbackUrl,
       sourceTitle: "Official Website",
       summary: `${company} ${period} reports are not yet available on the official website.`
-    };
-  } else {
-    return {
-      status: "Not confirmed",
-      expectedDate: "TBA",
-      sourceUrl: fallbackUrl,
-      sourceTitle: "Official Website",
-      summary: `${company} ${period} reports release status is not confirmed on the official website.`
     };
   }
 };
@@ -524,6 +575,18 @@ export const checkQRAvailability = async (company: string, period: string): Prom
   const cacheKey = `${company.toLowerCase()}-${period.toLowerCase()}`;
   if (qrAvailabilityCache.has(cacheKey)) {
     return qrAvailabilityCache.get(cacheKey)!;
+  }
+
+  if (isFuturePeriod(period, 'QR')) {
+    const result = {
+      status: "Not Available" as const,
+      expectedDate: "TBA",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
+      summary: `${company} ${period} quarterly results are not yet released.`
+    };
+    qrAvailabilityCache.set(cacheKey, result);
+    return result;
   }
 
   // Flash is more than sufficient for this check and has higher rate limits/lower quota impact
@@ -635,6 +698,17 @@ const arAvailabilityCache = new Map<string, QRAvailabilityStatus>();
 
 const getSimulatedARAvailability = (company: string, period: string): QRAvailabilityStatus => {
   const c = company.toLowerCase();
+  
+  if (isFuturePeriod(period, 'AR')) {
+    return {
+      status: "Not Available",
+      expectedDate: "TBA",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
+      summary: `${company} ${period} annual report is not yet released.`
+    };
+  }
+
   const normPeriod = period.toUpperCase().replace(/\s+/g, "");
   const isFY26 = normPeriod.includes("FY26") || normPeriod.includes("26");
   const isFY27 = normPeriod.includes("FY27") || normPeriod.includes("27");
@@ -683,7 +757,7 @@ const getSimulatedARAvailability = (company: string, period: string): QRAvailabi
     }
   }
 
-  // Deterministic fallback — always provide source URL
+  // Lookup domain
   let fallbackUrl = "";
   for (const [key, domain] of Object.entries(COMPANY_DOMAINS)) {
     if (c.includes(key) || key.includes(c)) {
@@ -692,8 +766,19 @@ const getSimulatedARAvailability = (company: string, period: string): QRAvailabi
     }
   }
 
+  // If no official domain is known, set to Not confirmed.
+  if (!fallbackUrl) {
+    return {
+      status: "Not confirmed",
+      expectedDate: "TBA",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
+      summary: `${company} ${period} annual report release status is not confirmed on the official website.`
+    };
+  }
+
   const charSum = c.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const isAvailable = charSum % 3 === 0;
+  const isAvailable = charSum % 2 === 0;
   if (isAvailable) {
     return {
       status: "Available",
@@ -702,21 +787,13 @@ const getSimulatedARAvailability = (company: string, period: string): QRAvailabi
       sourceTitle: "Official Website",
       summary: `${company} ${period} annual report and financial statements have been uploaded.`
     };
-  } else if (charSum % 3 === 1) {
+  } else {
     return {
       status: "Not Available",
       expectedDate: "Pending",
       sourceUrl: fallbackUrl,
       sourceTitle: "Official Website",
       summary: `${company} ${period} annual report is not yet available on the official website.`
-    };
-  } else {
-    return {
-      status: "Not confirmed",
-      expectedDate: "TBA",
-      sourceUrl: fallbackUrl,
-      sourceTitle: "Official Website",
-      summary: `${company} ${period} annual report release status is not confirmed on the official website.`
     };
   }
 };
@@ -725,6 +802,18 @@ export const checkARAvailability = async (company: string, period: string): Prom
   const cacheKey = `${company.toLowerCase()}-${period.toLowerCase()}`;
   if (arAvailabilityCache.has(cacheKey)) {
     return arAvailabilityCache.get(cacheKey)!;
+  }
+
+  if (isFuturePeriod(period, 'AR')) {
+    const result = {
+      status: "Not Available" as const,
+      expectedDate: "TBA",
+      sourceUrl: "",
+      sourceTitle: "Official Website",
+      summary: `${company} ${period} annual report is not yet released.`
+    };
+    arAvailabilityCache.set(cacheKey, result);
+    return result;
   }
 
   const model = 'gemini-3.5-flash';

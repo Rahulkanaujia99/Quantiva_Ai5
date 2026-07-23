@@ -238,7 +238,7 @@ const ARStatus: React.FC<ARStatusProps> = () => {
         return (
           <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#ECFDF5] text-[#1DB88E] border border-[#1DB88E]/20">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            Available
+            Annual Report Uploaded
           </span>
         );
       case 'Not confirmed':
@@ -266,7 +266,7 @@ const ARStatus: React.FC<ARStatusProps> = () => {
         return (
           <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FFF1F2] text-[#F43F5E] border border-[#F43F5E]/20">
             <XCircle className="w-3.5 h-3.5" />
-            Not Available
+            Annual Report Not Yet Released
           </span>
         );
     }
@@ -456,18 +456,22 @@ const ARStatus: React.FC<ARStatusProps> = () => {
                       {row.publishedDate}
                     </td>
                     <td className="py-4.5 px-6">
-                      {row.downloadUrl ? (
+                      {row.remarks === 'Scanning...' || row.publishedDate === '...' ? (
+                        <span className="text-[#888899] italic font-semibold">Scanning...</span>
+                      ) : row.publishedDate === 'Pending scan' || row.remarks === 'Click "Run Scan" to check availability' ? (
+                        <span className="text-[#888899] italic font-semibold">Pending scan</span>
+                      ) : row.downloadUrl ? (
                         <a 
                           href={row.downloadUrl} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 text-[#3D3DC4] hover:text-[#5B5BF5] font-bold"
                         >
-                          Investor Portal
+                          {row.source || 'Investor Portal'}
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
                       ) : (
-                        <span className="text-[#888899] italic font-semibold">Pending scan</span>
+                        <span className="text-red-500 font-bold italic">No verified sources available</span>
                       )}
                     </td>
                     <td className="py-4.5 px-6 font-semibold text-[#555566] max-w-sm truncate" title={row.remarks}>

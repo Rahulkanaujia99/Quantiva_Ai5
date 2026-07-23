@@ -507,7 +507,7 @@ const QRStatus: React.FC<QRStatusProps> = () => {
                         ) : (
                           <XCircle className="w-3 h-3" />
                         )}
-                        {row.status}
+                        {row.status === 'Available' ? 'Report Uploaded' : (row.status === 'Not Available' ? 'Report Not Yet Released' : row.status)}
                       </div>
                     </td>
                     <td className="p-5">
@@ -517,19 +517,27 @@ const QRStatus: React.FC<QRStatusProps> = () => {
                       </div>
                     </td>
                     <td className="p-5">
-                      <a 
-                        href={row.downloadUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-[13px] font-bold text-[#3D3DC4] hover:underline group"
-                      >
-                        {row.source.includes('BSE') || row.source.includes('NSE') ? (
-                          <div className="w-4 h-4 rounded bg-[#3D3DC4]/10 flex items-center justify-center text-[10px] font-black group-hover:bg-[#3D3DC4]/20 transition-colors">E</div>
-                        ) : (
-                          <Globe className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                        )}
-                        {row.source}
-                      </a>
+                      {row.remarks === 'Scanning...' || row.publishedDate === '...' ? (
+                        <span className="text-[#888899] italic font-semibold">Scanning...</span>
+                      ) : row.publishedDate === 'Checking...' || row.remarks === 'Sync required' ? (
+                        <span className="text-[#888899] italic font-semibold">Pending scan</span>
+                      ) : row.downloadUrl ? (
+                        <a 
+                          href={row.downloadUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-[13px] font-bold text-[#3D3DC4] hover:underline group"
+                        >
+                          {row.source.includes('BSE') || row.source.includes('NSE') ? (
+                            <div className="w-4 h-4 rounded bg-[#3D3DC4]/10 flex items-center justify-center text-[10px] font-black group-hover:bg-[#3D3DC4]/20 transition-colors">E</div>
+                          ) : (
+                            <Globe className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                          )}
+                          {row.source}
+                        </a>
+                      ) : (
+                        <span className="text-red-500 font-bold italic text-xs">No verified sources available</span>
+                      )}
                     </td>
                     <td className="p-5 text-[13px] font-bold opacity-70">
                       {row.remarks}
